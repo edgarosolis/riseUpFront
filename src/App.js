@@ -1,24 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
+import { useContext } from 'react';
+import { UserContext } from './context/user';
+import { Navigate, Route, Routes } from 'react-router';
+import LogInUser from './pages/Auth/LoginUser';
+import NavBar from './components/navigation/NavBar';
+import Welcome from './pages/Main/Welcome';
+import Section from './pages/Main/Section';
+import Report from './pages/Main/Report';
 
 function App() {
+
+  const {currentUser} = useContext(UserContext);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+      {
+        !currentUser && 
+        <>
+          <Route path="/" element={<NavBar/>}>
+            <Route index element={<LogInUser/>}/>
+            {/* <Route path="/admin" element={<LoginAdmin/>}/> */}
+          </Route>
+          <Route path='*' element={<Navigate to="/"/>}/>
+        </>
+      }
+      {
+        currentUser && currentUser.rol === "user" && <>
+          <Route path="/" element={<NavBar/>}>
+            <Route index element={<Welcome/>}/>
+            <Route path="/section/:id" element={<Section/>}/>
+            <Route path="/report" element={<Report/>}/>
+            <Route path='*' element={<Navigate to="/"/>}/>
+          </Route>
+        </>
+      }
+      </Routes>
+    </>
   );
 }
 
