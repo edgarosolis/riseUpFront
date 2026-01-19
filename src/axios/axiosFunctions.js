@@ -34,9 +34,9 @@ export const getAllAssessments = async()=>{
 
 //SUBMISSION
 
-export const getActiveUserSubmission = async(submissionId,userId)=>{
+export const getActiveUserSubmission = async(assessmentId,userId)=>{
   try {
-    const resp = await axios.get(BASE_URL + `submission/active/user/${userId}/assessmet/${submissionId}`);
+    const resp = await axios.get(BASE_URL + `submission/active/user/${userId}/assessmet/${assessmentId}`);
     return resp.data;
   } catch (error) {
     console.log(error);
