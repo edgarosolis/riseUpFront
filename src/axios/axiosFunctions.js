@@ -1,12 +1,12 @@
 import axios from "axios";
 
 //DEVELOPMENT URL
-export const BASE_URL = "http://localhost:8080/api/";
-export const FRONT_URL = "http://localhost:3000/";
+//export const BASE_URL = "http://localhost:8080/api/";
+//export const FRONT_URL = "http://localhost:3000/";
 
 //DEVELOPMENT URL
-//export const BASE_URL = "https://riseupback.onrender.com/api/";
-//export const FRONT_URL = "https://riseupback.onrender.com/";
+export const BASE_URL = "https://riseupback.onrender.com/api/";
+export const FRONT_URL = "https://riseupback.onrender.com/";
 
 //AUTH
 
