@@ -11,6 +11,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
     const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(1);
     const [currentAnswers, setCurrentAnswers] = useState();
+    const [options, setOptions] = useState([]);
 
     useEffect(() => {
         window.scrollTo({
@@ -23,6 +24,32 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
     useEffect(() => {
       setCurrentAnswers(answers);
     }, [answers])
+
+    useEffect(() => {
+       const shuffledOpt = shuffleArray(questions[activeStep-1].options);
+       setOptions(shuffledOpt);
+    }, [questions,activeStep])
+    
+    const shuffleArray = (array) => {
+        const newArray = [...array]; // Create a copy of the array
+        let currentIndex = newArray.length;
+        let randomIndex;
+      
+        // While there remain elements to shuffle.
+        while (currentIndex !== 0) {
+          // Pick a remaining element.
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+      
+          // Swap it with the current element.
+          [newArray[currentIndex], newArray[randomIndex]] = [
+            newArray[randomIndex],
+            newArray[currentIndex],
+          ];
+        }
+      
+        return newArray; // Return the new, shuffled array
+    };
     
 
     const handleNext = async() => {
@@ -42,6 +69,10 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
                 setActiveStep(1);
             }else{
                 window.scrollTo(0, 0);
+                const data = {
+                    finished : true
+                }
+                await saveProgress(submissionId,data);
                 navigate('/report');
             }
         }else{
@@ -95,7 +126,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
             <Typography variant="h6" sx={{marginTop:"50px",marginBottom:"30px"}}>{activeStep}. {questions[activeStep-1]?.text}</Typography>
             <RadioGroup value={findValue(questions[activeStep-1]?.customId)} onChange={handleChange}>
                 {
-                    questions[activeStep-1]?.options.map((q,i)=>(
+                    options.map((q,i)=>(
                         <FormControlLabel key={i} value={q.text} control={<Radio/>} label={q.text}/>
                     ))
                 }
