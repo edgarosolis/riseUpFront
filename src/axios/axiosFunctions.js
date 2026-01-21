@@ -4,6 +4,10 @@ import axios from "axios";
 export const BASE_URL = "http://localhost:8080/api/";
 export const FRONT_URL = "http://localhost:3000/";
 
+//DEVELOPMENT URL
+//export const BASE_URL = "https://riseupback.onrender.com/api/";
+//export const FRONT_URL = "https://riseupback.onrender.com/";
+
 //AUTH
 
 export const loginUser = async (data) => {
@@ -53,5 +57,17 @@ export const saveProgress = async(submissionId,data)=>{
       submission: undefined,
       msg: error.response.data.msg,
     };
+  }
+}
+
+//REPORT
+
+export const getReportInfo = async(assessmentId,userId)=>{
+  try {
+    const resp = await axios.get(BASE_URL + `report/assessment/${assessmentId}/user/${userId}`);
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+    return undefined;
   }
 }

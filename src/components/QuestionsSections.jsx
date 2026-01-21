@@ -96,7 +96,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
             <RadioGroup value={findValue(questions[activeStep-1]?.customId)} onChange={handleChange}>
                 {
                     questions[activeStep-1]?.options.map((q,i)=>(
-                        <FormControlLabel key={i} value={q} control={<Radio/>} label={q}/>
+                        <FormControlLabel key={i} value={q.text} control={<Radio/>} label={q.text}/>
                     ))
                 }
             </RadioGroup>
