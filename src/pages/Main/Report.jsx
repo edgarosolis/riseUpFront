@@ -22,8 +22,8 @@ const Report = () => {
   const [loading, setLoading] = useState(true);
   const [userSubmission, setUserSubmission] = useState();
 
-  const callReportData = async () => {
-    setLoading(true);
+  const callReportData = async (isSilent = false) => {
+    if (!isSilent) setLoading(true);
     const [resInfo, resAnswers] = await Promise.all([
       getReportInfo(currentAssessment?._id, currentUser?._id),
       getActiveUserSubmission(currentAssessment?._id, currentUser?._id)
@@ -60,7 +60,9 @@ const Report = () => {
     <>
       {
       loading ? 
-      <CircularProgress/>    
+      <Box display="flex" justifyContent="center" mt={10}>
+        <CircularProgress/>    
+      </Box>
       :
       <Box sx={{paddingBottom:"50px"}}>
         <WaveBannerReport title={currentAssessment?.title}/>
@@ -74,11 +76,11 @@ const Report = () => {
         <ReportHowTo/>
         {
           currentAssessment?.sections.map((s,i)=>(
-            <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={callReportData}/>
+            <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={()=>callReportData(true)}/>
           ))
         }
         <MiniBanner title={"Next Steps: A Spiritual Response"}/>
-        <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={callReportData}/>
+        <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={()=>callReportData(true)}/>
         <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
         <ReportLeader/>
       </Box>    

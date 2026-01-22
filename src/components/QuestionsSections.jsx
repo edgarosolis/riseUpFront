@@ -135,7 +135,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
                 <Button startIcon={<ArrowCircleLeftRoundedIcon/>} variant="contained" color="secondary" disabled={activeStep===1} onClick={handleBack}>
                     Back
                 </Button>
-                <Button endIcon={<ArrowCircleRightRoundedIcon/>} variant="contained" color="secondary" onClick={handleNext}>
+                <Button endIcon={<ArrowCircleRightRoundedIcon/>} variant="contained" disabled={findValue(questions[activeStep-1].customId) === ""} color="secondary" onClick={handleNext}>
                     {
                         activeStep===noQuestions ?
                         "Complete"

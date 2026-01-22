@@ -1,10 +1,14 @@
-import { Box, Button, Container, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, Container, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react";
 import { saveProgress } from "../axios/axiosFunctions";
 
 const QuestionsReportSections = ({ questions, answers, submissionId, callUserSubmission }) => {
 
     const [currentAnswers, setCurrentAnswers] = useState();
+    const [isSaving, setIsSaving] = useState(false);
+    const [showError, setShowError] = useState(false); 
+    const [error, setError] = useState("");
+    const [alertSeverity, setAlertSeverity] = useState("error"); 
 
     useEffect(() => {
         setCurrentAnswers(answers);
@@ -31,17 +35,24 @@ const QuestionsReportSections = ({ questions, answers, submissionId, callUserSub
     }
     
     const handleSave = async() => {
-        
+        setIsSaving(true)
         const data = {
             answers:currentAnswers
         }
-        const res = await saveProgress(submissionId,data);
-        if(!res){
-            return;
+        const res = await saveProgress(submissionId, data);
+        
+        if(res){
+            setAlertSeverity("success");
+            setError("Saved correctly");            
+            await callUserSubmission(); 
+        } else {
+            setAlertSeverity("error");
+            setError("Error while saving");
         }
         
-        setCurrentAnswers(res.submission.answers); 
-        callUserSubmission();
+        setShowError(true);
+        setIsSaving(false);
+        setTimeout(() => setShowError(false), 2000);
     };
 
     const findValue = (customId)=>{
@@ -62,8 +73,9 @@ const QuestionsReportSections = ({ questions, answers, submissionId, callUserSub
                 </Box>
             ))
         }
-        <Box display={"flex"} justifyContent={"flex-end"}>
-            <Button onClick={handleSave} color="secondary" variant="contained">Save</Button>
+        <Box display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
+            {showError && <Alert severity={alertSeverity}>{error}</Alert>}
+            <Button onClick={handleSave} disabled={isSaving} color="secondary" variant="contained">{isSaving ? "Saving..." : "Save"}</Button>
         </Box>
     </Container>
     )

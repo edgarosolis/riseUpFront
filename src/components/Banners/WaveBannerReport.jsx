@@ -20,7 +20,7 @@ const WaveBannerReport = ({title}) => {
                   variant="h2" 
                   sx={{ 
                     fontWeight: 600, 
-                    fontSize: { xs: '2.5rem', md: '5rem' },
+                    fontSize: { xs: '2.5rem', md: '4rem' },
                   }}
                 >
                   {title} Assessment

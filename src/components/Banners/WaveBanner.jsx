@@ -8,23 +8,23 @@ const WaveBanner = ({title,subtitle,button,buttonText,imageUrl}) => {
       <Container maxWidth="xl">
         <Grid container spacing={5} aligs="center">
           {/* Columna de Texto */}
-          <Grid size={{xs:12,md:9}}>
+          <Grid size={{xs:12,md:7}}>
             <Box sx={{ zIndex: 2, position: 'relative' }}>
               <Typography 
                 variant="h2"
                 color="primary"
                 sx={{ 
                   fontWeight: 600, 
-                  fontSize: { xs: '2.5rem', md: '6rem' },
+                  fontSize: { xs: '2.5rem', md: '4rem' },
                 }}
               >
                 {title}
               </Typography>
               <Typography 
-                variant="h2" 
+                variant="h4" 
                 sx={{ 
                   fontWeight: 400,
-                  maxWidth:"600px"
+                  maxWidth:"600px",
                 }}
               >
                 {subtitle}
@@ -52,7 +52,7 @@ const WaveBanner = ({title,subtitle,button,buttonText,imageUrl}) => {
           </Grid>
 
           {/* Columna de Imagen */}
-          <Grid size={{xs:12,md:3}}>
+          <Grid size={{xs:12,md:5}}>
             <Box 
               sx={{ 
                 display: 'flex', 
@@ -66,7 +66,7 @@ const WaveBanner = ({title,subtitle,button,buttonText,imageUrl}) => {
                 src={imageUrl}
                 alt="Banner Illustration"
                 sx={{
-                  width: '200%',                  
+                  width: '60%',                  
                   height: 'auto',
                   filter: 'drop-shadow(0px 20px 30px rgba(0,0,0,0.1))'
                 }}

@@ -9,7 +9,7 @@ export const BannerContainerReport = styled(Box)(({ theme }) => ({
     overflow: 'hidden',
     display: 'flex',
     alignItems: 'flex-start',
-    minHeight: '500px',
+    minHeight: '300px',
     [theme.breakpoints.down('md')]: {
       paddingTop: theme.spacing(8),
       paddingBottom: theme.spacing(15),

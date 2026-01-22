@@ -1,10 +1,14 @@
-import { Box, Button, Container, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, Container, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react";
 import { saveProgress } from "../../axios/axiosFunctions";
 
 const ReportNextSteps = ({ answers, submissionId, refreshData }) => {
     
     const [currentAnswers, setCurrentAnswers] = useState();
+    const [isSaving, setIsSaving] = useState(false);
+    const [showError, setShowError] = useState(false); 
+    const [error, setError] = useState("");
+    const [alertSeverity, setAlertSeverity] = useState("error"); 
 
     useEffect(() => {
         setCurrentAnswers(answers);
@@ -18,7 +22,7 @@ const ReportNextSteps = ({ answers, submissionId, refreshData }) => {
         return "";
     }
 
-    const handleChange = (e,customId)=>{
+    const handleChange = (e,customId)=>{ 
         const {value} = e.target;
 
         const existsAnswer = currentAnswers.findIndex(a=>a.customId === customId); 
@@ -38,17 +42,26 @@ const ReportNextSteps = ({ answers, submissionId, refreshData }) => {
     }
 
     const handleSave = async() => {
-        
+        setIsSaving(true);
         const data = {
             answers:currentAnswers
         }
-        const res = await saveProgress(submissionId,data);
-        if(!res){
-            return;
+        const res = await saveProgress(submissionId,data); 
+        
+        if(res){
+            setCurrentAnswers(res.submission.answers); 
+            setAlertSeverity("success");
+            setError("Saved correctly");            
+            await refreshData(); 
+        } else {
+            setAlertSeverity("error");
+            setError("Error while saving");
         }
         
-        setCurrentAnswers(res.submission.answers); 
-        refreshData();
+        setShowError(true);
+        setIsSaving(false);
+        setTimeout(() => setShowError(false), 2000);
+
     };
 
     return (
@@ -74,7 +87,8 @@ const ReportNextSteps = ({ answers, submissionId, refreshData }) => {
         <Typography variant='subtitle1' sx={{marginTop:"20px", paddingLeft:"20px"}}><span style={{fontWeight:"600"}}>Document</span> one action you can take this week that aligns with what you’re discovering.</Typography>
         <TextField value={findValue("ntq2")} onChange={(e)=>handleChange(e,"ntq2")} fullWidth multiline rows={5} sx={{marginBottom:"20px"}}/>
         <Box display={"flex"} justifyContent={"flex-end"} sx={{marginBottom:"50px"}}>
-            <Button color="secondary" onClick={handleSave} variant="contained">Save</Button>
+            {showError && <Alert severity={alertSeverity}>{error}</Alert>}
+            <Button color="secondary" disabled={isSaving} onClick={handleSave} variant="contained">{isSaving ? "Saving..." : "Save"}</Button>
         </Box>
     </Container>
     )
