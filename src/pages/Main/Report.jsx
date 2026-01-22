@@ -12,7 +12,7 @@ import SectionsReport from "../../components/SectionsReport"
 import ReportNextSteps from "../../components/Texts/ReportNextSteps"
 import ReportLeader from "../../components/Texts/ReportLeader"
 import { UserContext } from "../../context/user"
-import { getReportInfo } from "../../axios/axiosFunctions"
+import { getActiveUserSubmission, getReportInfo } from "../../axios/axiosFunctions"
 
 const Report = () => {
 
@@ -20,14 +20,28 @@ const Report = () => {
   const {currentUser} = useContext(UserContext);
   const [reportInfo, setReportInfo] = useState();
   const [loading, setLoading] = useState(true);
+  const [userSubmission, setUserSubmission] = useState();
+
+  const callReportData = async () => {
+    setLoading(true);
+    const [resInfo, resAnswers] = await Promise.all([
+      getReportInfo(currentAssessment?._id, currentUser?._id),
+      getActiveUserSubmission(currentAssessment?._id, currentUser?._id)
+    ]);
+
+    if(resInfo) setReportInfo(resInfo.report);
+    if(resAnswers) setUserSubmission(resAnswers.submission);
+    
+    setLoading(false);
+  };
 
   useEffect(() => {
     if(currentAssessment && currentUser){
-      callReportInfo(); 
+      callReportData();
     }
   }, [currentAssessment,currentUser])
   
-  const callReportInfo = async()=>{
+/*   const callReportInfo = async()=>{
     const res = await getReportInfo(currentAssessment?._id,currentUser?._id)
     if(res){
       setReportInfo(res.report);
@@ -35,6 +49,13 @@ const Report = () => {
     setLoading(false);
   }
 
+  const callUserSubmission = async()=>{
+    const answers = await getActiveUserSubmission(currentAssessment._id,currentUser._id);
+    if(answers){
+        setUserSubmission(answers.submission);
+    } 
+  }
+ */
   return (
     <>
       {
@@ -53,12 +74,12 @@ const Report = () => {
         <ReportHowTo/>
         {
           currentAssessment?.sections.map((s,i)=>(
-            <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo}/>
+            <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={callReportData}/>
           ))
         }
         <MiniBanner title={"Next Steps: A Spiritual Response"}/>
-        <ReportNextSteps/>
-        <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"}/>
+        <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={callReportData}/>
+        <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
         <ReportLeader/>
       </Box>    
       }

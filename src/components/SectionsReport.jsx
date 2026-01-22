@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import Separator from './Banners/Separator';
 import SectionReportBanner from './Banners/SectionReportBanner';
 import { Container, Grid, Typography } from '@mui/material';
 import Results from './Cards/Results';
 import QuestionsReportSections from './QuestionsReportSections';
 
-const SectionsReport = ({section, index, reportInfo}) => {
+const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData}) => {
     
     const [currentSection, setCurrentSection] = useState();
 
@@ -13,8 +13,6 @@ const SectionsReport = ({section, index, reportInfo}) => {
         const s = reportInfo.find(r=>r.section === section.customId);
         setCurrentSection(s); 
     }, [section]);
-
-    console.log(section);
     
     return (
         <>
@@ -31,15 +29,15 @@ const SectionsReport = ({section, index, reportInfo}) => {
                             <Typography fontWeight={600} variant='h6' color='white'>Definition</Typography>
                         </Grid>
                         {
-                            section?.report?.tableInfo.map(row=>(
-                                <>
+                            section?.report?.tableInfo.map((row,i)=>(
+                                <Fragment key={i}>
                                     <Grid size={3} sx={{backgroundColor:"backSections.main",padding:"30px 30px", display:"flex", alignItems:"center"}}>
                                         <Typography fontWeight={600}>{row.sphere}</Typography>
                                     </Grid>
                                     <Grid size={9} sx={{backgroundColor:"backSections.main",padding:"30px 30px", display:"flex", alignItems:"center"}}>
                                         <Typography>{row.definition}</Typography>
                                     </Grid>
-                                </>
+                                </Fragment>
                             ))
                         }
                         <Grid size={12} sx={{backgroundColor:"backSections.main", display:"flex",flexDirection:"column", justifyContent:"center", padding:"30px 30px"}}>
@@ -52,7 +50,7 @@ const SectionsReport = ({section, index, reportInfo}) => {
                 </Container>
             }
             <Results sectionColor={section?.color} title={section?.title} currentSection={currentSection}/>
-            <QuestionsReportSections questions={section?.report?.questions}/>
+            <QuestionsReportSections questions={section?.report?.questions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData}/>
         </>
     )
 }

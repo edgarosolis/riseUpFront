@@ -21,7 +21,6 @@ const Welcome = () => {
   }, [currentAssessment,currentUser]);
 
   const callSubmission = async()=>{
-    console.log("1");
     const res = await getActiveUserSubmission(currentAssessment._id,currentUser._id);
     if(res){
       if(res.submission.finished){

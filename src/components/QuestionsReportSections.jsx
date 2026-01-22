@@ -1,8 +1,56 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material"
+import { useEffect, useState } from "react";
+import { saveProgress } from "../axios/axiosFunctions";
 
-const QuestionsReportSections = ({questions}) => {
+const QuestionsReportSections = ({ questions, answers, submissionId, callUserSubmission }) => {
 
-    //TODO FUNCTIONALITY
+    const [currentAnswers, setCurrentAnswers] = useState();
+
+    useEffect(() => {
+        setCurrentAnswers(answers);
+    }, [answers]);
+
+    const handleChange = (e,i)=>{
+        const {value} = e.target;
+        const customId = questions[i].customId;
+
+        const existsAnswer = currentAnswers.findIndex(a=>a.customId === customId); 
+        if(existsAnswer !== -1){
+            const newAnswers = [...currentAnswers];
+            newAnswers[existsAnswer].value = value;
+            setCurrentAnswers(newAnswers);
+        }
+        else{
+            const newAnswers = [...currentAnswers];
+            newAnswers.push({
+                customId,
+                value
+            });
+            setCurrentAnswers(newAnswers);
+        }
+    }
+    
+    const handleSave = async() => {
+        
+        const data = {
+            answers:currentAnswers
+        }
+        const res = await saveProgress(submissionId,data);
+        if(!res){
+            return;
+        }
+        
+        setCurrentAnswers(res.submission.answers); 
+        callUserSubmission();
+    };
+
+    const findValue = (customId)=>{
+        if(currentAnswers){
+            const a = currentAnswers.find(a=>a.customId === customId);
+            return  a?.value || "";
+        }
+        return "";
+    }
 
     return (
     <Container maxWidth="xl" sx={{padding:"40px 0px"}}> 
@@ -10,12 +58,12 @@ const QuestionsReportSections = ({questions}) => {
             questions.map((q,i)=>(
                 <Box key={i} sx={{marginBottom:"20px"}}>
                     <Typography variant="subtitle1" fontWeight={600}>{q.text}</Typography>
-                    <TextField fullWidth multiline rows={5}/>
+                    <TextField value={findValue(questions[i]?.customId)} onChange={(e)=>handleChange(e,i)} fullWidth multiline rows={5}/>
                 </Box>
             ))
         }
         <Box display={"flex"} justifyContent={"flex-end"}>
-            <Button color="secondary" variant="contained">Save</Button>
+            <Button onClick={handleSave} color="secondary" variant="contained">Save</Button>
         </Box>
     </Container>
     )

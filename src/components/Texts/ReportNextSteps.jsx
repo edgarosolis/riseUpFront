@@ -1,6 +1,56 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material"
+import { useEffect, useState } from "react";
+import { saveProgress } from "../../axios/axiosFunctions";
 
-const ReportNextSteps = () => {
+const ReportNextSteps = ({ answers, submissionId, refreshData }) => {
+    
+    const [currentAnswers, setCurrentAnswers] = useState();
+
+    useEffect(() => {
+        setCurrentAnswers(answers);
+    }, [answers]);
+
+    const findValue = (customId)=>{
+        if(currentAnswers){
+            const a = currentAnswers.find(a=>a.customId === customId);
+            return  a?.value || "";
+        }
+        return "";
+    }
+
+    const handleChange = (e,customId)=>{
+        const {value} = e.target;
+
+        const existsAnswer = currentAnswers.findIndex(a=>a.customId === customId); 
+        if(existsAnswer !== -1){
+            const newAnswers = [...currentAnswers];
+            newAnswers[existsAnswer].value = value;
+            setCurrentAnswers(newAnswers);
+        }
+        else{
+            const newAnswers = [...currentAnswers];
+            newAnswers.push({
+                customId,
+                value
+            });
+            setCurrentAnswers(newAnswers);
+        }
+    }
+
+    const handleSave = async() => {
+        
+        const data = {
+            answers:currentAnswers
+        }
+        const res = await saveProgress(submissionId,data);
+        if(!res){
+            return;
+        }
+        
+        setCurrentAnswers(res.submission.answers); 
+        refreshData();
+    };
+
     return (
     <Container maxWidth="xl">
         <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>The Kingdom Calling Assessment is the beginning of a conversation with God, not the end of one. Set aside time in the coming days to do the following:</Typography>
@@ -20,11 +70,11 @@ const ReportNextSteps = () => {
         <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>Before you move forward:</Typography>
         <Typography variant='subtitle1' sx={{marginTop:"20px", paddingLeft:"20px"}}><span style={{fontWeight:"600"}}>Circle</span> 2–3 key phrases in your report that stand out to you.</Typography>
         <Typography variant='subtitle1' sx={{marginTop:"20px", paddingLeft:"20px"}}><span style={{fontWeight:"600"}}>Write </span> a 3-sentence summary of how you believe God is calling you to lead in this season.</Typography>
-        <TextField fullWidth multiline rows={5}/>
+        <TextField value={findValue("ntq1")} onChange={(e)=>handleChange(e,"ntq1")} fullWidth multiline rows={5}/>
         <Typography variant='subtitle1' sx={{marginTop:"20px", paddingLeft:"20px"}}><span style={{fontWeight:"600"}}>Document</span> one action you can take this week that aligns with what you’re discovering.</Typography>
-        <TextField fullWidth multiline rows={5} sx={{marginBottom:"20px"}}/>
+        <TextField value={findValue("ntq2")} onChange={(e)=>handleChange(e,"ntq2")} fullWidth multiline rows={5} sx={{marginBottom:"20px"}}/>
         <Box display={"flex"} justifyContent={"flex-end"} sx={{marginBottom:"50px"}}>
-            <Button color="secondary" variant="contained">Save</Button>
+            <Button color="secondary" onClick={handleSave} variant="contained">Save</Button>
         </Box>
     </Container>
     )
