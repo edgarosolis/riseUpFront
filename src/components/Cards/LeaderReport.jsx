@@ -1,4 +1,5 @@
 import { Button, Grid, Typography } from "@mui/material"
+import { Link } from "react-router"
 
 const LeaderReport = ({title,info,button=false,buttonText,buttonLink,cardColor,titleColor,buttonColor,infoColor="black"}) => {
   return (
@@ -10,7 +11,7 @@ const LeaderReport = ({title,info,button=false,buttonText,buttonLink,cardColor,t
         {
             button &&
             <Grid size={2} sx={{display:"flex",justifyContent:"center", alignItems:"center"}}>
-                <Button color={buttonColor} variant="contained">{buttonText}</Button> 
+                <Button component={Link} to={`${buttonLink}`} target={"_blank"} color={buttonColor} variant="contained">{buttonText}</Button> 
             </Grid>
         }
     </Grid>
