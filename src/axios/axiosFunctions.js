@@ -9,7 +9,6 @@ export const BASE_URL = "https://riseupback.onrender.com/api/";
 export const FRONT_URL = "https://riseupback.onrender.com/";
 
 //AUTH
-
 export const loginUser = async (data) => {
     try {
       const resp = await axios.post(BASE_URL + "auth/login", data);
@@ -21,6 +20,19 @@ export const loginUser = async (data) => {
         msg: error.response.data.msg,
       };
     }
+};
+
+export const loginAdmin = async (data) => {
+  try {
+    const resp = await axios.post(BASE_URL + "auth/loginAdmin", data);
+    return resp.data;
+  } catch (error) {
+    //TO DO: HANDLE ERROR
+    return {
+      user: undefined,
+      msg: error.response.data.msg,
+    };
+  }
 };
 
 //ASSESSMENTS
@@ -69,5 +81,29 @@ export const getReportInfo = async(assessmentId,userId)=>{
   } catch (error) {
     console.log(error);
     return undefined;
+  }
+}
+
+//USER
+export const getAllUsers = async()=>{
+  try {
+    const resp = await axios.get(BASE_URL + `user/allUserAdmin`);
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+}
+
+export const createUser = async(data)=>{
+  try {
+    const resp = await axios.post(BASE_URL + "user/", data);
+    return resp.data;
+  } catch (error) {
+    //TO DO: HANDLE ERROR
+    return {
+      user: undefined,
+      msg: error.response.data.msg,
+    };
   }
 }

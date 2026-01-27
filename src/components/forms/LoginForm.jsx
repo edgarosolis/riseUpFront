@@ -3,7 +3,7 @@ import { Alert, Box, Button, FormControl, Grid, IconButton, InputAdornment, Inpu
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/user";
-import { getAllAssessments, loginUser } from "../../axios/axiosFunctions";
+import { getAllAssessments, loginAdmin, loginUser } from "../../axios/axiosFunctions";
 import { AssessmentContext } from "../../context/assessment";
 
 const defaultLoginForm = {
@@ -39,7 +39,7 @@ const LoginForm = () => {
 
         let logInfo;
         if(location.pathname === "/admin"){
-            /* logInfo = await loginAdmin(data); */  
+            logInfo = await loginAdmin(data);  
         }else{
             logInfo = await loginUser(data);
         }

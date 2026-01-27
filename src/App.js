@@ -7,6 +7,8 @@ import NavBar from './components/navigation/NavBar';
 import Welcome from './pages/Main/Welcome';
 import Section from './pages/Main/Section';
 import Report from './pages/Main/Report';
+import LoginAdmin from './pages/Auth/LoginAdmin';
+import Dashboard from './pages/Admin/Dashboard';
 
 function App() {
 
@@ -20,7 +22,7 @@ function App() {
         <>
           <Route path="/" element={<NavBar/>}>
             <Route index element={<LogInUser/>}/>
-            {/* <Route path="/admin" element={<LoginAdmin/>}/> */}
+            <Route path="/admin" element={<LoginAdmin/>}/>
           </Route>
           <Route path='*' element={<Navigate to="/"/>}/>
         </>
@@ -33,6 +35,18 @@ function App() {
             <Route path="/report" element={<Report/>}/>
             <Route path='*' element={<Navigate to="/"/>}/>
           </Route>
+        </>
+      }
+      {
+        currentUser && currentUser.rol === "admin" && <>
+          <Route path="/" element={<NavBar/>}>
+            <Route index element={<Dashboard active={"home"}/>}/>
+            <Route path="/users" element={<Dashboard active={"users"}/>}/>
+            {/* <Route exact path="/profile/:userId" element={<Dashboard active={"profile"}/>}/>
+            <Route exact path="/profile/:slugAssessment/:userId" element={<Dashboard active={"report"}/>}/>
+            <Route path="/assessment/:slugAssessment" element={<Dashboard active={"assessment"}/>}/>*/}
+          </Route>
+          <Route path='*' element={<Navigate to="/"/>}/>
         </>
       }
       </Routes>

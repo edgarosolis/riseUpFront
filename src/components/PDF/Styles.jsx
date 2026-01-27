@@ -39,9 +39,10 @@ export const stylesPDF = StyleSheet.create({
       marginTop: 4,
   },
   bannerText: {
-      fontSize: 15,
+      fontSize: 14,
       color: 'white',        
       fontWeight: 400,
+      marginTop:"5px"
   },
   LogoContainer:{
       display:"flex",
@@ -54,7 +55,7 @@ export const stylesPDF = StyleSheet.create({
       paddingHorizontal: 45,
   },
   bannerMiniContainer: {
-      paddingHorizontal:45,
+      paddingHorizontal:40,
       paddingVertical: 20,
       width: '100%',
       justifyContent:"center",
@@ -83,7 +84,7 @@ export const stylesPDF = StyleSheet.create({
   titleText: {
     fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 5,
   },
   infoText: {        
     fontSize: 10,
@@ -106,7 +107,7 @@ export const stylesPDF = StyleSheet.create({
     color:"white"
   },
   sectionWrapper: {
-    paddingTop: 30,
+    paddingTop: 20,
     paddingBottom: 20,
     paddingHorizontal: 50,
     backgroundColor: '#FFC7001A',
@@ -120,11 +121,11 @@ export const stylesPDF = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 15,
+    marginBottom: 5,
     color: '#333333',
   },
   intro: {
-    marginTop: 10,
+    marginTop: 0,
   },
   tableContainer: {
     marginHorizontal: 40,

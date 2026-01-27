@@ -74,7 +74,7 @@ const Report = () => {
         <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={()=>callReportData(true)}/>
         <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
         <ReportLeader/>
-        <DownloadSection sections={currentAssessment?.sections} fetchData={callReportData} userSubmission={userSubmission} userName={`${currentUser?.firstName} ${currentUser?.lastName}`}/>
+        <DownloadSection sections={currentAssessment?.sections} fetchData={callReportData} userSubmission={userSubmission} userName={`${currentUser?.firstName || ""} ${currentUser?.lastName || ""}`}/>
       </Box>    
       }
     </>
