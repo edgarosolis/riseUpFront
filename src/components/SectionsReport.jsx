@@ -13,11 +13,11 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData})
         const s = reportInfo.find(r=>r.section === section.customId);
         setCurrentSection(s); 
     }, [section]);
-    
+
     return (
         <>
             <Separator sectionColor={section?.color}/>
-            <SectionReportBanner sectionColor={section?.color} title={section?.title} index={index} intro={section?.report?.intro}/>
+            <SectionReportBanner sectionColor={section?.color} title={section?.title} index={index} intro={section?.report?.intro} image={section?.image}/>
             <Results sectionColor={section?.color} title={section?.title} currentSection={currentSection}/>
             <QuestionsReportSections questions={section?.report?.questions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData}/>
             {

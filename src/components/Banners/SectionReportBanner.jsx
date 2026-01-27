@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Typography } from "@mui/material"
 
-const SectionReportBanner = ({sectionColor,index, title,intro}) => {
+const SectionReportBanner = ({sectionColor,index, title,intro,image}) => { 
     return (
     <Box sx={{backgroundColor:"backSections.main",paddingTop:"50px",paddingBottom:"30px"}}>
         <Container maxWidth="xl">
@@ -28,7 +28,12 @@ const SectionReportBanner = ({sectionColor,index, title,intro}) => {
                     </Typography>
                     <Typography component={"div"} variant='subtitle1' sx={{marginTop:"20px", marginBottom:"10px"}} dangerouslySetInnerHTML={{__html:`${intro}`}}/>
                 </Box>
-                </Grid> 
+                </Grid>
+                <Grid size={4}>
+                    <Box>
+                        {<img src={image} alt="section_image" style={{width:"120%"}}/>}
+                    </Box>
+                </Grid>
             </Grid>
         </Container>
     </Box>

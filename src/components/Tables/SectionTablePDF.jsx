@@ -1,5 +1,9 @@
 import { Text, View } from "@react-pdf/renderer";
 import { stylesPDF } from "../PDF/Styles";
+import { Font } from '@react-pdf/renderer';
+
+Font.registerHyphenationCallback(word => [word]);
+
 
 const SectionTablePDF = ({ tableInfo }) => {
   return (

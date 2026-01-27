@@ -45,7 +45,7 @@ const DownloadSection = ({ fetchData, sections, userSubmission,userName }) => {
             {isFetchingAPI ? "LOADING..." : "PREPARE PDF REPORT"}
           </Button>
           <Typography variant="caption" display="block" sx={{ mt: 1, color: 'text.secondary' }}>
-            Please prepare the report to include your latest answers.
+            Download report - Your report will be generated with your latest answers.
           </Typography>
         </Box>
       ) : (

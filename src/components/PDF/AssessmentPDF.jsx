@@ -1,4 +1,4 @@
-import { Document,Page } from '@react-pdf/renderer';
+import { Document,Image,Link,Page, View } from '@react-pdf/renderer';
 import BannerPDF from '../Banners/BannerPDF';
 import TextPDF from '../Texts/TextPDF';
 import MiniBannerPDF from '../Banners/MiniBannerPDF';
@@ -8,6 +8,11 @@ import ResultsPDF from '../Cards/ResultsPDF';
 import { Fragment } from 'react';
 import SectionTablePDF from '../Tables/SectionTablePDF';
 import ReportResultsPDF from '../Texts/ReportResultsPDF';
+import OutroReport from '../../assets/images/OutroReport.png';
+import { stylesPDF } from './Styles';
+import { Font } from '@react-pdf/renderer';
+
+Font.registerHyphenationCallback(word => [word]);
 
 const AssessmentPDF = ({ data, sections,userName }) => {
 
@@ -16,16 +21,12 @@ const AssessmentPDF = ({ data, sections,userName }) => {
         <Page>
             <BannerPDF title={"Kingdom Calling Assessment"} subtitle={"REPORT"}/>
             <MiniBannerPDF title={"Embracing the Wonder of You"} color={"#F4C542"} center={true} titleSize="2.0"/>
-            <TextPDF text={`<b>Dear ${userName},</b>
-            <br>
-            <br>
-            Welcome to your Kingdom Calling Assessment Report. This is a tool designed not to define you, but to reveal who you are and the leader for the Kingdom you are called to be. This is not just data. <b>This is discovery.</b>
-            <br>
-            <br>
-            Our prayer is that this report will stir something in your soul and serve as a prophetic guide into who God has uniquely made you to be as a Kingdom leader.
-            <br>
-            <br>
-            You were made to rise up. Jesus said, “You did not choose me, but I chose you and appointed you so that you might go and bear fruit — fruit that will last” (John 15:16). This report is part of His invitation to walk boldly in the good works He prepared in advance for you (Ephesians. 2:10).`}/>
+            <TextPDF text={`<b>Dear ${userName},</b><br><br>Welcome to your Kingdom Calling Assessment Report. This is a tool designed not to define you, but to reveal who you are and the leader for the Kingdom you are called to be. This is not just data. <b>This is discovery.</b><br><br>Our prayer is that this report will stir something in your soul and serve as a prophetic guide into who God has uniquely made you to be as a Kingdom leader.<br><br>You were made to rise up. Jesus said, “You did not choose me, but I chose you and appointed you so that you might go and bear fruit — fruit that will last” (John 15:16). This report is part of His invitation to walk boldly in the good works He prepared in advance for you (Ephesians. 2:10).`}/>
+            <View style={stylesPDF.imageContainer}>
+                <Link>
+                    <Image src={OutroReport} style={stylesPDF.outroImage}/>
+                </Link>
+            </View>
         </Page>
         <Page>
             <MiniBannerPDF title={"Your Result"} color={"#383838"}/>
@@ -42,10 +43,7 @@ const AssessmentPDF = ({ data, sections,userName }) => {
             <br>
             These are not labels to wear, but lenses to look through — helping you interpret your life, leadership, and legacy with clarity and confidence.`}/>
             <MiniBannerPDF title={"How to Use This Report"} color={"#383838"}/>
-            <TextPDF text={`Before you analyze, pause. Invite the Holy Spirit into this moment.
-            <br>
-            <br>
-            Consider praying: “Lord, You know me better than I know myself. Speak through these insights. Confirm what’s true. Challenge what’s misaligned. Reveal what You see in me.”
+            <TextPDF text={`Before you analyze, pause. Invite the Holy Spirit into this moment.<br><br>Consider praying: “Lord, You know me better than I know myself. Speak through these insights. Confirm what’s true. Challenge what’s misaligned. Reveal what You see in me.”
             <br>
             <br>
             As you read through each section, consider:
@@ -69,16 +67,16 @@ const AssessmentPDF = ({ data, sections,userName }) => {
             sections.map((s,i)=>(
                 <Page key={i}>
                     <MiniBannerPDF title={""} color={s.color}/>
-                    <SectionReportBannerPDF sectionColor={s.color} index={i} title={s.title} intro={s.report.intro}/>
+                    <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={s.title} intro={s.report.intro} image={s.image}/>
                     <ResultsPDF sectionColor={s?.color} title={s?.title} currentSection={data.report.find(cs=>cs.section === s.customId)}/>
                     {
                         s.report.questions.map((q,i)=>(
-                            <Fragment key={i}>
+                            <View key={i} wrap={false}>
                                 <TextPDF text={`<b>${q.text}</b>
                                 <br>
                                 ${(data.submission.answers.find(a=>a.customId === q.customId))?.value || "" }
                                 `}/>
-                            </Fragment>
+                            </View>
 
                         ))
                     }
@@ -150,10 +148,7 @@ const AssessmentPDF = ({ data, sections,userName }) => {
         </Page>
         <Page>
             <MiniBannerPDF title={"You Are A Leader"} subtitle={"Now Step into It"} color={"#383838"}/>
-            <TextPDF text={`<b>Your Kingdom Calling Report is not an endpoint. It is an invitation.</b>
-            <br>
-            <br>
-            You now have language for the wonder of how God uniquely designed you. The next step is learning how to live it out with confidence, clarity, and purpose within the Body of Christ.
+            <TextPDF text={`<b>Your Kingdom Calling Report is not an endpoint. It is an invitation.</b><br><br>You now have language for the wonder of how God uniquely designed you. The next step is learning how to live it out with confidence, clarity, and purpose within the Body of Christ.
             <br>
             <br>
             <b>Choose the next step that fits where you are right now:</b>`}/>

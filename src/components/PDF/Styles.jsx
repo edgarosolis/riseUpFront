@@ -112,11 +112,26 @@ export const stylesPDF = StyleSheet.create({
     paddingHorizontal: 50,
     backgroundColor: '#FFC7001A',
     marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  sectionTextColumn: {
+    width: '65%', // Similar al size={8}
+    paddingRight: 20,
+  },
+  sectionImageColumn: {
+    width: '35%', // Similar al size={4}
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   sectionNumber: {
     fontWeight: 'bold',
     fontSize: 22,
     marginBottom: 4,
+  },
+  sectionImage: {
+    width: '100%', // Ajustado al contenedor
+    height: 'auto',
   },
   title: {
     fontSize: 24,
@@ -148,10 +163,10 @@ export const stylesPDF = StyleSheet.create({
     justifyContent: 'center',
   },
   col3: {
-    width: '25%',
+    width: '30%',
   },
   col9: {
-    width: '75%',
+    width: '70%',
   },
   col12: {
     width: '100%',
@@ -166,6 +181,7 @@ export const stylesPDF = StyleSheet.create({
   rowText: {
     fontSize: 10,
     color: '#333',
+    textAlign:"left"
   },
   footerText: {
     fontSize: 11,
@@ -195,5 +211,18 @@ export const stylesPDF = StyleSheet.create({
     fontWeight: "bold",
     color: "#383838",
     textAlign: "center",
+  },
+  imageContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center', 
+    marginVertical: 20,       
+    marginHorizontal: 'auto',
+  },
+  outroImage: {
+    width: 300,              // Adjust as needed
+    height: 'auto',
+    borderRadius: 10,
   }
 })

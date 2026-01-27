@@ -2,8 +2,6 @@ import { Box, Container, Typography } from "@mui/material"
 
 const ReportResults = ({reportInfo}) => {
 
-    console.log(reportInfo);
-    
     return (
         <Container maxWidth="xl">
             <Box display={"flex"} justifyContent={"space-around"} sx={{padding:"40px 0px"}}>
