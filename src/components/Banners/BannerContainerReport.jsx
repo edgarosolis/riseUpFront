@@ -5,11 +5,11 @@ export const BannerContainerReport = styled(Box)(({ theme }) => ({
     color: 'white',
     position: 'relative',
     paddingTop: theme.spacing(10),
-    paddingBottom: theme.spacing(20), // Espacio inferior para acomodar el SVG
+    paddingBottom: theme.spacing(0), // Espacio inferior para acomodar el SVG
     overflow: 'hidden',
     display: 'flex',
     alignItems: 'flex-start',
-    minHeight: '300px',
+    /* minHeight: '200px', */
     [theme.breakpoints.down('md')]: {
       paddingTop: theme.spacing(8),
       paddingBottom: theme.spacing(15),

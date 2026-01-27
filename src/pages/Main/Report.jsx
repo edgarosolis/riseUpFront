@@ -13,6 +13,7 @@ import ReportNextSteps from "../../components/Texts/ReportNextSteps"
 import ReportLeader from "../../components/Texts/ReportLeader"
 import { UserContext } from "../../context/user"
 import { getActiveUserSubmission, getReportInfo } from "../../axios/axiosFunctions"
+import DownloadSection from "../../components/DownloadSection"
 
 const Report = () => {
 
@@ -29,10 +30,14 @@ const Report = () => {
       getActiveUserSubmission(currentAssessment?._id, currentUser?._id)
     ]);
 
-    if(resInfo) setReportInfo(resInfo.report);
-    if(resAnswers) setUserSubmission(resAnswers.submission);
+    const report = resInfo?.report;
+    const submission = resAnswers?.submission;
+
+    if(report) setReportInfo(report);
+    if(submission) setUserSubmission(submission);
     
     setLoading(false);
+    return { report, submission };
   };
 
   useEffect(() => {
@@ -40,22 +45,7 @@ const Report = () => {
       callReportData();
     }
   }, [currentAssessment,currentUser])
-  
-/*   const callReportInfo = async()=>{
-    const res = await getReportInfo(currentAssessment?._id,currentUser?._id)
-    if(res){
-      setReportInfo(res.report);
-    }
-    setLoading(false);
-  }
 
-  const callUserSubmission = async()=>{
-    const answers = await getActiveUserSubmission(currentAssessment._id,currentUser._id);
-    if(answers){
-        setUserSubmission(answers.submission);
-    } 
-  }
- */
   return (
     <>
       {
@@ -66,6 +56,7 @@ const Report = () => {
       :
       <Box sx={{paddingBottom:"50px"}}>
         <WaveBannerReport title={currentAssessment?.title}/>
+        <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"}/>
         <ReportIntro/>
         <VideoReport/>
         <MiniBanner title={"Your Result"}/>
@@ -83,6 +74,7 @@ const Report = () => {
         <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={()=>callReportData(true)}/>
         <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
         <ReportLeader/>
+        <DownloadSection sections={currentAssessment?.sections} fetchData={callReportData} userSubmission={userSubmission} userName={`${currentUser?.firstName} ${currentUser?.lastName}`}/>
       </Box>    
       }
     </>

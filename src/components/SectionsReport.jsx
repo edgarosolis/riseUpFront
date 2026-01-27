@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Separator from './Banners/Separator';
 import SectionReportBanner from './Banners/SectionReportBanner';
 import { Container, Grid, Typography } from '@mui/material';
@@ -18,6 +18,8 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData})
         <>
             <Separator sectionColor={section?.color}/>
             <SectionReportBanner sectionColor={section?.color} title={section?.title} index={index} intro={section?.report?.intro}/>
+            <Results sectionColor={section?.color} title={section?.title} currentSection={currentSection}/>
+            <QuestionsReportSections questions={section?.report?.questions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData}/>
             {
                 section?.report?.hasTable && 
                 <Container maxWidth="xl" sx={{padding:"50px 0px"}}>
@@ -49,8 +51,6 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData})
                     </Grid>
                 </Container>
             }
-            <Results sectionColor={section?.color} title={section?.title} currentSection={currentSection}/>
-            <QuestionsReportSections questions={section?.report?.questions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData}/>
         </>
     )
 }

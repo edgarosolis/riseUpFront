@@ -1,11 +1,11 @@
 import { Box, Container, Typography } from "@mui/material"
 
-const MiniBanner = ({title,subtitle}) => {
+const MiniBanner = ({title,subtitle, bgColor="report.main",center=false, titleSize="1.7"}) => {
 
     return (
-    <Box sx={{backgroundColor:"report.main",paddingTop:"30px",paddingBottom:"30px"}}>
-        <Container maxWidth="xl">
-            <Typography variant='h6' color='white' fontWeight={600} sx={{fontSize:"1.7rem"}}>{title}</Typography>
+    <Box sx={{backgroundColor:bgColor,paddingTop:"30px",paddingBottom:"30px"}}>
+        <Container maxWidth="xl" sx={{display:"flex",flexDirection:"column",alignItems:center?"center":"normal"}}>
+            <Typography variant='h6' color='white' fontWeight={600} sx={{fontSize:`${titleSize}rem`}}>{title}</Typography>
             <Typography variant='subtitle1' color="primary" fontWeight={600}>{subtitle}</Typography>
         </Container>
     </Box>
