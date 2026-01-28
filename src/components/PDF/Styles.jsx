@@ -66,7 +66,7 @@ export const stylesPDF = StyleSheet.create({
       fontWeight:400,
       flexShrink: 1,
       marginTop:20,
-      lineHeight:1.3
+      lineHeight:1.25
   },
   cardContainer: {
       marginHorizontal: 30,
@@ -112,17 +112,15 @@ export const stylesPDF = StyleSheet.create({
     paddingHorizontal: 50,
     backgroundColor: '#FFC7001A',
     marginBottom: 10,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
   },
   sectionTextColumn: {
-    width: '65%', // Similar al size={8}
-    paddingRight: 20,
+    width: '60%', 
   },
   sectionImageColumn: {
-    width: '35%', // Similar al size={4}
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '40%',
+    alignItems: 'flex-end', 
   },
   sectionNumber: {
     fontWeight: 'bold',
@@ -130,8 +128,8 @@ export const stylesPDF = StyleSheet.create({
     marginBottom: 4,
   },
   sectionImage: {
-    width: '100%', // Ajustado al contenedor
-    height: 'auto',
+    width: '50%',
+    alignItems:"flex-end"
   },
   title: {
     fontSize: 24,

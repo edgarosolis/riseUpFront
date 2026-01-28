@@ -5,7 +5,6 @@ import MiniBannerPDF from '../Banners/MiniBannerPDF';
 import LeaderReportPDF from '../Cards/LeaderReportPDF';
 import SectionReportBannerPDF from '../Banners/SectionReportBannerPDF';
 import ResultsPDF from '../Cards/ResultsPDF';
-import { Fragment } from 'react';
 import SectionTablePDF from '../Tables/SectionTablePDF';
 import ReportResultsPDF from '../Texts/ReportResultsPDF';
 import OutroReport from '../../assets/images/OutroReport.png';
