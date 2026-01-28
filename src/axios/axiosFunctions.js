@@ -107,3 +107,26 @@ export const createUser = async(data)=>{
     };
   }
 }
+
+export const updateUser = async(userId,data)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `user/${userId}`, data);
+    return resp.data;
+  } catch (error) {
+    //TO DO: HANDLE ERROR
+    return {
+      user: undefined,
+      msg: error.response.data.msg,
+    };
+  }
+}
+
+export const deleteUser = async(userId)=>{
+  try {
+    const resp = await axios.delete(BASE_URL + `user/${userId}`);
+    return resp.data;
+  } catch (error) {
+    //TO DO: HANDLE ERROR
+    return undefined;
+  }
+}
