@@ -5,8 +5,8 @@ import axios from "axios";
 //export const FRONT_URL = "http://localhost:3000/";
 
 //DEVELOPMENT URL
-export const BASE_URL = "https://riseupback.onrender.com/api/";
-export const FRONT_URL = "https://riseupback.onrender.com/";
+export const BASE_URL = "https://assessments.theriseupculture.com/api/";
+export const FRONT_URL = "https://assessments.theriseupculture.com/";
 
 //AUTH
 export const loginUser = async (data) => {
