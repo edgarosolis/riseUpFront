@@ -112,7 +112,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
     }
 
     return (
-    <Container maxWidth="lg" sx={{padding:"50px"}}>
+    <Container maxWidth="lg" sx={{padding:{xs:"20px 16px", sm:"30px", md:"50px"}}}>
         <MobileStepper
             variant="progress"
             steps={noQuestions+1}
@@ -122,20 +122,20 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
             backButton={<Typography>{activeStep}</Typography>}
             sx={{justifyContent:"space-evenly"}}
         />
-        <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
-            <Typography variant="h6" sx={{marginTop:"50px",marginBottom:"30px"}}>{activeStep}. {questions[activeStep-1]?.text}</Typography>
-            <RadioGroup value={findValue(questions[activeStep-1]?.customId)} onChange={handleChange}>
+        <Box display={"flex"} flexDirection={"column"} alignItems={"center"} sx={{px: {xs: 1, sm: 2}}}>
+            <Typography variant="h6" sx={{marginTop:{xs:"25px", md:"50px"}, marginBottom:{xs:"20px", md:"30px"}, fontSize:{xs:"1rem", sm:"1.15rem", md:"1.25rem"}, textAlign:"center"}}>{activeStep}. {questions[activeStep-1]?.text}</Typography>
+            <RadioGroup value={findValue(questions[activeStep-1]?.customId)} onChange={handleChange} sx={{width: "100%", maxWidth: "500px"}}>
                 {
                     options.map((q,i)=>(
-                        <FormControlLabel key={i} value={q.text} control={<Radio/>} label={q.text}/>
+                        <FormControlLabel key={i} value={q.text} control={<Radio/>} label={q.text} sx={{'& .MuiFormControlLabel-label': {fontSize: {xs: '0.9rem', sm: '1rem'}}}}/>
                     ))
                 }
             </RadioGroup>
-            <Box display={"flex"} justifyContent={"space-around"} sx={{width: "60%",marginTop:"100px"}} >
-                <Button startIcon={<ArrowCircleLeftRoundedIcon/>} variant="contained" color="secondary" disabled={activeStep===1} onClick={handleBack}>
+            <Box display={"flex"} justifyContent={"space-between"} gap={2} sx={{width: {xs:"100%", sm:"80%", md:"60%"}, marginTop:{xs:"40px", md:"100px"}}} >
+                <Button startIcon={<ArrowCircleLeftRoundedIcon/>} variant="contained" color="secondary" disabled={activeStep===1} onClick={handleBack} sx={{fontSize:{xs:"0.75rem", sm:"0.875rem"}, px:{xs:2, sm:3}}}>
                     Back
                 </Button>
-                <Button endIcon={<ArrowCircleRightRoundedIcon/>} variant="contained" disabled={findValue(questions[activeStep-1].customId) === ""} color="secondary" onClick={handleNext}>
+                <Button endIcon={<ArrowCircleRightRoundedIcon/>} variant="contained" disabled={findValue(questions[activeStep-1].customId) === ""} color="secondary" onClick={handleNext} sx={{fontSize:{xs:"0.75rem", sm:"0.875rem"}, px:{xs:2, sm:3}}}>
                     {
                         activeStep===noQuestions ?
                         "Complete"

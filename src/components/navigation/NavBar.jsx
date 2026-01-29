@@ -25,10 +25,15 @@ const NavBar = () => {
             <Container maxWidth="false">
                 <Toolbar disableGutters sx={{justifyContent:"space-between",padding:"10px 0px"}}>
                 {
-                    /* DESKTOP LOGO */  
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                    /* LOGO - visible on all screen sizes */
+                    <Box sx={{ display: 'flex' }}>
                         <Link to="/">
-                            <img src={Logo} className='logoImage' alt='LOGO_RISEUP'/>
+                            <img
+                                src={Logo}
+                                className='logoImage'
+                                alt='LOGO_RISEUP'
+                                style={{ width: 'clamp(60px, 15vw, 100px)' }}
+                            />
                         </Link>
                     </Box>
                 }

@@ -5,44 +5,47 @@ import { WaveOverlay } from "./WaveOverlay"
 const WaveBanner = ({title,subtitle,button,buttonText,imageUrl}) => {
   return (
     <BannerContainer>
-      <Container maxWidth="xl">
-        <Grid container spacing={5} aligs="center">
+      <Container maxWidth="xl" sx={{px: {xs: 2, sm: 3}}}>
+        <Grid container spacing={{xs: 2, md: 5}} alignItems="center">
           {/* Columna de Texto */}
           <Grid size={{xs:12,md:7}}>
-            <Box sx={{ zIndex: 2, position: 'relative' }}>
-              <Typography 
+            <Box sx={{ zIndex: 2, position: 'relative', textAlign: {xs: 'center', md: 'left'} }}>
+              <Typography
                 variant="h2"
                 color="primary"
-                sx={{ 
-                  fontWeight: 600, 
-                  fontSize: { xs: '2.5rem', md: '4rem' },
+                sx={{
+                  fontWeight: 600,
+                  fontSize: { xs: '1.8rem', sm: '2.5rem', md: '4rem' },
                 }}
               >
                 {title}
               </Typography>
-              <Typography 
-                variant="h4" 
-                sx={{ 
+              <Typography
+                variant="h4"
+                sx={{
                   fontWeight: 400,
-                  maxWidth:"600px",
+                  maxWidth: {xs: "100%", md: "600px"},
+                  fontSize: {xs: '1rem', sm: '1.3rem', md: '2.125rem'},
+                  mx: {xs: 'auto', md: 0}
                 }}
               >
                 {subtitle}
               </Typography>
               {button && (
-                <Button 
-                  variant="contained" 
-                  size="large" 
-                  sx={{ 
-                    bgcolor: 'white', 
-                    color: '#0057FF', 
-                    px: 4,
-                    py: 1.5,
-                    fontSize: '1rem',
+                <Button
+                  variant="contained"
+                  size="large"
+                  sx={{
+                    bgcolor: 'white',
+                    color: '#0057FF',
+                    px: {xs: 3, md: 4},
+                    py: {xs: 1, md: 1.5},
+                    fontSize: {xs: '0.875rem', md: '1rem'},
                     '&:hover': { bgcolor: '#e0e0e0' },
                     textTransform: 'none',
                     fontWeight: 'bold',
-                    borderRadius: '50px' // Estilo redondeado moderno
+                    borderRadius: '50px',
+                    mt: {xs: 2, md: 0}
                   }}
                 >
                   {buttonText}
@@ -51,22 +54,23 @@ const WaveBanner = ({title,subtitle,button,buttonText,imageUrl}) => {
             </Box>
           </Grid>
 
-          {/* Columna de Imagen */}
-          <Grid size={{xs:12,md:5}}>
-            <Box 
-              sx={{ 
-                display: 'flex', 
+          {/* Columna de Imagen - hidden on mobile */}
+          <Grid size={{xs:12,md:5}} sx={{display: {xs: 'none', sm: 'block'}}}>
+            <Box
+              sx={{
+                display: 'flex',
                 justifyContent: 'center',
                 zIndex: 2,
                 position: 'relative'
               }}
             >
-              <Box 
+              <Box
                 component="img"
                 src={imageUrl}
                 alt="Banner Illustration"
                 sx={{
-                  width: '60%',                  
+                  width: {xs: '50%', md: '60%'},
+                  maxWidth: '300px',
                   height: 'auto',
                   filter: 'drop-shadow(0px 20px 30px rgba(0,0,0,0.1))'
                 }}
