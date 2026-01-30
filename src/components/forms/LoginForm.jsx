@@ -74,7 +74,7 @@ const LoginForm = () => {
         <form onSubmit={handleLoginSubmit}>
             <Grid container spacing={2}>
                 <Grid size={12}>
-                    <TextField required fullWidth onChange={handleLoginChange} name='email' label="Email address..." color="primary"/>
+                    <TextField required fullWidth onChange={handleLoginChange} name='email' label="Email address" color="primary"/>
                 </Grid>
                 <Grid size={12}>
                     <FormControl fullWidth variant="outlined">
