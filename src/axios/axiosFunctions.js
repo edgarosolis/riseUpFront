@@ -130,3 +130,21 @@ export const deleteUser = async(userId)=>{
     return undefined;
   }
 }
+
+export const bulkUploadUsers = async(csvFile)=>{
+  try {
+    const formData = new FormData();
+    formData.append('csv', csvFile);
+    const resp = await axios.post(BASE_URL + "user/bulk-upload", formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return resp.data;
+  } catch (error) {
+    return {
+      successCount: 0,
+      failedCount: 0,
+      results: [],
+      msg: error.response?.data?.msg || "Upload failed"
+    };
+  }
+}
