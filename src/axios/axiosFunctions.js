@@ -1,12 +1,12 @@
 import axios from "axios";
 
 //DEVELOPMENT URL
-//export const BASE_URL = "http://localhost:8080/api/";
-//export const FRONT_URL = "http://localhost:3000/";
+export const BASE_URL = "http://localhost:8080/api/";
+export const FRONT_URL = "http://localhost:3000/";
 
 //DEVELOPMENT URL
-export const BASE_URL = "https://assessments.theriseupculture.com/api/";
-export const FRONT_URL = "https://assessments.theriseupculture.com/";
+//export const BASE_URL = "https://assessments.theriseupculture.com/api/";
+//export const FRONT_URL = "https://assessments.theriseupculture.com/";
 
 //AUTH
 export const loginUser = async (data) => {
@@ -31,6 +31,31 @@ export const loginAdmin = async (data) => {
     return {
       user: undefined,
       msg: error.response.data.msg,
+    };
+  }
+};
+
+// Code-based login
+export const requestLoginCode = async (data) => {
+  try {
+    const resp = await axios.post(BASE_URL + "auth/request-code", data);
+    return resp.data;
+  } catch (error) {
+    return {
+      success: false,
+      msg: error.response?.data?.msg || "Failed to send code",
+    };
+  }
+};
+
+export const verifyLoginCode = async (data) => {
+  try {
+    const resp = await axios.post(BASE_URL + "auth/verify-code", data);
+    return resp.data;
+  } catch (error) {
+    return {
+      user: undefined,
+      msg: error.response?.data?.msg || "Verification failed",
     };
   }
 };
