@@ -39,16 +39,6 @@ jobs:
           remote_user: ubuntu
           remote_key: "${{ secrets.SSH_PRIVATE_KEY }}"
 
-      - name: 📂 Deploy scripts folder
-        uses: burnett01/rsync-deployments@7.0.1
-        with:
-          switches: -avzr
-          path: scripts/
-          remote_path: /home/ubuntu/riseup-frontend/scripts
-          remote_host: "${{ secrets.SSH_HOST }}"
-          remote_user: ubuntu
-          remote_key: "${{ secrets.SSH_PRIVATE_KEY }}"
-
       - name: 🎉 Deploy to Remote Server
         uses: appleboy/ssh-action@master
         with:
