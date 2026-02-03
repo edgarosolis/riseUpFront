@@ -142,7 +142,7 @@ const LoginFormOTP = () => {
                     <Grid container spacing={2}>
                         <Grid size={12}>
                             <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-                                Enter your e-mail address and we'll send you a verification code.
+                                Enter your email address and we'll send you a verification code.
                             </Typography>
                         </Grid>
                         <Grid size={12}>
