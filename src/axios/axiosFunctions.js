@@ -35,6 +35,31 @@ export const loginAdmin = async (data) => {
   }
 };
 
+// OTP Authentication
+export const requestOTP = async (email) => {
+  try {
+    const resp = await axios.post(BASE_URL + "auth/request-otp", { email });
+    return resp.data;
+  } catch (error) {
+    return {
+      success: false,
+      msg: error.response?.data?.msg || "Failed to send verification code"
+    };
+  }
+};
+
+export const verifyOTP = async (email, code) => {
+  try {
+    const resp = await axios.post(BASE_URL + "auth/verify-otp", { email, code });
+    return resp.data;
+  } catch (error) {
+    return {
+      user: undefined,
+      msg: error.response?.data?.msg || "Verification failed"
+    };
+  }
+};
+
 //ASSESSMENTS
 
 export const getAllAssessments = async()=>{
