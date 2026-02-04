@@ -1,6 +1,9 @@
 import { Box, Container, Typography } from '@mui/material'
 
 const Results = ({sectionColor,title,currentSection}) => {
+
+    console.log(currentSection);
+
     return (
     <Container maxWidth="xl">
         <Box sx={{backgroundColor:sectionColor, margin:"30px -30px", padding:"20px 30px"}}>
@@ -21,7 +24,7 @@ const Results = ({sectionColor,title,currentSection}) => {
             maxWidth:"600px",
             fontSize:'1.5rem', 
             }}
-        >{currentSection?.keyUsed[0]}</Typography>
+        >{currentSection?.content.title}</Typography>
         <Typography component={"div"} variant='subtitle1' color={currentSection?.section==="s1"?"black":"white"} sx={{marginTop:"20px", marginBottom:"10px"}} dangerouslySetInnerHTML={{__html:`${currentSection?.content?.content}`}}/>
         </Box>
     </Container>
