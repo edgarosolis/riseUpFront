@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 const VideoWelcome = ({sections}) => {
   
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="lg">
     <Box 
       sx={{ 
         position: 'relative', 
@@ -15,7 +15,7 @@ const VideoWelcome = ({sections}) => {
         backgroundColor: "#000",
         boxShadow: "0px 4px 20px rgba(0,0,0,0.2)"
       }}
-    >
+    > 
       <Box
         component="video"
         controls 

@@ -87,6 +87,12 @@ const AssessmentPDF = ({ data, sections,userName }) => {
             ))
         }
         <Page>
+            <MiniBannerPDF title={""} color={"#6E5600"}/>
+            <SectionReportBannerPDF sectionColor={"#6E5600"} index={3} title={"The Wonder of You (FIVE-FOLD + BIBLICAL DNA)"} 
+            intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`}/>
+            <ResultsPDF sectionColor={"#6E5600"} title={'The Wonder of You'} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
+        </Page>
+        <Page>
             <MiniBannerPDF title={"Next Steps: A Spiritual Response"} color={"#383838"}/>
             <TextPDF text={`The Kingdom Calling Assessment is the beginning of a conversation with God, not the end of one. Set aside time in the coming days to do the following:
             <br>
