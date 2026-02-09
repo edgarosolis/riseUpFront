@@ -32,6 +32,8 @@ const DownloadSection = ({ fetchData, sections, userSubmission,userName }) => {
     }
   }, [userSubmission]);
 
+  console.log(apiData);
+
   return (
     <Container maxWidth="xl">
       {!apiData ? (
@@ -66,12 +68,6 @@ const DownloadSection = ({ fetchData, sections, userSubmission,userName }) => {
           )}
         </PDFDownloadLink>
       )}
-      
-      {/* {apiData && (
-        <Button color="error" onClick={() => setApiData(null)} sx={{ ml: 2 }}>
-          Reset
-        </Button>
-      )} */}
     </Container>
   )
 }

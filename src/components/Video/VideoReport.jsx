@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 
 const VideoReport = () => {
     return (
-      <Container maxWidth="xl">
+      <Container maxWidth="md">
         <Box 
           sx={{ 
             position: 'relative', 

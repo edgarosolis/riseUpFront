@@ -2,8 +2,6 @@ import { Box, Container, Typography } from '@mui/material'
 
 const Results = ({sectionColor,title,currentSection}) => {
 
-    console.log(currentSection);
-
     return (
     <Container maxWidth="xl">
         <Box sx={{backgroundColor:sectionColor, margin:"30px -30px", padding:"20px 30px"}}>
