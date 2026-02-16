@@ -12,6 +12,14 @@ jobs:
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
+        with:
+          lfs: true
+          fetch-depth: 0
+
+      - name: ✅ Verify LFS files are real
+        run: |
+          ls -lh public/assets/videos/*.mp4 || true
+          file public/assets/videos/*.mp4 || true
 
       - name: Install Node
         uses: actions/setup-node@v3
