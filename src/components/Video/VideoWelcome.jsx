@@ -29,9 +29,8 @@ const VideoWelcome = ({sections}) => {
           objectFit: 'contain'
         }}
       >
-        <source src="/assets/videos/IntroAssessment.mov" type="video/quicktime" />
-        <source src="/assets/videos/IntroAssessment.mov" type="video/mp4" />
-        Tu navegador no soporta videos.
+        <source src="/assets/videos/IntroAssessment.mp4" type="video/mp4" />
+        Your browser does not support video playback.
       </Box>
     </Box>
     <Box display={"flex"} justifyContent={"center"}>

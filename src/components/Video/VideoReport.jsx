@@ -28,9 +28,8 @@ const VideoReport = () => {
               objectFit: 'contain'
             }}
           >
-            <source src="/assets/videos/OutroAssessment.mov" type="video/quicktime" />
-            <source src="/assets/videos/OutroAssessment.mov" type="video/mp4" />
-            Tu navegador no soporta videos.
+            <source src="/assets/videos/OutroAssessment.mp4" type="video/mp4" />
+            Your browser does not support video playback.
           </Box>
         </Box>
       </Container>
