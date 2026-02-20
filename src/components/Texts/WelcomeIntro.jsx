@@ -14,22 +14,22 @@ const WelcomeIntro = () => {
         <Typography variant='h6' sx={bodyStyle}>In just a few minutes, you'll discover:</Typography>
         <List component={"ul"} sx={{ listStyle: "disc", pl:{xs:2, md:4}}}>
             <ListItem component={"li"} sx={{display:"list-item", py:{xs:0.5, md:1}}}>
-                <ListItemText primary={<Typography variant='h6' sx={bodyStyle}>Your Sphere of Influence — where you're uniquely called to lead (business, ministry, education, etc.).</Typography>}/>
+                <ListItemText primary={<Typography variant='h6' sx={bodyStyle}><b>Your Sphere of Influence</b> — where you're uniquely called to lead (business, ministry, education, etc.).</Typography>}/>
             </ListItem>
             <ListItem component={"li"} sx={{display:"list-item", py:{xs:0.5, md:1}}}>
-                <ListItemText primary={<Typography variant='h6' sx={bodyStyle}>Your 5-Fold Personality — how you express God's heart (apostolic, prophetic, evangelistic, shepherd, or teacher personalities).</Typography>}/>
+                <ListItemText primary={<Typography variant='h6' sx={bodyStyle}><b>our 5-Fold Personality</b> — how you express God's heart (apostolic, prophetic, evangelistic, shepherd, or teacher personalities).</Typography>}/>
             </ListItem>
             <ListItem component={"li"} sx={{display:"list-item", py:{xs:0.5, md:1}}}>
-                <ListItemText primary={<Typography variant='h6' sx={bodyStyle}>Your Biblical DNA — which biblical leaders reflect your gifts and style.</Typography>}/>
+                <ListItemText primary={<Typography variant='h6' sx={bodyStyle}><b>Your Biblical DNA</b> — which biblical leaders reflect your gifts and style.</Typography>}/>
             </ListItem>
         </List>
         <Typography variant='h6' sx={bodyStyle}>Afterward, you'll receive a personalized Destiny Report that awakens you to God's design and launches you into His call.</Typography>
-        <Typography variant='h6' sx={bodyStyle}>There are 60 total questions. 2 DEMOGRAPHIC (Name and Email), 18 Sphere, 20 Five Fold and 20 DNA20 Five Fold.</Typography>
+        <Typography variant='h6' sx={bodyStyle}>There are 60 total questions. 2 demographic (Name and Email), 18 Sphere, 20 Five Fold and 20 DNA.</Typography>
         <Typography variant='h6' sx={bodyStyle}>The assessment should take approximated 30-40 minutes to complete. Go at your own pace. Everything saves automatically, so you can step away and continue later whenever you're ready. There are no wrong answers!</Typography>
         <Typography variant='h6' sx={bodyStyle}>This isn't just about taking a test. It's about awakening the potential in you.</Typography>
         <Typography variant='h6' sx={bodyStyle}>Because what God has put in you is bigger than you think.</Typography>
         <Typography variant='h6' sx={bodyStyle}>Ready?</Typography>
-        <Typography variant='h6' fontWeight={600} sx={{fontSize:{xs:"0.95rem", sm:"1.1rem", md:"1.25rem"}}}>Let's step into discovery together.</Typography>
+        <Typography variant='h6' fontWeight={600} sx={{fontSize:{xs:"0.95rem", sm:"1.1rem", md:"1.25rem"}}}>Let's step into discovery together. Watch this short welcome video from Pastor Drew to start.</Typography>
     </Container>
   )
 }

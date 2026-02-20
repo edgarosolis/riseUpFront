@@ -12,7 +12,7 @@ const ReportResultsPDF = ({ reportInfo }) => {
           Sphere:
         </Text>
         <Text style={stylesPDF.resultValue}>
-          {reportInfo[0]?.keyUsed[0] || "N/A"}
+          {reportInfo[0].content.title || "N/A"}
         </Text>
       </View>
 
@@ -22,7 +22,7 @@ const ReportResultsPDF = ({ reportInfo }) => {
           5-Fold Leaning:
         </Text>
         <Text style={stylesPDF.resultValue}>
-          {reportInfo[1]?.keyUsed[0] || "N/A"}
+          {reportInfo[1].content.title || "N/A"}
         </Text>
       </View>
 
@@ -32,7 +32,7 @@ const ReportResultsPDF = ({ reportInfo }) => {
           Biblical DNA:
         </Text>
         <Text style={stylesPDF.resultValue}>
-          {reportInfo[2]?.keyUsed[0] || "N/A"}
+          {reportInfo[2].content.title || "N/A"}
         </Text>
       </View>
     </View>

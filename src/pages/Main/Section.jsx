@@ -48,7 +48,7 @@ const Section = () => {
             sectionInfo &&
             <>
                 <SectionBanner title={sectionInfo?.section?.title} description={sectionInfo?.section?.description} noQuestions={sectionInfo?.section?.questions?.length} image={sectionInfo?.section?.image} index={sectionInfo?.index}/>
-                <SectionBar subtitle={sectionInfo?.section?.subtitle} noQuestions={sectionInfo?.section?.questions.length}/>
+                <SectionBar title={sectionInfo?.section?.title} subtitle={sectionInfo?.section?.subtitle} noQuestions={sectionInfo?.section?.questions.length}/>
                 <QuestionsSections answers={userSubmission?.answers} submissionId={userSubmission?._id} questions={sectionInfo?.section?.questions} noQuestions={sectionInfo?.section?.questions?.length} nextSection={sectionInfo?.next}/>
             </>
         }
