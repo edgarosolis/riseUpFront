@@ -19,9 +19,8 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData})
             <Separator sectionColor={section?.color}/>
             <SectionReportBanner sectionColor={section?.color} title={section?.title} index={index} intro={section?.report?.intro} image={section?.image}/>
             <Results sectionColor={section?.color} title={section?.title} currentSection={currentSection}/>
-            <QuestionsReportSections questions={section?.report?.questions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData}/>
             {
-                section?.report?.hasTable && 
+                section?.report?.hasTable &&
                 <Container maxWidth="xl" sx={{padding:"50px 0px"}}>
                     <Grid container spacing={2}>
                         <Grid size={3} sx={{backgroundColor:"#F4C542", display:"flex", justifyContent:"center", padding:"10px 0px"}}>
@@ -51,6 +50,7 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData})
                     </Grid>
                 </Container>
             }
+            <QuestionsReportSections questions={section?.report?.questions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData}/>
         </>
     )
 }

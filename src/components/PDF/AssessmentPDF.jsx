@@ -70,6 +70,10 @@ const AssessmentPDF = ({ data, sections,userName }) => {
                     <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={s.title} intro={s.report.intro} image={s.image}/>
                     <ResultsPDF sectionColor={s?.color} title={s?.title} currentSection={data.report.find(cs=>cs.section === s.customId)}/>
                     {
+                        s.report.hasTable &&
+                        <SectionTablePDF tableInfo={s.report.tableInfo}/>
+                    }
+                    {
                         s.report.questions.map((q,i)=>(
                             <View key={i} wrap={false}>
                                 <TextPDF text={`<b>${q.text}</b>
@@ -79,10 +83,6 @@ const AssessmentPDF = ({ data, sections,userName }) => {
                             </View>
 
                         ))
-                    }
-                    {
-                        s.report.hasTable &&
-                        <SectionTablePDF tableInfo={s.report.tableInfo}/>
                     }
                 </Page>
             ))
