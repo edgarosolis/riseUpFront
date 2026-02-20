@@ -4,10 +4,10 @@ import { BannerContainerReport } from "./BannerContainerReport"
 import { useContext } from "react"
 import { UserContext } from "../../context/user"
 
-const WaveBannerReport = ({title}) => {
+const WaveBannerReport = ({title, completedAt}) => {
 
     const {currentUser} = useContext(UserContext);
-    const yourDate = new Date(); //TODO SET TO CURRENT OR TO COMPLETED???
+    const yourDate = completedAt ? new Date(completedAt) : new Date();
 
     return (
       <BannerContainerReport>

@@ -8,6 +8,7 @@ import ResultsPDF from '../Cards/ResultsPDF';
 import SectionTablePDF from '../Tables/SectionTablePDF';
 import ReportResultsPDF from '../Texts/ReportResultsPDF';
 import OutroReport from '../../assets/images/OutroReport.png';
+import RiseUpLogo from '../../assets/images/RiseUpLogo.png';
 import { stylesPDF } from './Styles';
 import { Font } from '@react-pdf/renderer';
 
@@ -18,7 +19,7 @@ const AssessmentPDF = ({ data, sections,userName }) => {
     return (
     <Document>
         <Page>
-            <BannerPDF title={"Kingdom Calling Assessment"} subtitle={"REPORT"}/>
+            <BannerPDF title={"Kingdom Calling Assessment"} subtitle={"REPORT"} userName={userName} completedAt={data.submission?.completedAt || data.submission?.updatedAt}/>
             <MiniBannerPDF title={"Embracing the Wonder of You"} color={"#F4C542"} center={true} titleSize="2.0"/>
             <TextPDF text={`<b>Dear ${userName},</b><br><br>Welcome to your Kingdom Calling Assessment Report. This is a tool designed not to define you, but to reveal who you are and the leader for the Kingdom you are called to be. This is not just data. <b>This is discovery.</b><br><br>Our prayer is that this report will stir something in your soul and serve as a prophetic guide into who God has uniquely made you to be as a Kingdom leader.<br><br>You were made to rise up. Jesus said, “You did not choose me, but I chose you and appointed you so that you might go and bear fruit — fruit that will last” (John 15:16). This report is part of His invitation to walk boldly in the good works He prepared in advance for you (Ephesians. 2:10).`}/>
             <View style={stylesPDF.imageContainer}>
@@ -164,10 +165,14 @@ const AssessmentPDF = ({ data, sections,userName }) => {
         </Page>
         <Page>
             <TextPDF text={`You do not have to do everything at once. Take one faithful step at www.theriseupculture.com`}/>
-            <LeaderReportPDF title="YOUR NEXT STEP" info="Take our “Calling Course” or request a Coaching session to go over your results" cardColor="#000000" titleColor="#F4C542" infoColor="white"/>
-            <LeaderReportPDF title="YOUR NEXT READ" info="So, You’re a Leader… Now What? (coming soon by Drew East)." cardColor="#000000" titleColor="#F4C542" infoColor="white"/>
+            <LeaderReportPDF title="YOUR NEXT STEP" info="Take our “Calling Course” or request a Coaching session to go over your results" cardColor="#000000" titleColor="#F4C542" infoColor="white" button={true} buttonText={"Course"} buttonLink={""} buttonColor="primary"/>
+            {/* <LeaderReportPDF title="YOUR NEXT READ" info="So, You’re a Leader… Now What? (coming soon by Drew East)." cardColor="#000000" titleColor="#F4C542" infoColor="white"/> */}
             <TextPDF text={`The best leaders aren’t the loudest in the room. They’re the ones who know who they are, walk with Jesus, and say “yes” to the call. That’s you.`}/>
             <TextPDF text={`<b>Welcome to the adventure. The world will never be the same.</b>`}/>
+            <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>
+                <Image src={RiseUpLogo} style={{ width: 120 }} />
+                <Link src="https://www.theriseupculture.com" style={{ color: '#000', fontSize: 12, fontWeight: 'bold', marginTop: 6, textDecoration: 'none' }}>www.theriseupculture.com</Link>
+            </View>
         </Page>
     </Document>
   )
