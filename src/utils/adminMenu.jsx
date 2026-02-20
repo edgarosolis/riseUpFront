@@ -2,6 +2,7 @@ import TuneIcon from '@mui/icons-material/Tune';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import QuizIcon from '@mui/icons-material/Quiz';
 
 export const navItems = [
     {
@@ -15,6 +16,12 @@ export const navItems = [
       icon: <AdminPanelSettingsIcon sx={{color:"white"}}/>,
       locationRef : "admins",
       href: "/admins",
+    },
+    {
+      title: "Questions",
+      icon: <QuizIcon sx={{color:"white"}}/>,
+      locationRef : "questions",
+      href: "/questions",
     },
     {
       title: "Section Texts",

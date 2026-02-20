@@ -1,6 +1,7 @@
 import { Container, Grid } from "@mui/material"
 import Home from "./Home";
 import Admins from "./Admins";
+import Questions from "./Questions";
 import SectionTexts from "./SectionTexts";
 import WonderOfYou from "./WonderOfYou";
 import Sidebar from "../../components/Sidebar";
@@ -17,6 +18,7 @@ const Dashboard = ({active = "home"}) => {
                 <Container maxWidth={"xl"} sx={{padding:"50px"}}>
                     {active === "home" && <Home/>}
                     {active === "admins" && <Admins/>}
+                    {active === "questions" && <Questions/>}
                     {active === "sectionTexts" && <SectionTexts/>}
                     {active === "wonderOfYou" && <WonderOfYou/>}
                 </Container>
