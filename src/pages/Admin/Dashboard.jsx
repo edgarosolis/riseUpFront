@@ -1,35 +1,27 @@
-import { useEffect, useState } from "react"
 import { Container, Grid } from "@mui/material"
-/* import UsersAdmin from "./UsersAdmin"; */
 import Home from "./Home";
+import Admins from "./Admins";
+import SectionTexts from "./SectionTexts";
+import WonderOfYou from "./WonderOfYou";
 import Sidebar from "../../components/Sidebar";
-import Users from "./Users";
 
-const Dashboard = ({active}) => {
-
-    const [location, setLocation] = useState();
-
-    useEffect(() => {
-        setLocation(active);
-    }, [active]);
+const Dashboard = ({active = "home"}) => {
 
     return (
-    <Container maxWidth={false} sx={{padding:"0px!important"}}> 
+    <Container maxWidth={false} sx={{padding:"0px!important"}}>
         <Grid container sx={{height:"calc(100vh - 84px)"}}>
             <Grid size={2}>
-                <Sidebar location={location}/>
+                <Sidebar location={active}/>
             </Grid>
-            <Grid size={10}>
+            <Grid size={10} sx={{overflowY:"auto", height:"100%"}}>
                 <Container maxWidth={"xl"} sx={{padding:"50px"}}>
-                    {
-                        location === "home" && <Home/>
-                    }
-                    {
-                        location === "users" && <Users/>
-                    }
+                    {active === "home" && <Home/>}
+                    {active === "admins" && <Admins/>}
+                    {active === "sectionTexts" && <SectionTexts/>}
+                    {active === "wonderOfYou" && <WonderOfYou/>}
                 </Container>
             </Grid>
-        </Grid>   
+        </Grid>
     </Container>
     )
 }

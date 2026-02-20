@@ -1,5 +1,5 @@
-import { Visibility, VisibilityOff, CloudUpload, Download } from "@mui/icons-material";
-import { Alert, Box, Button, FormControl, Grid, IconButton, InputAdornment, OutlinedInput, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress } from "@mui/material"
+import { CloudUpload, Download } from "@mui/icons-material";
+import { Alert, Box, Button, Grid, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress } from "@mui/material"
 import { useState } from "react";
 import { createUser, bulkUploadUsers } from "../../axios/axiosFunctions";
 
@@ -7,14 +7,12 @@ const defaultCreateUserForm = {
     firstName:"",
     lastName:"",
     email:"",
-    password: "",
 }
 
-const CreateUser = () => {
+const CreateUser = ({onUserCreated}) => {
 
-    const [showPassword, setShowPassword] = useState(false);
     const [createUserForm, setCreateUserForm] = useState(defaultCreateUserForm);
-    const {firstName, lastName, email,password} = createUserForm;
+    const {firstName, lastName, email} = createUserForm;
     const [msg, setMsg] = useState("");
     const [showMsg, setShowMsg] = useState(false);
     const [alertSeverity, setAlertSeverity] = useState("error");
@@ -25,15 +23,13 @@ const CreateUser = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadResults, setUploadResults] = useState(null);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-
     const handleForm = (e)=>{
         const {name, value} = e.target;
         setCreateUserForm({...createUserForm,[name]:value});
     }
 
     const validateForm = ()=>{
-        return firstName !== "" && lastName !== "" && email !== "" && password !== "";
+        return firstName !== "" && lastName !== "" && email !== "";
     }
 
     const handleSubmit = async()=>{
@@ -61,6 +57,7 @@ const CreateUser = () => {
         setMsg(res.msg);
         setShowMsg(true);
         setAlertSeverity("success");
+        if(onUserCreated) onUserCreated();
         setTimeout(() => {
             setCreateUserForm(defaultCreateUserForm);
             setShowMsg(false);
@@ -91,8 +88,8 @@ const CreateUser = () => {
     };
 
     const downloadTemplate = () => {
-        const headers = "firstName,lastName,email,password";
-        const example = "John,Doe,john@example.com,Password123";
+        const headers = "firstName,lastName,email";
+        const example = "John,Doe,john@example.com";
         const csv = `${headers}\n${example}`;
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
@@ -139,26 +136,6 @@ const CreateUser = () => {
                 <Typography variant="h6" color="secondary">Email</Typography>
                 <TextField value={email} required fullWidth onChange={handleForm} name='email'/>
             </Grid>
-            <Grid size={6}>
-                <FormControl fullWidth variant="outlined">
-                    <Typography variant="h6" color="secondary">Password</Typography>
-                    <OutlinedInput
-                        type={showPassword ? 'text' : 'password'}
-                        fullWidth
-                        name='password'
-                        value={password}
-                        required
-                        onChange={handleForm}
-                        endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton onClick={handleClickShowPassword}>
-                            {showPassword ? <VisibilityOff/> : <Visibility/>}
-                            </IconButton>
-                        </InputAdornment>
-                        }
-                    />
-                </FormControl>
-            </Grid>
             {
                 showMsg &&
                 <Grid size={12}>
@@ -186,7 +163,7 @@ const CreateUser = () => {
             <DialogContent>
                 <Box sx={{padding:"20px 0"}}>
                     <Typography variant="body1" sx={{marginBottom:"20px"}}>
-                        Upload a CSV file with columns: firstName, lastName, email, password
+                        Upload a CSV file with columns: firstName, lastName, email
                     </Typography>
 
                     <Box sx={{display:"flex", gap:"20px", alignItems:"center", marginBottom:"20px"}}>

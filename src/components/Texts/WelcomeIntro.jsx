@@ -3,15 +3,15 @@ import { Container, List, ListItem, ListItemText, Typography } from '@mui/materi
 
 const WelcomeIntro = () => {
   // Responsive styles for headings and body text
-  const headingStyle = {marginBottom:{xs:"20px", md:"40px"}, fontSize:{xs:"1.3rem", sm:"1.6rem", md:"2.125rem"}};
-  const bodyStyle = {marginBottom:{xs:"15px", md:"20px"}, fontSize:{xs:"0.95rem", sm:"1.1rem", md:"1.25rem"}};
+  const headingStyle = {marginBottom:{xs:"12px", md:"20px"}, fontSize:{xs:"1.1rem", sm:"1.3rem", md:"1.5rem"}};
+  const bodyStyle = {marginBottom:{xs:"8px", md:"12px"}, fontSize:{xs:"0.85rem", sm:"0.95rem", md:"1.05rem"}};
 
   return (
-    <Container maxWidth="xl" sx={{px: {xs: 2, sm: 3}}}>
-        <Typography variant='h4' color='primary' sx={headingStyle}>Deep down, you know you were made for more.</Typography>
-        <Typography variant='h4' color='primary' sx={headingStyle}>Not just to survive, but to transform the world around you.</Typography>
-        <Typography variant='h6' sx={bodyStyle}>This assessment is designed to help you uncover the God-given leadership DNA already inside you. Every believer is called to lead—not always from a platform, but always with Kingdom influence. The world changes when ordinary people realize they're extraordinary in Christ.</Typography>
-        <Typography variant='h6' sx={bodyStyle}>In just a few minutes, you'll discover:</Typography>
+    <Container maxWidth="lg" sx={{py: {xs: 2, md: 3}}}>
+        <Typography variant='h5' color='primary' sx={headingStyle}>Deep down, you know you were made for more.</Typography>
+        <Typography variant='h5' color='primary' sx={headingStyle}>Not just to survive, but to transform the world around you.</Typography>
+        <Typography variant='body1' sx={bodyStyle}>This assessment is designed to help you uncover the God-given leadership DNA already inside you. Every believer is called to lead—not always from a platform, but always with Kingdom influence. The world changes when ordinary people realize they're extraordinary in Christ.</Typography>
+        <Typography variant='body1' sx={bodyStyle}>In just a few minutes, you'll discover:</Typography>
         <List component={"ul"} sx={{ listStyle: "disc", pl:{xs:2, md:4}}}>
             <ListItem component={"li"} sx={{display:"list-item", py:{xs:0.5, md:1}}}>
                 <ListItemText primary={<Typography variant='h6' sx={bodyStyle}><b>Your Sphere of Influence</b> — where you're uniquely called to lead (business, ministry, education, etc.).</Typography>}/>

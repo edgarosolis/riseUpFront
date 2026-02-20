@@ -41,10 +41,9 @@ function App() {
         currentUser && currentUser.rol === "admin" && <>
           <Route path="/" element={<NavBar/>}>
             <Route index element={<Dashboard active={"home"}/>}/>
-            <Route path="/users" element={<Dashboard active={"users"}/>}/>
-            {/* <Route exact path="/profile/:userId" element={<Dashboard active={"profile"}/>}/>
-            <Route exact path="/profile/:slugAssessment/:userId" element={<Dashboard active={"report"}/>}/>
-            <Route path="/assessment/:slugAssessment" element={<Dashboard active={"assessment"}/>}/>*/}
+            <Route path="/admins" element={<Dashboard active={"admins"}/>}/>
+            <Route path="/section-texts" element={<Dashboard active={"sectionTexts"}/>}/>
+            <Route path="/wonder-of-you" element={<Dashboard active={"wonderOfYou"}/>}/>
           </Route>
           <Route path='*' element={<Navigate to="/"/>}/>
         </>
