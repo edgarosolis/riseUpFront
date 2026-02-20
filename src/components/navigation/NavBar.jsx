@@ -32,7 +32,7 @@ const NavBar = () => {
                                 src={Logo}
                                 className='logoImage'
                                 alt='LOGO_RISEUP'
-                                style={{ width: 'clamp(60px, 15vw, 100px)' }}
+                                style={{ width: 'clamp(30px, 8vw, 50px)' }}
                             />
                         </Link>
                     </Box>

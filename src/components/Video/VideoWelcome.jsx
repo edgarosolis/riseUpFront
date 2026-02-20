@@ -2,23 +2,23 @@ import { Box, Button, Container } from '@mui/material'
 import {Link} from 'react-router';
 
 const VideoWelcome = ({sections}) => {
-  
+
   return (
     <Container maxWidth="lg">
-    <Box 
-      sx={{ 
-        position: 'relative', 
-        paddingTop: '56.25%', 
+    <Box
+      sx={{
+        position: 'relative',
+        paddingTop: '56.25%',
         margin: "30px 0px",
         borderRadius: "16px",
         overflow: "hidden",
         backgroundColor: "#000",
         boxShadow: "0px 4px 20px rgba(0,0,0,0.2)"
       }}
-    > 
+    >
       <Box
         component="video"
-        controls 
+        controls
         playsInline
         sx={{
           position: 'absolute',

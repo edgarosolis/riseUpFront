@@ -109,6 +109,29 @@ export const getReportInfo = async(assessmentId,userId)=>{
   }
 }
 
+//ADMINS
+export const getAllAdmins = async()=>{
+  try {
+    const resp = await axios.get(BASE_URL + `user/allAdmins`);
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+}
+
+export const createAdmin = async(data)=>{
+  try {
+    const resp = await axios.post(BASE_URL + "user/admin", data);
+    return resp.data;
+  } catch (error) {
+    return {
+      user: undefined,
+      msg: error.response.data.msg,
+    };
+  }
+}
+
 //USER
 export const getAllUsers = async()=>{
   try {
@@ -152,6 +175,50 @@ export const deleteUser = async(userId)=>{
     return resp.data;
   } catch (error) {
     //TO DO: HANDLE ERROR
+    return undefined;
+  }
+}
+
+//RESULTS
+export const getAllResults = async()=>{
+  try {
+    const resp = await axios.get(BASE_URL + `result/`);
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+}
+
+export const createResult = async(data)=>{
+  try {
+    const resp = await axios.post(BASE_URL + "result/", data);
+    return resp.data;
+  } catch (error) {
+    return {
+      result: undefined,
+      msg: error.response?.data?.msg || "Error creating result",
+    };
+  }
+}
+
+export const updateResult = async(resultId, data)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `result/${resultId}`, data);
+    return resp.data;
+  } catch (error) {
+    return {
+      result: undefined,
+      msg: error.response?.data?.msg || "Error updating result",
+    };
+  }
+}
+
+export const deleteResult = async(resultId)=>{
+  try {
+    const resp = await axios.delete(BASE_URL + `result/${resultId}`);
+    return resp.data;
+  } catch (error) {
     return undefined;
   }
 }
