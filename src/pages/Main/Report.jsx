@@ -63,7 +63,7 @@ const Report = () => {
       </Box>
       :
       <Box sx={{paddingBottom:"50px"}}>
-        <WaveBannerReport title={currentAssessment?.title}/>
+        <WaveBannerReport title={currentAssessment?.title} completedAt={userSubmission?.completedAt || userSubmission?.updatedAt}/>
         <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"}/>
         <ReportIntro/>
         <VideoReport/>
