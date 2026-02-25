@@ -4,6 +4,7 @@ import Admins from "./Admins";
 import Questions from "./Questions";
 import SectionTexts from "./SectionTexts";
 import WonderOfYou from "./WonderOfYou";
+import Groups from "./Groups";
 import Sidebar from "../../components/Sidebar";
 
 const Dashboard = ({active = "home"}) => {
@@ -21,6 +22,7 @@ const Dashboard = ({active = "home"}) => {
                     {active === "questions" && <Questions/>}
                     {active === "sectionTexts" && <SectionTexts/>}
                     {active === "wonderOfYou" && <WonderOfYou/>}
+                    {active === "groups" && <Groups/>}
                 </Container>
             </Grid>
         </Grid>

@@ -3,9 +3,9 @@ import { useNavigate, useParams } from "react-router";
 import { Box, Button, Container, FormControlLabel, MobileStepper, Radio, RadioGroup, Typography } from "@mui/material";
 import ArrowCircleLeftRoundedIcon from '@mui/icons-material/ArrowCircleLeftRounded';
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
-import { saveProgress } from "../axios/axiosFunctions";
+import { saveProgress, updateSubmission360 } from "../axios/axiosFunctions";
 
-const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextSection }) => {
+const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextSection,groupId }) => {
 
     const {id}=useParams();
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
         window.scrollTo({
             top: 0,
             left: 0,
-            behavior: 'smooth' // O 'instant' si prefieres que no haya animación
+            behavior: 'smooth'
         });
     }, [id]);
 
@@ -29,35 +29,44 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
        const shuffledOpt = shuffleArray(questions[activeStep-1].options);
        setOptions(shuffledOpt);
     }, [questions,activeStep])
-    
+
     const shuffleArray = (array) => {
         const newArray = [...array]; // Create a copy of the array
         let currentIndex = newArray.length;
         let randomIndex;
-      
+
         // While there remain elements to shuffle.
         while (currentIndex !== 0) {
           // Pick a remaining element.
           randomIndex = Math.floor(Math.random() * currentIndex);
           currentIndex--;
-      
+
           // Swap it with the current element.
           [newArray[currentIndex], newArray[randomIndex]] = [
             newArray[randomIndex],
             newArray[currentIndex],
           ];
         }
-      
+
         return newArray; // Return the new, shuffled array
     };
-    
+
 
     const handleNext = async() => {
-        
+
         const data = {
             answers:currentAnswers
         }
-        const res = await saveProgress(submissionId,data);
+
+        let res;
+        if(groupId){
+            // 360 group context: use Submission360 API
+            res = await updateSubmission360(submissionId, data);
+        } else {
+            // Normal assessment
+            res = await saveProgress(submissionId, data);
+        }
+
         if(res){
             setCurrentAnswers(res.submission.answers);
         }
@@ -65,21 +74,30 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
         if(activeStep===noQuestions){
             if(nextSection){
                 window.scrollTo(0, 0);
-                navigate(`/section/${nextSection._id}`);
+                if(groupId){
+                    navigate(`/group/${groupId}/section/${nextSection._id}`);
+                } else {
+                    navigate(`/section/${nextSection._id}`);
+                }
                 setActiveStep(1);
             }else{
                 window.scrollTo(0, 0);
                 const data = {
                     finished : true
                 }
-                await saveProgress(submissionId,data);
-                navigate('/report');
+                if(groupId){
+                    await updateSubmission360(submissionId, data);
+                    navigate(`/group/${groupId}/complete`);
+                } else {
+                    await saveProgress(submissionId,data);
+                    navigate('/report');
+                }
             }
         }else{
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
     };
-    
+
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
@@ -95,7 +113,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
     const handleChange = (e)=>{
         const {value} = e.target;
         const customId = questions[activeStep-1].customId;
-        const existsAnswer = currentAnswers.findIndex(a=>a.customId === customId); 
+        const existsAnswer = currentAnswers.findIndex(a=>a.customId === customId);
         if(existsAnswer !== -1){
             const newAnswers = [...currentAnswers];
             newAnswers[existsAnswer].value = value;

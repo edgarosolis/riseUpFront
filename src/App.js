@@ -9,6 +9,10 @@ import Section from './pages/Main/Section';
 import Report from './pages/Main/Report';
 import LoginAdmin from './pages/Auth/LoginAdmin';
 import Dashboard from './pages/Admin/Dashboard';
+import AssessmentMenu from './pages/Main/AssessmentMenu';
+import Welcome360 from './pages/Main/Welcome360';
+import Complete360 from './pages/Main/Complete360';
+import ReviewAssessment from './pages/Public/ReviewAssessment';
 
 function App() {
 
@@ -17,8 +21,10 @@ function App() {
   return (
     <>
       <Routes>
+      {/* Public review route — no auth required */}
+      <Route path="/review/:token" element={<ReviewAssessment/>}/>
       {
-        !currentUser && 
+        !currentUser &&
         <>
           <Route path="/" element={<NavBar/>}>
             <Route index element={<LogInUser/>}/>
@@ -30,9 +36,13 @@ function App() {
       {
         currentUser && currentUser.rol === "user" && <>
           <Route path="/" element={<NavBar/>}>
-            <Route index element={<Welcome/>}/>
+            <Route index element={<AssessmentMenu/>}/>
+            <Route path="/welcome" element={<Welcome/>}/>
             <Route path="/section/:id" element={<Section/>}/>
             <Route path="/report" element={<Report/>}/>
+            <Route path="/group/:groupId/welcome" element={<Welcome360/>}/>
+            <Route path="/group/:groupId/section/:id" element={<Section/>}/>
+            <Route path="/group/:groupId/complete" element={<Complete360/>}/>
             <Route path='*' element={<Navigate to="/"/>}/>
           </Route>
         </>
@@ -45,6 +55,7 @@ function App() {
             <Route path="/questions" element={<Dashboard active={"questions"}/>}/>
             <Route path="/section-texts" element={<Dashboard active={"sectionTexts"}/>}/>
             <Route path="/wonder-of-you" element={<Dashboard active={"wonderOfYou"}/>}/>
+            <Route path="/groups" element={<Dashboard active={"groups"}/>}/>
           </Route>
           <Route path='*' element={<Navigate to="/"/>}/>
         </>
