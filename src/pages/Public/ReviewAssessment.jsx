@@ -5,6 +5,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { getReviewByToken } from "../../axios/axiosFunctions";
 import QuestionsSections360 from "../../components/QuestionsSections360";
+import SectionBanner from "../../components/Banners/SectionBanner";
+import SectionBar from "../../components/Banners/SectionBar";
 
 const ReviewAssessment = () => {
     const { token } = useParams();
@@ -95,7 +97,7 @@ const ReviewAssessment = () => {
     const nextSection = assessment?.sections?.[currentSectionIndex + 1] || null;
 
     return (
-        <Box sx={{ minHeight: "100vh", backgroundColor: "#fafafa" }}>
+        <Box sx={{ minHeight: "100vh" }}>
             {/* Header */}
             <Box sx={{ backgroundColor: "#000", color: "#F4C542", py: 3, textAlign: "center" }}>
                 <Typography variant="h5" fontWeight={600}>
@@ -108,21 +110,22 @@ const ReviewAssessment = () => {
                 )}
             </Box>
 
-            {/* Section info */}
+            {/* Section Banner + Bar (matching personal assessment style) */}
             {currentSection && (
-                <Box sx={{ backgroundColor: "#F4C542", py: 2, textAlign: "center" }}>
-                    <Typography variant="h6" fontWeight={600} color="secondary">
-                        {currentSection.title}
-                    </Typography>
-                    {currentSection.description && (
-                        <Typography variant="body2" color="secondary">
-                            {currentSection.description}
-                        </Typography>
-                    )}
-                    <Typography variant="caption" color="secondary">
-                        Section {currentSectionIndex + 1} of {assessment.sections.length}
-                    </Typography>
-                </Box>
+                <>
+                    <SectionBanner
+                        title={currentSection.title}
+                        description={currentSection.description}
+                        noQuestions={currentSection.questions?.length}
+                        image={currentSection.image}
+                        index={currentSectionIndex}
+                    />
+                    <SectionBar
+                        title={currentSection.title}
+                        subtitle={currentSection.subtitle}
+                        noQuestions={currentSection.questions?.length}
+                    />
+                </>
             )}
 
             {/* Questions */}
