@@ -2,7 +2,7 @@ import { Alert, Box, Button, Container, TextField, Typography } from "@mui/mater
 import { useEffect, useState } from "react";
 import { saveProgress } from "../axios/axiosFunctions";
 
-const QuestionsReportSections = ({ questions, answers, submissionId, callUserSubmission }) => {
+const QuestionsReportSections = ({ questions, answers, submissionId, callUserSubmission, saveFn }) => {
 
     const [currentAnswers, setCurrentAnswers] = useState();
     const [isSaving, setIsSaving] = useState(false);
@@ -39,7 +39,8 @@ const QuestionsReportSections = ({ questions, answers, submissionId, callUserSub
         const data = {
             answers:currentAnswers
         }
-        const res = await saveProgress(submissionId, data);
+        const save = saveFn || saveProgress;
+        const res = await save(submissionId, data);
         
         if(res){
             setAlertSeverity("success");

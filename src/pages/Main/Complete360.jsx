@@ -33,6 +33,38 @@ const Complete360 = () => {
     const totalReviewers = group360?.reviewers?.length || 0;
     const progress = totalReviewers > 0 ? (completedCount / totalReviewers) * 100 : 0;
 
+    if (group360?.reportReady) {
+        return (
+            <Container maxWidth="sm" sx={{ py: 8, textAlign: "center" }}>
+                <CheckCircleIcon sx={{ fontSize: 80, color: "#4caf50", mb: 3 }} />
+
+                <Typography variant="h4" fontWeight={600} color="secondary" gutterBottom>
+                    Your report is ready!
+                </Typography>
+
+                <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
+                    Your 360 report for <strong>{group360?.group?.name}</strong> has been generated.
+                </Typography>
+
+                <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => navigate(`/group/${groupId}/report`)}
+                    >
+                        View Report
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        onClick={() => navigate("/")}
+                    >
+                        Back to Menu
+                    </Button>
+                </Box>
+            </Container>
+        );
+    }
+
     return (
         <Container maxWidth="sm" sx={{ py: 8, textAlign: "center" }}>
             <CheckCircleIcon sx={{ fontSize: 80, color: "#4caf50", mb: 3 }} />

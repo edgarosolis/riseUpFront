@@ -5,7 +5,7 @@ import { Container, Grid, Typography } from '@mui/material';
 import Results from './Cards/Results';
 import QuestionsReportSections from './QuestionsReportSections';
 
-const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData}) => {
+const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,saveFn}) => {
     
     const [currentSection, setCurrentSection] = useState();
 
@@ -50,7 +50,7 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData})
                     </Grid>
                 </Container>
             }
-            <QuestionsReportSections questions={section?.report?.questions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData}/>
+            <QuestionsReportSections questions={section?.report?.questions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
         </>
     )
 }

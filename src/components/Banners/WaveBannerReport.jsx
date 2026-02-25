@@ -4,7 +4,7 @@ import { BannerContainerReport } from "./BannerContainerReport"
 import { useContext } from "react"
 import { UserContext } from "../../context/user"
 
-const WaveBannerReport = ({title, completedAt}) => {
+const WaveBannerReport = ({title, subtitle, completedAt}) => {
 
     const {currentUser} = useContext(UserContext);
     const yourDate = completedAt ? new Date(completedAt) : new Date();
@@ -34,7 +34,7 @@ const WaveBannerReport = ({title, completedAt}) => {
                     maxWidth:"600px"
                   }}
                 >
-                  REPORT
+                  {subtitle || "REPORT"}
                 </Typography>
                 <Box sx={{mt:5,mb:8}}>
                     <Typography variant="h6">
