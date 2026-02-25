@@ -27,6 +27,7 @@ const Section = () => {
     }, [id,getSectionInfo,isLoading,navigate,groupId]);
 
     useEffect(() => {
+        setUserSubmission(undefined); // Clear stale data from previous assessment type
         const callUserSubmission = async()=>{
             if(currentAssessment && currentUser){
                 if(groupId){
