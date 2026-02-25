@@ -200,7 +200,15 @@ const ReviewersDialog = ({ open, onClose, group360 }) => {
                                 slotProps={{ select: { native: true } }}
                             >
                                 <option value="">-- Select a user --</option>
-                                {users.map((u) => (
+                                {users
+                                    .filter((u) => {
+                                        // Exclude the reviewee
+                                        if (u._id === group360?.reviewee?._id) return false;
+                                        // Exclude existing reviewers
+                                        if (reviewers.some(r => r.user?._id === u._id)) return false;
+                                        return true;
+                                    })
+                                    .map((u) => (
                                     <option key={u._id} value={u._id}>
                                         {u.firstName} {u.lastName} ({u.email})
                                     </option>

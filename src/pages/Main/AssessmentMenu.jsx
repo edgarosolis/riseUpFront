@@ -118,7 +118,9 @@ const AssessmentMenu = () => {
                             <Card sx={{ height: "100%" }}>
                                 <CardActionArea
                                     onClick={() => {
-                                        if (group360Statuses[g360._id] === "completed") {
+                                        if (g360.reportReady && group360Statuses[g360._id] === "completed") {
+                                            navigate(`/group/${g360.group?._id}/report`);
+                                        } else if (group360Statuses[g360._id] === "completed") {
                                             navigate(`/group/${g360.group?._id}/complete`);
                                         } else {
                                             navigate(`/group/${g360.group?._id}/welcome`);
@@ -134,7 +136,10 @@ const AssessmentMenu = () => {
                                         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                                             Self-assessment for your 360 review
                                         </Typography>
-                                        {getStatusChip(group360Statuses[g360._id])}
+                                        {g360.reportReady && group360Statuses[g360._id] === "completed"
+                                            ? <Chip label="Report Ready" color="info" size="small" />
+                                            : getStatusChip(group360Statuses[g360._id])
+                                        }
                                     </CardContent>
                                 </CardActionArea>
                             </Card>

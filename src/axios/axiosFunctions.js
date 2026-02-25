@@ -422,6 +422,30 @@ export const getGroup360sByUserId = async(userId)=>{
   }
 }
 
+// ─── GROUP 360 REPORT ───
+
+export const toggleReport360 = async(group360Id)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `group360/toggleReport/${group360Id}`);
+    return resp.data;
+  } catch (error) {
+    return {
+      group360: undefined,
+      msg: error.response?.data?.msg || "Error toggling report",
+    };
+  }
+}
+
+export const getReport360Info = async(group360Id)=>{
+  try {
+    const resp = await axios.get(BASE_URL + `group360/report360/${group360Id}`);
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+}
+
 // ─── SUBMISSION 360 ───
 
 export const getActiveSubmission360 = async(reviewerId, revieweeId, groupId)=>{

@@ -3,7 +3,7 @@ import { Box, Typography, Button, TextField, Dialog, DialogTitle, DialogContent,
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PeopleIcon from '@mui/icons-material/People';
-import { getGroup360sByGroupId, createGroup360, deleteGroup360, createUser, getAllUsers } from "../../axios/axiosFunctions";
+import { getGroup360sByGroupId, createGroup360, deleteGroup360, createUser, getAllUsers, toggleReport360 } from "../../axios/axiosFunctions";
 import ReviewersDialog from "./ReviewersDialog";
 
 const RevieweesDialog = ({ open, onClose, group, assessmentId }) => {
@@ -117,6 +117,16 @@ const RevieweesDialog = ({ open, onClose, group, assessmentId }) => {
         setDeleteDialog(null);
     };
 
+    const handleToggleReport = async (g360) => {
+        const res = await toggleReport360(g360._id);
+        if (res && res.group360) {
+            showAlert(res.group360.reportReady ? "Report generated" : "Report reverted", "success");
+            fetchGroup360s();
+        } else {
+            showAlert(res?.msg || "Error toggling report");
+        }
+    };
+
     const handleManageReviewers = (g360) => {
         setSelectedGroup360(g360);
         setReviewersDialogOpen(true);
@@ -169,6 +179,15 @@ const RevieweesDialog = ({ open, onClose, group, assessmentId }) => {
                                             sx={{ mr: 1 }}
                                         >
                                             Manage Reviewers
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            color={g360.reportReady ? "warning" : "success"}
+                                            onClick={() => handleToggleReport(g360)}
+                                            sx={{ mr: 1 }}
+                                        >
+                                            {g360.reportReady ? "Revert Report" : "Generate Report"}
                                         </Button>
                                         <IconButton size="small" onClick={() => setDeleteDialog(g360)}>
                                             <DeleteIcon sx={{ color: "red" }} fontSize="small" />

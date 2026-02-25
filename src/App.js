@@ -13,6 +13,7 @@ import AssessmentMenu from './pages/Main/AssessmentMenu';
 import Welcome360 from './pages/Main/Welcome360';
 import Complete360 from './pages/Main/Complete360';
 import ReviewAssessment from './pages/Public/ReviewAssessment';
+import Report360 from './pages/Main/Report360';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="/group/:groupId/welcome" element={<Welcome360/>}/>
             <Route path="/group/:groupId/section/:id" element={<Section/>}/>
             <Route path="/group/:groupId/complete" element={<Complete360/>}/>
+            <Route path="/group/:groupId/report" element={<Report360/>}/>
             <Route path='*' element={<Navigate to="/"/>}/>
           </Route>
         </>
