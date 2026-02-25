@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Box, Button, Container, FormControlLabel, MobileStepper, Radio, RadioGroup, Typography } from "@mui/material";
+import { Box, Button, Container, Dialog, DialogContent, FormControlLabel, MobileStepper, Radio, RadioGroup, Typography } from "@mui/material";
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import ArrowCircleLeftRoundedIcon from '@mui/icons-material/ArrowCircleLeftRounded';
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
 import { saveProgress, updateSubmission360 } from "../axios/axiosFunctions";
@@ -12,6 +13,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
     const [activeStep, setActiveStep] = useState(1);
     const [currentAnswers, setCurrentAnswers] = useState();
     const [options, setOptions] = useState([]);
+    const [showProcessingDialog, setShowProcessingDialog] = useState(false);
 
     useEffect(() => {
         window.scrollTo({
@@ -87,7 +89,8 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
                 }
                 if(groupId){
                     await updateSubmission360(submissionId, data);
-                    navigate(`/group/${groupId}/complete`);
+                    setShowProcessingDialog(true);
+                    setTimeout(() => navigate('/'), 3000);
                 } else {
                     await saveProgress(submissionId,data);
                     navigate('/report');
@@ -130,6 +133,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
     }
 
     return (
+    <>
     <Container maxWidth="lg" sx={{padding:{xs:"20px 16px", sm:"30px", md:"50px"}}}>
         <MobileStepper
             variant="progress"
@@ -164,6 +168,19 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
             </Box>
         </Box>
     </Container>
+
+    <Dialog open={showProcessingDialog}>
+        <DialogContent sx={{ textAlign: "center", py: 5, px: 4 }}>
+            <HourglassTopIcon sx={{ fontSize: 60, color: "#F4C542", mb: 2 }} />
+            <Typography variant="h5" fontWeight={600} gutterBottom>
+                Thank you!
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+                Your results are being processed. You will be notified when your report is ready.
+            </Typography>
+        </DialogContent>
+    </Dialog>
+    </>
     )
 }
 
