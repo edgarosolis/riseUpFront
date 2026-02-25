@@ -73,6 +73,18 @@ export const getAllAssessments = async()=>{
 }
 
 
+export const updateQuestionReviewerText = async(assessmentId, customId, reviewerText)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `assessment/${assessmentId}/reviewer-text`, { customId, reviewerText });
+    return resp.data;
+  } catch (error) {
+    return {
+      msg: error.response?.data?.msg || "Error updating reviewer text",
+      error: true,
+    };
+  }
+}
+
 //SUBMISSION
 
 export const getActiveUserSubmission = async(assessmentId,userId)=>{

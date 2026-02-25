@@ -1,11 +1,14 @@
 import { useContext, useState } from "react";
 import { AssessmentContext } from "../../context/assessment";
+import { updateQuestionReviewerText } from "../../axios/axiosFunctions";
 import {
   Typography, Box, Tabs, Tab, Chip, Paper, Accordion, AccordionSummary,
-  AccordionDetails, Alert
+  AccordionDetails, Alert, IconButton, Dialog, DialogTitle, DialogContent,
+  DialogActions, Button, TextField, Tooltip
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoIcon from '@mui/icons-material/Info';
+import EditIcon from '@mui/icons-material/Edit';
 
 const SECTION_LABELS = {
   s1: "Sphere of Influence",
@@ -21,9 +24,15 @@ const SECTION_COLORS = {
 
 const Questions = () => {
 
-  const { currentAssessment } = useContext(AssessmentContext);
+  const { currentAssessment, refetchAssessments } = useContext(AssessmentContext);
   const [activeTab, setActiveTab] = useState(0);
   const [showGuide, setShowGuide] = useState(true);
+
+  // Edit dialog state
+  const [editOpen, setEditOpen] = useState(false);
+  const [editQuestion, setEditQuestion] = useState(null);
+  const [editReviewerText, setEditReviewerText] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const sections = currentAssessment?.sections || [];
 
@@ -40,6 +49,29 @@ const Questions = () => {
       });
     });
     return Array.from(categories).sort();
+  };
+
+  const handleOpenEdit = (question) => {
+    setEditQuestion(question);
+    setEditReviewerText(question.reviewerText || "");
+    setEditOpen(true);
+  };
+
+  const handleCloseEdit = () => {
+    setEditOpen(false);
+    setEditQuestion(null);
+    setEditReviewerText("");
+  };
+
+  const handleSaveReviewerText = async () => {
+    if (!editQuestion || !currentAssessment) return;
+    setSaving(true);
+    const res = await updateQuestionReviewerText(currentAssessment._id, editQuestion.customId, editReviewerText);
+    setSaving(false);
+    if (!res.error) {
+      await refetchAssessments();
+      handleCloseEdit();
+    }
   };
 
   return (
@@ -142,10 +174,29 @@ const Questions = () => {
                   <Typography variant="subtitle1" fontWeight={500} sx={{ flex: 1 }}>
                     {q.text}
                   </Typography>
+                  <Tooltip title="Edit reviewer text">
+                    <IconButton
+                      size="small"
+                      onClick={(e) => { e.stopPropagation(); handleOpenEdit(q); }}
+                      sx={{ mr: 1 }}
+                    >
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
                   <Chip label={q.customId} size="small" variant="outlined" sx={{ fontSize: "0.7rem" }} />
                 </Box>
               </AccordionSummary>
               <AccordionDetails>
+                {q.reviewerText && (
+                  <Box sx={{ mb: 1.5, p: 1.5, backgroundColor: "#fff8e1", borderRadius: 1, border: "1px solid #ffe082" }}>
+                    <Typography variant="caption" color="text.secondary" fontWeight={600}>
+                      Reviewer version:
+                    </Typography>
+                    <Typography variant="body2">
+                      {q.reviewerText}
+                    </Typography>
+                  </Box>
+                )}
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                   Type: {q.type || "multiple_choice"} · {q.options?.length || 0} options
                 </Typography>
@@ -190,6 +241,37 @@ const Questions = () => {
           No assessment data loaded. Make sure the assessment exists in the database.
         </Typography>
       )}
+
+      {/* Edit Reviewer Text Dialog */}
+      <Dialog open={editOpen} onClose={handleCloseEdit} maxWidth="sm" fullWidth>
+        <DialogTitle>Edit Reviewer Text</DialogTitle>
+        <DialogContent>
+          <Box sx={{ mb: 3, mt: 1 }}>
+            <Typography variant="caption" color="text.secondary" fontWeight={600}>
+              Original question:
+            </Typography>
+            <Typography variant="body1" sx={{ mt: 0.5 }}>
+              {editQuestion?.text}
+            </Typography>
+          </Box>
+          <TextField
+            label="Reviewer version"
+            placeholder="e.g. How would you describe {name}'s leadership style?"
+            multiline
+            rows={3}
+            fullWidth
+            value={editReviewerText}
+            onChange={(e) => setEditReviewerText(e.target.value)}
+            helperText="Use {name} as a placeholder for the reviewee's name. Leave empty to show the original question to reviewers."
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEdit} color="secondary">Cancel</Button>
+          <Button onClick={handleSaveReviewerText} variant="contained" color="primary" disabled={saving}>
+            {saving ? "Saving..." : "Save"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }
