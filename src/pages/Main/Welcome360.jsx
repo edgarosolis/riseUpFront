@@ -39,7 +39,7 @@ const Welcome360 = () => {
                 imageUrl={currentAssessment?.image}
             />
             <WelcomeIntro />
-            <VideoWelcome sections={currentAssessment?.sections} />
+            <VideoWelcome sections={currentAssessment?.sections} groupId={groupId} />
         </Box>
     );
 };
