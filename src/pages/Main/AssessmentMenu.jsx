@@ -35,7 +35,7 @@ const AssessmentMenu = () => {
 
             // Fetch 360 group assignments
             const g360Res = await getGroup360sByUserId(currentUser._id);
-            if (g360Res && g360Res.group360s) {
+            if (g360Res && g360Res.group360s && g360Res.group360s.length > 0) {
                 setGroup360s(g360Res.group360s);
 
                 // Check submission status for each group
@@ -55,8 +55,12 @@ const AssessmentMenu = () => {
                     }
                 }));
                 setGroup360Statuses(statuses);
+                setLoadingGroups(false);
+            } else {
+                // No 360 assignments — skip menu, go straight to normal assessment
+                navigate("/welcome");
+                return;
             }
-            setLoadingGroups(false);
         };
 
         fetchData();
