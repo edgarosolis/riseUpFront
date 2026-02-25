@@ -27,25 +27,27 @@ const Section = () => {
     }, [id,getSectionInfo,isLoading,navigate,groupId]);
 
     useEffect(() => {
-        setUserSubmission(undefined); // Clear stale data from previous assessment type
+        let cancelled = false;
+        setUserSubmission(undefined); // Clear stale data immediately
         const callUserSubmission = async()=>{
             if(currentAssessment && currentUser){
                 if(groupId){
                     // 360 group context: fetch Submission360
                     const res = await getActiveSubmission360(currentUser._id, currentUser._id, groupId);
-                    if(res && res.submission){
+                    if(!cancelled && res && res.submission){
                         setUserSubmission(res.submission);
                     }
                 } else {
                     // Normal assessment
                     const answers = await getActiveUserSubmission(currentAssessment._id,currentUser._id);
-                    if(answers){
+                    if(!cancelled && answers){
                         setUserSubmission(answers.submission);
                     }
                 }
             }
         }
         callUserSubmission();
+        return () => { cancelled = true; };
     }, [currentAssessment,currentUser,groupId])
 
     if (isLoading || !sectionInfo) {
@@ -60,6 +62,7 @@ const Section = () => {
                 <SectionBanner title={sectionInfo?.section?.title} description={sectionInfo?.section?.description} noQuestions={sectionInfo?.section?.questions?.length} image={sectionInfo?.section?.image} index={sectionInfo?.index}/>
                 <SectionBar title={sectionInfo?.section?.title} subtitle={sectionInfo?.section?.subtitle} noQuestions={sectionInfo?.section?.questions.length}/>
                 <QuestionsSections
+                    key={groupId || 'personal'}
                     answers={userSubmission?.answers}
                     submissionId={userSubmission?._id}
                     questions={sectionInfo?.section?.questions}
