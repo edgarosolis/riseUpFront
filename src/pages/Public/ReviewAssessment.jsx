@@ -34,6 +34,21 @@ const ReviewAssessment = () => {
                 setSubmission(res.submission);
                 setRevieweeName(res.revieweeName);
                 setGroupName(res.groupName || "");
+
+                // Resume at the last section the reviewer was working on
+                const savedAnswers = res.submission?.answers || [];
+                if (savedAnswers.length > 0 && res.assessment?.sections) {
+                    const sections = res.assessment.sections;
+                    let resumeIndex = 0;
+                    for (let i = 0; i < sections.length; i++) {
+                        const sectionQuestionIds = sections[i].questions.map(q => q.customId);
+                        const answeredInSection = savedAnswers.filter(a => sectionQuestionIds.includes(a.customId));
+                        if (answeredInSection.length > 0) {
+                            resumeIndex = i;
+                        }
+                    }
+                    setCurrentSectionIndex(resumeIndex);
+                }
             }
             setLoading(false);
         };

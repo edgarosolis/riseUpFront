@@ -9,9 +9,25 @@ const QuestionsSections360 = ({ token, questions = [], noQuestions, nextSection,
     const [currentAnswers, setCurrentAnswers] = useState([]);
     const [options, setOptions] = useState([]);
 
+    // Resume at the first unanswered question within this section
     useEffect(() => {
         setCurrentAnswers(answers || []);
-    }, [answers]);
+        if (answers && answers.length > 0 && questions.length > 0) {
+            let resumeStep = 1;
+            for (let i = 0; i < questions.length; i++) {
+                const hasAnswer = answers.find(a => a.customId === questions[i].customId && a.value);
+                if (hasAnswer) {
+                    resumeStep = i + 1;
+                } else {
+                    break;
+                }
+            }
+            // If all answered, stay on the last question so they can hit "Complete"/"Next"
+            setActiveStep(resumeStep);
+        } else {
+            setActiveStep(1);
+        }
+    }, [answers, questions]);
 
     useEffect(() => {
         if (questions.length > 0 && activeStep - 1 < questions.length) {
