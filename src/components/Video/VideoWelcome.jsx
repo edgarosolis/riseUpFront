@@ -1,7 +1,7 @@
 import { Box, Button, Container } from '@mui/material'
 import {Link} from 'react-router';
 
-const VideoWelcome = ({sections}) => {
+const VideoWelcome = ({sections, groupId}) => {
 
   return (
     <Container maxWidth="lg">
@@ -34,7 +34,7 @@ const VideoWelcome = ({sections}) => {
       </Box>
     </Box>
     <Box display={"flex"} justifyContent={"center"}>
-        <Button component={Link} to={`/section/${sections[0]?._id}`} className='roundedB' variant='contained' color='primary'>START</Button>
+        <Button component={Link} to={groupId ? `/group/${groupId}/section/${sections[0]?._id}` : `/section/${sections[0]?._id}`} className='roundedB' variant='contained' color='primary'>START</Button>
     </Box>
     </Container>
   )
