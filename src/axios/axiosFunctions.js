@@ -1,12 +1,12 @@
 import axios from "axios";
 
 //DEVELOPMENT URL
-export const BASE_URL = "http://localhost:8080/api/";
-export const FRONT_URL = "http://localhost:3000/";
+//export const BASE_URL = "http://localhost:8080/api/";
+//export const FRONT_URL = "http://localhost:3000/";
 
 //DEVELOPMENT URL
-//export const BASE_URL = "https://assessments.theriseupculture.com/api/";
-//export const FRONT_URL = "https://assessments.theriseupculture.com/";
+export const BASE_URL = "https://assessments.theriseupculture.com/api/";
+export const FRONT_URL = "https://assessments.theriseupculture.com/";
 
 //AUTH
 export const loginUser = async (data) => {
