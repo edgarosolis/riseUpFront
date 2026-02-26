@@ -14,8 +14,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { UserContext } from "../../context/user";
+import { AssessmentContext } from "../../context/assessment";
 import {
     getGroup360sByUserId,
+    getActiveUserSubmission,
     addReviewerByEmail,
     updateReviewer,
     removeReviewerFromGroup360,
@@ -30,10 +32,12 @@ const Setup360 = () => {
     const { groupId } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useContext(UserContext);
+    const { currentAssessment } = useContext(AssessmentContext);
 
     const [group360, setGroup360] = useState(null);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(false);
+    const [personalComplete, setPersonalComplete] = useState(false);
 
     // Alert
     const [alert, setAlert] = useState({ show: false, msg: "", severity: "success" });
@@ -51,18 +55,30 @@ const Setup360 = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteReviewer, setDeleteReviewer] = useState(null);
 
+    // Generate Report Info Dialog
+    const [infoOpen, setInfoOpen] = useState(false);
+
     const fetchGroup360 = async () => {
         const res = await getGroup360sByUserId(currentUser._id);
         if (res && res.group360s) {
             const match = res.group360s.find(g => g.group?._id === groupId);
             if (match) setGroup360(match);
         }
+
+        // Check personal assessment status
+        if (currentAssessment) {
+            const subRes = await getActiveUserSubmission(currentAssessment._id, currentUser._id);
+            if (subRes && subRes.submission && subRes.submission.finished) {
+                setPersonalComplete(true);
+            }
+        }
+
         setLoading(false);
     };
 
     useEffect(() => {
         if (currentUser) fetchGroup360();
-    }, [currentUser, groupId]);
+    }, [currentUser, groupId, currentAssessment]);
 
     const showAlert = (msg, severity = "success") => {
         setAlert({ show: true, msg, severity });
@@ -79,7 +95,7 @@ const Setup360 = () => {
     const reviewers = group360?.reviewers || [];
     const completedCount = reviewers.filter(r => r.status === "completed").length;
     const totalReviewers = reviewers.length;
-    const canGenerateReport = completedCount >= 3;
+    const canGenerateReport = completedCount >= 3 && personalComplete;
     const canAddReviewer = totalReviewers < 10;
     const neededForReport = Math.max(0, 3 - completedCount);
 
@@ -183,6 +199,10 @@ const Setup360 = () => {
     };
 
     const handleGenerateReport = async () => {
+        if (!canGenerateReport) {
+            setInfoOpen(true);
+            return;
+        }
         setActionLoading(true);
         const res = await generateReport360(group360._id);
         if (res.group360) {
@@ -286,7 +306,7 @@ const Setup360 = () => {
                     color="success"
                     startIcon={<BarChartIcon />}
                     onClick={handleGenerateReport}
-                    disabled={!canGenerateReport || actionLoading}
+                    disabled={actionLoading}
                     size="small"
                 >
                     {group360.reportReady ? "Regenerate Report" : "Generate Report"}
@@ -483,6 +503,30 @@ const Setup360 = () => {
                         </Button>
                     </Box>
                 </DialogContent>
+            </Dialog>
+
+            {/* ─── Generate Report Info Dialog ─── */}
+            <Dialog open={infoOpen} onClose={() => setInfoOpen(false)} maxWidth="sm" fullWidth>
+                <DialogTitle>Unable to Generate Report</DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1" sx={{ mb: 2 }}>
+                        To generate your 360 report, the following requirements must be met:
+                    </Typography>
+                    <Box component="ul" sx={{ pl: 2 }}>
+                        <Typography component="li" variant="body1" color={personalComplete ? "success.main" : "error.main"} sx={{ mb: 1 }}>
+                            {personalComplete ? "Personal assessment completed" : "Your personal assessment must be completed"}
+                        </Typography>
+                        <Typography component="li" variant="body1" color={completedCount >= 3 ? "success.main" : "error.main"}>
+                            {completedCount >= 3
+                                ? "Minimum 3 reviewer submissions received"
+                                : `At least 3 reviewers must complete their submissions (currently ${completedCount} of ${totalReviewers})`
+                            }
+                        </Typography>
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="contained" onClick={() => setInfoOpen(false)}>OK</Button>
+                </DialogActions>
             </Dialog>
         </Container>
     );
