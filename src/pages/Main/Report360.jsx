@@ -78,6 +78,7 @@ const Report360 = () => {
   }, [currentAssessment, currentUser]);
 
   const finalSection = () => {
+    if (!reportInfo || !Array.isArray(reportInfo) || reportInfo.length === 0) return null;
     const info = [...reportInfo];
     return info[info.length - 1];
   }
@@ -121,21 +122,21 @@ const Report360 = () => {
                   </Grid>
                 </Grid>
               </Box>
-            ) : (
+            ) : reportInfo ? (
               <ReportResults reportInfo={reportInfo} />
-            )}
+            ) : null}
             <MiniBanner title={"Understanding the Report"} />
             <ReportUnderstanding />
             <MiniBanner title={"How to Use This Report"} />
             <ReportHowTo />
             {
-              currentAssessment?.sections.map((s, i) => (
+              reportInfo && currentAssessment?.sections.map((s, i) => (
                 <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={() => callReportData(true)} saveFn={updateSubmission360} />
               ))
             }
             <Separator sectionColor={"#6E5600"} />
             <SectionReportBanner sectionColor={"#6E5600"} title={"The Wonder of You (FIVE-FOLD + BIBLICAL DNA)"} index={3} intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`} />
-            <Results sectionColor={"#6E5600"} title={"The Wonder of You"} currentSection={finalSection()} />
+            {finalSection() && <Results sectionColor={"#6E5600"} title={"The Wonder of You"} currentSection={finalSection()} />}
             <MiniBanner title={"Next Steps: A Spiritual Response."} />
             <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={() => callReportData(true)} saveFn={updateSubmission360} />
             <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
