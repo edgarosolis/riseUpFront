@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Alert, Box, Button, Dialog, DialogContent, Grid, IconButton, TextField, Typography, FormControlLabel, Switch } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteUser, updateUser, toggle360 } from "../../axios/axiosFunctions";
+import { deleteUser, updateUser, toggle360, getUserGroup360 } from "../../axios/axiosFunctions";
 
 const defaultUser = {
     firstName: "",
@@ -21,6 +21,8 @@ const ActionsUsers = ({row,api}) => {
     const [userForm, setUserForm] = useState(defaultUser);
     const { firstName, lastName, email, has360 } = userForm;
     const [toggling360, setToggling360] = useState(false);
+    const [openConfirm360, setOpenConfirm360] = useState(false);
+    const [reviewerCount, setReviewerCount] = useState(0);
 
     useEffect(() => {
         initUser();
@@ -58,6 +60,21 @@ const ActionsUsers = ({row,api}) => {
     }
 
     const handleToggle360 = async(e) => {
+        // If turning OFF, check for reviewers first
+        if (has360) {
+            const res = await getUserGroup360(row.id);
+            const count = res.group360?.reviewers?.length || 0;
+            if (count > 0) {
+                setReviewerCount(count);
+                setOpenConfirm360(true);
+                return;
+            }
+        }
+        await executeToggle360();
+    };
+
+    const executeToggle360 = async() => {
+        setOpenConfirm360(false);
         setToggling360(true);
         const res = await toggle360(row.id);
         setToggling360(false);
@@ -164,6 +181,18 @@ const ActionsUsers = ({row,api}) => {
                         <Button variant="contained" onClick={handleCancelEdit} sx={{marginLeft:"20px"}}>CANCEL</Button>
                     </Grid>
                 </Grid>
+            </DialogContent>
+        </Dialog>
+        <Dialog open={openConfirm360} onClose={() => setOpenConfirm360(false)}>
+            <DialogContent>
+                <Typography>
+                    This user has <strong>{reviewerCount}</strong> reviewer{reviewerCount !== 1 ? 's' : ''}. Disabling 360 will permanently delete all reviewers and their submissions.
+                </Typography>
+                <Typography sx={{marginTop:"10px", fontWeight:"bold"}}>Are you sure?</Typography>
+                <Box sx={{display:"flex",justifyContent:"center",marginTop:"20px"}}>
+                    <Button onClick={executeToggle360} variant="contained" color="error">YES, DISABLE</Button>
+                    <Button variant="contained" onClick={() => setOpenConfirm360(false)} sx={{marginLeft:"20px"}}>CANCEL</Button>
+                </Box>
             </DialogContent>
         </Dialog>
         <Dialog open={openDialogDelete} onClose={handleCloseDialogDelete}>
