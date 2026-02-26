@@ -115,14 +115,7 @@ const Report360 = () => {
             <ReportHowTo />
             {
               reportInfo && currentAssessment?.sections.map((s, i) => (
-                <Box key={i}>
-                  <SectionsReport section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={() => callReportData(true)} saveFn={updateSubmission360} />
-                  {getReviewerSection(s.customId) && (
-                    <Box sx={{ backgroundColor: "#f5f5f5" }}>
-                      <Results sectionColor={s?.color} title={`Reviewer Perspective: ${s?.title}`} currentSection={getReviewerSection(s.customId)} />
-                    </Box>
-                  )}
-                </Box>
+                <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={() => callReportData(true)} saveFn={updateSubmission360} reviewerSection={getReviewerSection(s.customId)} />
               ))
             }
             <Separator sectionColor={"#6E5600"} />
