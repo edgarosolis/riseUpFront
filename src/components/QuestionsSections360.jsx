@@ -58,13 +58,13 @@ const QuestionsSections360 = ({ token, questions = [], noQuestions, nextSection,
         if (activeStep === noQuestions) {
             if (nextSection) {
                 window.scrollTo(0, 0);
-                // Move to next section - handled by parent via onComplete with section info
-                if (onComplete) onComplete("nextSection", nextSection);
+                // Pass updated submission to parent so next section starts with fresh answers
+                if (onComplete) onComplete("nextSection", nextSection, res?.submission);
             } else {
                 window.scrollTo(0, 0);
                 const completeData = { answers: currentAnswers };
-                await completeReview(token, completeData);
-                if (onComplete) onComplete("completed");
+                const completeRes = await completeReview(token, completeData);
+                if (onComplete) onComplete("completed", null, completeRes?.submission);
             }
         } else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);

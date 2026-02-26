@@ -56,7 +56,10 @@ const ReviewAssessment = () => {
         fetchReview();
     }, [token]);
 
-    const handleComplete = (type, nextSection) => {
+    const handleComplete = (type, nextSection, updatedSubmission) => {
+        if (updatedSubmission) {
+            setSubmission(updatedSubmission);
+        }
         if (type === "completed") {
             setCompleted(true);
         } else if (type === "nextSection") {
