@@ -36,7 +36,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <MiniBannerPDF title={"Your Result"} color={"#383838"}/>
             <ReportResultsPDF reportInfo={data.report}/>
             {is360 && reviewerReport && reviewerReport.length > 0 && (
-                <View style={{ backgroundColor: "#f5f5f5", padding: 10, marginHorizontal: 20, marginBottom: 10 }}>
+                <View>
                     <Text style={{ fontSize: 12, fontWeight: "bold", textAlign: "center", marginBottom: 6 }}>
                         Reviewer Feedback ({reviewerCount} reviewer{reviewerCount !== 1 ? "s" : ""})
                     </Text>
