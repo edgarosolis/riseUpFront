@@ -1,4 +1,4 @@
-import { Document,Image,Link,Page, View } from '@react-pdf/renderer';
+import { Document,Image,Link,Page, Text, View } from '@react-pdf/renderer';
 import BannerPDF from '../Banners/BannerPDF';
 import TextPDF from '../Texts/TextPDF';
 import MiniBannerPDF from '../Banners/MiniBannerPDF';
@@ -14,12 +14,16 @@ import { Font } from '@react-pdf/renderer';
 
 Font.registerHyphenationCallback(word => [word]);
 
-const AssessmentPDF = ({ data, sections,userName }) => {
+const AssessmentPDF = ({ data, sections, userName, is360 }) => {
+
+    const reviewerReport = data.reviewerReport;
+    const reviewerCount = data.reviewerCount || 0;
+    const getReviewerSection = (key) => reviewerReport?.find(r => r.section === key) || null;
 
     return (
     <Document>
         <Page>
-            <BannerPDF title={"Kingdom Calling Assessment"} subtitle={"REPORT"} userName={userName} completedAt={data.submission?.completedAt || data.submission?.updatedAt}/>
+            <BannerPDF title={"Kingdom Calling Assessment"} subtitle={is360 ? "360 REPORT" : "REPORT"} userName={userName} completedAt={data.submission?.completedAt || data.submission?.updatedAt}/>
             <MiniBannerPDF title={"Embracing the Wonder of You"} color={"#F4C542"} center={true} titleSize="2.0"/>
             <TextPDF text={`<b>Dear ${userName},</b><br><br>Welcome to your Kingdom Calling Assessment Report. This is a tool designed not to define you, but to reveal who you are and the leader for the Kingdom you are called to be. This is not just data. <b>This is discovery.</b><br><br>Our prayer is that this report will stir something in your soul and serve as a prophetic guide into who God has uniquely made you to be as a Kingdom leader.<br><br>You were made to rise up. Jesus said, “You did not choose me, but I chose you and appointed you so that you might go and bear fruit — fruit that will last” (John 15:16). This report is part of His invitation to walk boldly in the good works He prepared in advance for you (Ephesians. 2:10).`}/>
             <View style={stylesPDF.imageContainer}>
@@ -31,6 +35,14 @@ const AssessmentPDF = ({ data, sections,userName }) => {
         <Page>
             <MiniBannerPDF title={"Your Result"} color={"#383838"}/>
             <ReportResultsPDF reportInfo={data.report}/>
+            {is360 && reviewerReport && reviewerReport.length > 0 && (
+                <View style={{ backgroundColor: "#f5f5f5", padding: 10, marginHorizontal: 20, marginBottom: 10 }}>
+                    <Text style={{ fontSize: 12, fontWeight: "bold", textAlign: "center", marginBottom: 6 }}>
+                        Reviewer Feedback ({reviewerCount} reviewer{reviewerCount !== 1 ? "s" : ""})
+                    </Text>
+                    <ReportResultsPDF reportInfo={reviewerReport}/>
+                </View>
+            )}
             <MiniBannerPDF title={"Understanding the Report"} color={"#383838"}/>
             <TextPDF text={`The Kingdom Calling Assessment explores three layers of your God-designed leadership:
             <br>
@@ -69,6 +81,11 @@ const AssessmentPDF = ({ data, sections,userName }) => {
                     <MiniBannerPDF title={""} color={s.color}/>
                     <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={s.title} intro={s.report.intro} image={s.image}/>
                     <ResultsPDF sectionColor={s?.color} title={s?.title} currentSection={data.report.find(cs=>cs.section === s.customId)}/>
+                    {is360 && getReviewerSection(s.customId) && (
+                        <View style={{ backgroundColor: "#f5f5f5", marginHorizontal: 20 }}>
+                            <ResultsPDF sectionColor={s?.color} title={`Reviewer Perspective: ${s?.title}`} currentSection={getReviewerSection(s.customId)}/>
+                        </View>
+                    )}
                     {
                         s.report.hasTable &&
                         <SectionTablePDF tableInfo={s.report.tableInfo}/>
@@ -92,6 +109,11 @@ const AssessmentPDF = ({ data, sections,userName }) => {
             <SectionReportBannerPDF sectionColor={"#6E5600"} index={3} title={"The Wonder of You (FIVE-FOLD + BIBLICAL DNA)"} 
             intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`}/>
             <ResultsPDF sectionColor={"#6E5600"} title={'The Wonder of You'} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
+            {is360 && getReviewerSection("r1") && (
+                <View style={{ backgroundColor: "#f5f5f5", marginHorizontal: 20 }}>
+                    <ResultsPDF sectionColor={"#6E5600"} title={"Reviewer Perspective: The Wonder of You"} currentSection={getReviewerSection("r1")}/>
+                </View>
+            )}
         </Page>
         <Page>
             <MiniBannerPDF title={"Next Steps: A Spiritual Response"} color={"#383838"}/>

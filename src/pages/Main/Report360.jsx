@@ -66,7 +66,7 @@ const Report360 = () => {
     if (submission) setUserSubmission(submission);
 
     setLoading(false);
-    return { report, submission };
+    return { report, submission, reviewerReport: resInfo?.reviewerReport || null, reviewerCount: resInfo?.reviewerCount || 0 };
   };
 
   useEffect(() => {
@@ -130,7 +130,7 @@ const Report360 = () => {
             <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={() => callReportData(true)} saveFn={updateSubmission360} />
             <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
             <ReportLeader />
-            <DownloadSection sections={currentAssessment?.sections} fetchData={callReportData} userSubmission={userSubmission} userName={`${currentUser?.firstName || ""} ${currentUser?.lastName || ""}`} />
+            <DownloadSection sections={currentAssessment?.sections} fetchData={callReportData} userSubmission={userSubmission} userName={`${currentUser?.firstName || ""} ${currentUser?.lastName || ""}`} is360={true} />
           </Box>
       }
     </>

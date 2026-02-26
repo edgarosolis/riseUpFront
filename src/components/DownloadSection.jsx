@@ -5,7 +5,7 @@ import AssessmentPDF from "./PDF/AssessmentPDF"
 import PrintIcon from '@mui/icons-material/Print';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
-const DownloadSection = ({ fetchData, sections, userSubmission,userName }) => {
+const DownloadSection = ({ fetchData, sections, userSubmission, userName, is360 }) => {
 
   const [apiData, setApiData] = useState(null);
   const [isFetchingAPI, setIsFetchingAPI] = useState(false);
@@ -52,7 +52,7 @@ const DownloadSection = ({ fetchData, sections, userSubmission,userName }) => {
         </Box>
       ) : (
         <PDFDownloadLink 
-          document={<AssessmentPDF data={apiData} sections={sections} userName={userName}/>} 
+          document={<AssessmentPDF data={apiData} sections={sections} userName={userName} is360={is360}/>}
           fileName={`Report.pdf`}
         >
           {({ loading }) => (
