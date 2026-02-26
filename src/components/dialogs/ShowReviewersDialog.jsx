@@ -6,9 +6,10 @@ import {
 } from "@mui/material";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import SendIcon from '@mui/icons-material/Send';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
-    getUserGroup360, addReviewerByEmail, sendInvitation,
+    getUserGroup360, addReviewerByEmail, sendInvitation, sendReminder,
     removeReviewerFromGroup360, generateReport360, FRONT_URL
 } from "../../axios/axiosFunctions";
 
@@ -78,6 +79,17 @@ const ShowReviewersDialog = ({ open, onClose, userId, onUpdate }) => {
             setSnackMsg("Invitation sent");
             setSnackOpen(true);
             await fetchGroup360();
+        } else {
+            setSnackMsg(res.msg);
+            setSnackOpen(true);
+        }
+    };
+
+    const handleSendReminder = async (reviewerId) => {
+        const res = await sendReminder(group360._id, reviewerId);
+        if (!res.error) {
+            setSnackMsg("Reminder sent");
+            setSnackOpen(true);
         } else {
             setSnackMsg(res.msg);
             setSnackOpen(true);
@@ -177,6 +189,14 @@ const ShowReviewersDialog = ({ open, onClose, userId, onUpdate }) => {
                                                                 color="primary"
                                                             >
                                                                 <SendIcon fontSize="small" />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                size="small"
+                                                                onClick={() => handleSendReminder(reviewer._id)}
+                                                                title="Send reminder"
+                                                                color="warning"
+                                                            >
+                                                                <NotificationsActiveIcon fontSize="small" />
                                                             </IconButton>
                                                             {confirmDelete === reviewer._id ? (
                                                                 <Button
