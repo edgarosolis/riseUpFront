@@ -12,6 +12,11 @@ const Complete360 = () => {
     const [group360, setGroup360] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // Redirect to Setup360 page
+    useEffect(() => {
+        navigate(`/group/${groupId}/setup`, { replace: true });
+    }, [groupId, navigate]);
+
     useEffect(() => {
         if (!currentUser) return;
 

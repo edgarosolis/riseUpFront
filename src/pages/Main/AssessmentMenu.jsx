@@ -5,7 +5,7 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { UserContext } from "../../context/user";
 import { AssessmentContext } from "../../context/assessment";
-import { getActiveUserSubmission, getGroup360sByUserId, getActiveSubmission360 } from "../../axios/axiosFunctions";
+import { getActiveUserSubmission, getGroup360sByUserId } from "../../axios/axiosFunctions";
 
 const AssessmentMenu = () => {
     const navigate = useNavigate();
@@ -14,7 +14,6 @@ const AssessmentMenu = () => {
 
     const [normalStatus, setNormalStatus] = useState("not_started");
     const [group360s, setGroup360s] = useState([]);
-    const [group360Statuses, setGroup360Statuses] = useState({});
     const [loadingGroups, setLoadingGroups] = useState(true);
 
     useEffect(() => {
@@ -37,24 +36,6 @@ const AssessmentMenu = () => {
             const g360Res = await getGroup360sByUserId(currentUser._id);
             if (g360Res && g360Res.group360s && g360Res.group360s.length > 0) {
                 setGroup360s(g360Res.group360s);
-
-                // Check submission status for each group
-                const statuses = {};
-                await Promise.all(g360Res.group360s.map(async (g360) => {
-                    const s360Res = await getActiveSubmission360(currentUser._id, currentUser._id, g360.group?._id);
-                    if (s360Res && s360Res.submission) {
-                        if (s360Res.submission.finished) {
-                            statuses[g360._id] = "completed";
-                        } else if (s360Res.submission.answers?.length > 0) {
-                            statuses[g360._id] = "in_progress";
-                        } else {
-                            statuses[g360._id] = "not_started";
-                        }
-                    } else {
-                        statuses[g360._id] = "not_started";
-                    }
-                }));
-                setGroup360Statuses(statuses);
                 setLoadingGroups(false);
             } else {
                 // No 360 assignments — skip menu, go straight to normal assessment
@@ -113,38 +94,34 @@ const AssessmentMenu = () => {
                         <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}><CircularProgress size={24} /></Box>
                     </Grid>
                 ) : (
-                    group360s.map((g360) => (
-                        <Grid key={g360._id} size={{ xs: 12, sm: 6, md: 4 }}>
-                            <Card sx={{ height: "100%" }}>
-                                <CardActionArea
-                                    onClick={() => {
-                                        if (g360.reportReady && group360Statuses[g360._id] === "completed") {
-                                            navigate(`/group/${g360.group?._id}/report`);
-                                        } else if (group360Statuses[g360._id] === "completed") {
-                                            navigate(`/group/${g360.group?._id}/complete`);
-                                        } else {
-                                            navigate(`/group/${g360.group?._id}/welcome`);
-                                        }
-                                    }}
-                                    sx={{ height: "100%", p: 2 }}
-                                >
-                                    <CardContent sx={{ textAlign: "center" }}>
-                                        <GroupsIcon sx={{ fontSize: 60, color: "#1976d2", mb: 2 }} />
-                                        <Typography variant="h6" fontWeight={600} gutterBottom>
-                                            360 - {g360.group?.name}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                            Self-assessment for your 360 review
-                                        </Typography>
-                                        {g360.reportReady && group360Statuses[g360._id] === "completed"
-                                            ? <Chip label="Report Ready" color="info" size="small" />
-                                            : getStatusChip(group360Statuses[g360._id])
-                                        }
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
-                    ))
+                    group360s.map((g360) => {
+                        const completed360 = g360.reviewers?.filter(r => r.status === "completed").length || 0;
+                        const total360 = g360.reviewers?.length || 0;
+                        return (
+                            <Grid key={g360._id} size={{ xs: 12, sm: 6, md: 4 }}>
+                                <Card sx={{ height: "100%" }}>
+                                    <CardActionArea
+                                        onClick={() => navigate(`/group/${g360.group?._id}/setup`)}
+                                        sx={{ height: "100%", p: 2 }}
+                                    >
+                                        <CardContent sx={{ textAlign: "center" }}>
+                                            <GroupsIcon sx={{ fontSize: 60, color: "#1976d2", mb: 2 }} />
+                                            <Typography variant="h6" fontWeight={600} gutterBottom>
+                                                360 - {g360.group?.name}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                                                Manage your 360 review
+                                            </Typography>
+                                            {g360.reportReady
+                                                ? <Chip label="Report Ready" color="info" size="small" />
+                                                : <Chip label={`${completed360} of ${total360} reviewers completed`} size="small" />
+                                            }
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </Grid>
+                        );
+                    })
                 )}
             </Grid>
         </Container>

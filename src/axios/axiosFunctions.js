@@ -434,6 +434,92 @@ export const getGroup360sByUserId = async(userId)=>{
   }
 }
 
+// ─── GROUP 360 — User Setup ───
+
+export const addReviewerByEmail = async(group360Id, data)=>{
+  try {
+    const resp = await axios.post(BASE_URL + `group360/addReviewerByEmail/${group360Id}`, data);
+    return resp.data;
+  } catch (error) {
+    return {
+      group360: undefined,
+      msg: error.response?.data?.msg || "Error adding reviewer",
+    };
+  }
+}
+
+export const updateReviewer = async(group360Id, reviewerId, data)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `group360/updateReviewer/${group360Id}/${reviewerId}`, data);
+    return resp.data;
+  } catch (error) {
+    return {
+      group360: undefined,
+      msg: error.response?.data?.msg || "Error updating reviewer",
+    };
+  }
+}
+
+export const sendInvitation = async(group360Id, reviewerId)=>{
+  try {
+    const resp = await axios.post(BASE_URL + `group360/invite/${group360Id}/${reviewerId}`);
+    return resp.data;
+  } catch (error) {
+    return {
+      msg: error.response?.data?.msg || "Error sending invitation",
+      error: true,
+    };
+  }
+}
+
+export const sendInviteAll = async(group360Id)=>{
+  try {
+    const resp = await axios.post(BASE_URL + `group360/inviteAll/${group360Id}`);
+    return resp.data;
+  } catch (error) {
+    return {
+      msg: error.response?.data?.msg || "Error sending invitations",
+      error: true,
+    };
+  }
+}
+
+export const sendReminder = async(group360Id, reviewerId)=>{
+  try {
+    const resp = await axios.post(BASE_URL + `group360/remind/${group360Id}/${reviewerId}`);
+    return resp.data;
+  } catch (error) {
+    return {
+      msg: error.response?.data?.msg || "Error sending reminder",
+      error: true,
+    };
+  }
+}
+
+export const sendRemindAll = async(group360Id)=>{
+  try {
+    const resp = await axios.post(BASE_URL + `group360/remindAll/${group360Id}`);
+    return resp.data;
+  } catch (error) {
+    return {
+      msg: error.response?.data?.msg || "Error sending reminders",
+      error: true,
+    };
+  }
+}
+
+export const generateReport360 = async(group360Id)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `group360/generateReport/${group360Id}`);
+    return resp.data;
+  } catch (error) {
+    return {
+      group360: undefined,
+      msg: error.response?.data?.msg || "Error generating report",
+    };
+  }
+}
+
 // ─── GROUP 360 REPORT ───
 
 export const toggleReport360 = async(group360Id)=>{

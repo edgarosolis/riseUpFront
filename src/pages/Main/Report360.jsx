@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material"
+import { Box, CircularProgress, Grid, Typography, Alert } from "@mui/material"
 import WaveBannerReport from "../../components/Banners/WaveBannerReport"
 import { useContext, useEffect, useState } from "react"
 import { AssessmentContext } from "../../context/assessment"
@@ -12,7 +12,7 @@ import SectionsReport from "../../components/SectionsReport"
 import ReportNextSteps from "../../components/Texts/ReportNextSteps"
 import ReportLeader from "../../components/Texts/ReportLeader"
 import { UserContext } from "../../context/user"
-import { getGroup360sByUserId, getReport360Info, getActiveSubmission360, updateSubmission360 } from "../../axios/axiosFunctions"
+import { getGroup360sByUserId, getReport360Info, getActiveSubmission360, updateSubmission360, getActiveUserSubmission } from "../../axios/axiosFunctions"
 import DownloadSection from "../../components/DownloadSection"
 import Separator from "../../components/Banners/Separator"
 import SectionReportBanner from "../../components/Banners/SectionReportBanner"
@@ -25,6 +25,9 @@ const Report360 = () => {
   const { currentAssessment } = useContext(AssessmentContext);
   const { currentUser } = useContext(UserContext);
   const [reportInfo, setReportInfo] = useState();
+  const [selfReport, setSelfReport] = useState(null);
+  const [reviewerReport, setReviewerReport] = useState(null);
+  const [reviewerCount, setReviewerCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [userSubmission, setUserSubmission] = useState();
   const [group360Id, setGroup360Id] = useState(null);
@@ -59,6 +62,9 @@ const Report360 = () => {
     const submission = resAnswers?.submission;
 
     if (report) setReportInfo(report);
+    if (resInfo?.selfReport) setSelfReport(resInfo.selfReport);
+    if (resInfo?.reviewerReport) setReviewerReport(resInfo.reviewerReport);
+    if (resInfo?.reviewerCount !== undefined) setReviewerCount(resInfo.reviewerCount);
     if (submission) setUserSubmission(submission);
 
     setLoading(false);
@@ -90,7 +96,34 @@ const Report360 = () => {
             <ReportIntro />
             <VideoReport />
             <MiniBanner title={"Your Result"} />
-            <ReportResults reportInfo={reportInfo} />
+            {(selfReport || reviewerReport) ? (
+              <Box sx={{ px: { xs: 2, md: 4 }, py: 3 }}>
+                <Grid container spacing={4}>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="h6" fontWeight={600} textAlign="center" sx={{ mb: 2 }}>
+                      Self-Assessment
+                    </Typography>
+                    {selfReport ? (
+                      <ReportResults reportInfo={selfReport} />
+                    ) : (
+                      <Alert severity="info" sx={{ mx: 2 }}>Personal assessment not yet completed</Alert>
+                    )}
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="h6" fontWeight={600} textAlign="center" sx={{ mb: 2 }}>
+                      Reviewer Feedback ({reviewerCount} reviewer{reviewerCount !== 1 ? "s" : ""})
+                    </Typography>
+                    {reviewerReport ? (
+                      <ReportResults reportInfo={reviewerReport} />
+                    ) : (
+                      <Alert severity="info" sx={{ mx: 2 }}>No reviewer submissions yet</Alert>
+                    )}
+                  </Grid>
+                </Grid>
+              </Box>
+            ) : (
+              <ReportResults reportInfo={reportInfo} />
+            )}
             <MiniBanner title={"Understanding the Report"} />
             <ReportUnderstanding />
             <MiniBanner title={"How to Use This Report"} />
