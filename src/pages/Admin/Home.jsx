@@ -1,15 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getAllUsers } from "../../axios/axiosFunctions";
 import { DataGrid } from '@mui/x-data-grid';
 import { Typography, Button, Dialog, DialogTitle, DialogContent, Box } from "@mui/material";
 import { PersonAdd } from "@mui/icons-material";
-import { homeColumns } from "../../utils/homeCols";
+import { getHomeColumns } from "../../utils/homeCols";
 import CreateUser from "../../components/forms/CreateUser";
+import ShowReviewersDialog from "../../components/dialogs/ShowReviewersDialog";
 
 const Home = () => {
 
   const [rows, setRows] = useState([{id:1}]);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [openReviewersDialog, setOpenReviewersDialog] = useState(false);
 
   const fetchUsers = async()=>{
     const users = await getAllUsers();
@@ -19,6 +22,7 @@ const Home = () => {
         firstName: u.firstName,
         lastName: u.lastName,
         email: u.email,
+        has360: u.has360 || false,
       }));
       setRows(tempRows);
     }
@@ -34,6 +38,13 @@ const Home = () => {
       setOpenCreateDialog(false);
     }, 2000);
   };
+
+  const handleShowReviewers = useCallback((userId) => {
+    setSelectedUserId(userId);
+    setOpenReviewersDialog(true);
+  }, []);
+
+  const homeColumns = getHomeColumns(handleShowReviewers);
 
   return (
     <>
@@ -55,6 +66,13 @@ const Home = () => {
           <CreateUser onUserCreated={handleUserCreated}/>
         </DialogContent>
       </Dialog>
+
+      <ShowReviewersDialog
+        open={openReviewersDialog}
+        onClose={() => setOpenReviewersDialog(false)}
+        userId={selectedUserId}
+        onUpdate={fetchUsers}
+      />
     </>
   )
 }

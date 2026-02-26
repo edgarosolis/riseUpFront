@@ -253,6 +253,30 @@ export const bulkUploadUsers = async(csvFile)=>{
   }
 }
 
+// ─── USER 360 ───
+
+export const toggle360 = async(userId)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `user/${userId}/toggle360`);
+    return resp.data;
+  } catch (error) {
+    return {
+      msg: error.response?.data?.msg || "Error toggling 360",
+      error: true,
+    };
+  }
+}
+
+export const getUserGroup360 = async(userId)=>{
+  try {
+    const resp = await axios.get(BASE_URL + `user/${userId}/group360`);
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+    return { group360: null };
+  }
+}
+
 // ─── CHURCHES ───
 
 export const getAllChurches = async()=>{

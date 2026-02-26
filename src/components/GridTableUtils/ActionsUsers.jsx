@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Alert, Box, Button, Dialog, DialogContent, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Dialog, DialogContent, Grid, IconButton, TextField, Typography, FormControlLabel, Switch } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteUser, updateUser } from "../../axios/axiosFunctions";
+import { deleteUser, updateUser, toggle360 } from "../../axios/axiosFunctions";
 
 const defaultUser = {
     firstName: "",
     lastName:"",
     email: "",
+    has360: false,
 }
 
 const ActionsUsers = ({row,api}) => {
@@ -18,7 +19,8 @@ const ActionsUsers = ({row,api}) => {
     const [alertMsg, setAlertMsg] = useState("");
     const [alertOpen, setAlertOpen] = useState(false);
     const [userForm, setUserForm] = useState(defaultUser);
-    const { firstName, lastName, email } = userForm;
+    const { firstName, lastName, email, has360 } = userForm;
+    const [toggling360, setToggling360] = useState(false);
 
     useEffect(() => {
         initUser();
@@ -29,6 +31,7 @@ const ActionsUsers = ({row,api}) => {
             firstName: row.firstName || "",
             lastName: row.lastName || "",
             email: row.email || "",
+            has360: row.has360 || false,
         });
     }
 
@@ -53,6 +56,22 @@ const ActionsUsers = ({row,api}) => {
         const {name,value} = e.target;
         setUserForm({...userForm,[name]:value});
     }
+
+    const handleToggle360 = async(e) => {
+        setToggling360(true);
+        const res = await toggle360(row.id);
+        setToggling360(false);
+        if (!res.error) {
+            const newVal = !has360;
+            setUserForm({...userForm, has360: newVal});
+            api.updateRows([{id: row.id, has360: newVal}]);
+        } else {
+            setAlertMsg(res.msg);
+            setAlertSeverity("error");
+            setAlertOpen(true);
+            setTimeout(() => setAlertOpen(false), 2000);
+        }
+    };
 
     const handleCancelEdit = ()=>{
         initUser();
@@ -119,7 +138,19 @@ const ActionsUsers = ({row,api}) => {
                     <Grid size={6}>
                         <Typography variant="subtitle1">Email</Typography>
                         <TextField onChange={handleChange} onKeyDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} value={email} name="email" fullWidth/>
-                    </Grid> 
+                    </Grid>
+                    <Grid size={6} sx={{display:"flex", alignItems:"center"}}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={has360}
+                                    onChange={handleToggle360}
+                                    disabled={toggling360}
+                                />
+                            }
+                            label={toggling360 ? "Toggling..." : "Enable 360 Review"}
+                        />
+                    </Grid>
                     {
                         alertOpen &&
                         <Grid size={12}>

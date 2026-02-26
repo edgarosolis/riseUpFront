@@ -1,5 +1,5 @@
 import { CloudUpload, Download } from "@mui/icons-material";
-import { Alert, Box, Button, Grid, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress } from "@mui/material"
+import { Alert, Box, Button, Grid, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, FormControlLabel, Switch } from "@mui/material"
 import { useState } from "react";
 import { createUser, bulkUploadUsers } from "../../axios/axiosFunctions";
 
@@ -7,12 +7,13 @@ const defaultCreateUserForm = {
     firstName:"",
     lastName:"",
     email:"",
+    has360: false,
 }
 
 const CreateUser = ({onUserCreated}) => {
 
     const [createUserForm, setCreateUserForm] = useState(defaultCreateUserForm);
-    const {firstName, lastName, email} = createUserForm;
+    const {firstName, lastName, email, has360} = createUserForm;
     const [msg, setMsg] = useState("");
     const [showMsg, setShowMsg] = useState(false);
     const [alertSeverity, setAlertSeverity] = useState("error");
@@ -135,6 +136,17 @@ const CreateUser = ({onUserCreated}) => {
             <Grid size={6}>
                 <Typography variant="h6" color="secondary">Email</Typography>
                 <TextField value={email} required fullWidth onChange={handleForm} name='email'/>
+            </Grid>
+            <Grid size={6} sx={{display:"flex", alignItems:"center"}}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={has360}
+                            onChange={(e) => setCreateUserForm({...createUserForm, has360: e.target.checked})}
+                        />
+                    }
+                    label="Enable 360 Review"
+                />
             </Grid>
             {
                 showMsg &&
