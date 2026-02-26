@@ -82,9 +82,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                     <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={s.title} intro={s.report.intro} image={s.image}/>
                     <ResultsPDF sectionColor={s?.color} title={s?.title} currentSection={data.report.find(cs=>cs.section === s.customId)}/>
                     {is360 && getReviewerSection(s.customId) && (
-                        <View style={{ backgroundColor: "#f5f5f5", marginHorizontal: 20 }}>
-                            <ResultsPDF sectionColor={s?.color} title={`Reviewer Perspective: ${s?.title}`} currentSection={getReviewerSection(s.customId)}/>
-                        </View>
+                        <ResultsPDF sectionColor={s?.color} title={`Reviewer Perspective: ${s?.title}`} currentSection={getReviewerSection(s.customId)}/>
                     )}
                     {
                         s.report.hasTable &&
@@ -110,9 +108,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`}/>
             <ResultsPDF sectionColor={"#6E5600"} title={'The Wonder of You'} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
             {is360 && getReviewerSection("r1") && (
-                <View style={{ backgroundColor: "#f5f5f5", marginHorizontal: 20 }}>
-                    <ResultsPDF sectionColor={"#6E5600"} title={"Reviewer Perspective: The Wonder of You"} currentSection={getReviewerSection("r1")}/>
-                </View>
+                <ResultsPDF sectionColor={"#6E5600"} title={"Reviewer Perspective: The Wonder of You"} currentSection={getReviewerSection("r1")}/>
             )}
         </Page>
         <Page>
