@@ -75,7 +75,7 @@ export const stylesPDF = StyleSheet.create({
       paddingHorizontal: 20,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center', 
+      alignItems: 'flex-start',
       borderRadius: 5
   },
   textColumn: {
@@ -199,10 +199,11 @@ export const stylesPDF = StyleSheet.create({
     width: "30%", // Reparte el espacio equitativamente
   },
   resultLabel: {
-    fontSize: 14, // Equivalente a un h4 pequeño en PDF
+    fontSize: 14,
     fontWeight: "bold",
     marginBottom: 5,
     textAlign: "center",
+    minHeight: 20,
   },
   resultValue: {
     fontSize: 12,
@@ -219,8 +220,17 @@ export const stylesPDF = StyleSheet.create({
     marginHorizontal: 'auto',
   },
   outroImage: {
-    width: 300,              // Adjust as needed
+    width: 300,
     height: 'auto',
     borderRadius: 10,
-  }
+  },
+  pageNumber: {
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    fontSize: 9,
+    color: '#888888',
+  },
 })

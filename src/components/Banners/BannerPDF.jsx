@@ -2,7 +2,7 @@ import { Text, View } from '@react-pdf/renderer'
 import { stylesPDF } from '../PDF/Styles'
 
 const BannerPDF = ({ title,subtitle, color, userName, completedAt }) => {
-    const dateStr = completedAt ? new Date(completedAt).toISOString().split('T')[0] : '';
+    const dateStr = completedAt ? new Date(completedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
     return (
     <View style={stylesPDF.heroBanner}>
         <View style={stylesPDF.LogoContainer}>
