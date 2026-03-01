@@ -3,6 +3,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import QuizIcon from '@mui/icons-material/Quiz';
+import EmailIcon from '@mui/icons-material/Email';
 export const navItems = [
     {
       title: "Home",
@@ -33,5 +34,11 @@ export const navItems = [
       icon: <AutoAwesomeIcon sx={{color:"white"}}/>,
       locationRef : "wonderOfYou",
       href: "/wonder-of-you",
+    },
+    {
+      title: "Email Notifications",
+      icon: <EmailIcon sx={{color:"white"}}/>,
+      locationRef : "emailNotifications",
+      href: "/email-notifications",
     },
 ];

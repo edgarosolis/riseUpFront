@@ -629,3 +629,37 @@ export const completeReview = async(token, data)=>{
     };
   }
 }
+
+// ─── EMAIL TEMPLATES ───
+
+export const getAllEmailTemplates = async()=>{
+    try {
+        const resp = await axios.get(BASE_URL + `emailTemplate/`);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+        return undefined;
+    }
+}
+
+export const getEmailTemplateById = async(templateId)=>{
+    try {
+        const resp = await axios.get(BASE_URL + `emailTemplate/${templateId}`);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+        return undefined;
+    }
+}
+
+export const updateEmailTemplate = async(templateId, data)=>{
+    try {
+        const resp = await axios.put(BASE_URL + `emailTemplate/${templateId}`, data);
+        return resp.data;
+    } catch (error) {
+        return {
+            template: undefined,
+            msg: error.response?.data?.msg || "Error updating email template",
+        };
+    }
+}
