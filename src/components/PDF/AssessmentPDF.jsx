@@ -81,12 +81,9 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <br>
             · How does this resonate with your lived experience?
             <br>
-            <br>
             · What are the invitations in this season?
             <br>
-            <br>
             · Who can you process this with — a pastor, mentor, or trusted leader?
-            <br>
             <br>
             · Are there any confirmations that have already come in prayer or community?
             <br>
