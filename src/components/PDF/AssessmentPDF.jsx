@@ -64,9 +64,12 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <br>
             <b>1. Your Sphere</b> – Where God has designed you to show up and lead.
             <br>
+            <br>
             <b>2. Your Five-Fold Personality</b> – How Jesus expresses His heart through you (apostolic, prophetic, evangelistic, shepherd, or teacher personalities).
             <br>
+            <br>
             <b>3. Your Biblical DNA</b> – The values, instincts, and anointing that shape your Kingdom expression and impact.
+            <br>
             <br>
             These are not labels to wear, but lenses to look through — helping you interpret your life, leadership, and legacy with clarity and confidence.`}/>
             <MiniBannerPDF title={"How to Use This Report"} color={"#383838"}/>
@@ -110,7 +113,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                         s.report.questions.length > 0 && (
                             <View break={s.report.hasTable}>
                                 {s.report.questions.map((q,qi)=>(
-                                    <View key={qi} wrap={false}>
+                                    <View key={qi}>
                                         <TextPDF text={`<b>${q.text}</b>
                                         <br>
                                         ${(data.submission.answers.find(a=>a.customId === q.customId))?.value || "" }
