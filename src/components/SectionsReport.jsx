@@ -14,14 +14,16 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
         setCurrentSection(s);
     }, [section]);
 
+    const displayTitle = section?.customId === 's1' ? section?.title?.replace('Sphere', 'Sphere(s)') : section?.title;
+
     return (
         <>
             <Separator sectionColor={section?.color}/>
-            <SectionReportBanner sectionColor={section?.color} title={section?.title} index={index} intro={section?.report?.intro} image={section?.image}/>
-            <Results sectionColor={section?.color} title={section?.title} currentSection={currentSection}/>
+            <SectionReportBanner sectionColor={section?.color} title={displayTitle} index={index} intro={section?.report?.intro} image={section?.image}/>
+            <Results sectionColor={section?.color} title={displayTitle} currentSection={currentSection}/>
             {reviewerSection && (
                 <Box sx={{ backgroundColor: "#f5f5f5" }}>
-                    <Results sectionColor={section?.color} title={`Reviewer Perspective: ${section?.title}`} currentSection={reviewerSection}/>
+                    <Results sectionColor={section?.color} title={`Reviewer Perspective: ${displayTitle}`} currentSection={reviewerSection}/>
                 </Box>
             )}
             {

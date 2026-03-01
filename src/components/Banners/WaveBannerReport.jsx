@@ -34,14 +34,14 @@ const WaveBannerReport = ({title, subtitle, completedAt}) => {
                     maxWidth:"600px"
                   }}
                 >
-                  {subtitle || "REPORT"}
+                  {subtitle || "SELF-ASSESSMENT REPORT"}
                 </Typography>
                 <Box sx={{mt:5,mb:8}}>
                     <Typography variant="h6">
                         Prepared for: {currentUser?.firstName} {currentUser?.lastName}
                     </Typography>
                     <Typography variant="h6">
-                        Date: {yourDate.toISOString().split('T')[0]} 
+                        Date: {yourDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                     </Typography>
                 </Box>
               </Box>

@@ -97,7 +97,7 @@ const Report360 = () => {
           <Box sx={{ paddingBottom: "50px" }}>
             <WaveBannerReport title={currentAssessment?.title} subtitle="360 REPORT" completedAt={userSubmission?.completedAt || userSubmission?.updatedAt} />
             <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"} />
-            <ReportIntro />
+            <ReportIntro is360={true} />
             <VideoReport />
             <MiniBanner title={"Your Result"} />
             {reportInfo && <ReportResults reportInfo={reportInfo} />}
@@ -119,7 +119,7 @@ const Report360 = () => {
               ))
             }
             <Separator sectionColor={"#6E5600"} />
-            <SectionReportBanner sectionColor={"#6E5600"} title={"The Wonder of You (FIVE-FOLD + BIBLICAL DNA)"} index={3} intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`} />
+            <SectionReportBanner sectionColor={"#6E5600"} title={"The Wonder of You (FIVE-FOLD PERSONALITY + BIBLICAL DNA)"} index={3} intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`} />
             {finalSection() && <Results sectionColor={"#6E5600"} title={"The Wonder of You"} currentSection={finalSection()} />}
             {getReviewerSection("r1") && (
               <Box sx={{ backgroundColor: "#f5f5f5" }}>

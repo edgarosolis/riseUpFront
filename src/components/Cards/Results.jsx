@@ -17,10 +17,11 @@ const Results = ({sectionColor,title,currentSection}) => {
             {title}
         </Typography>
         <Typography
-            variant="h6" 
-            sx={{  
+            variant="h6"
+            color={currentSection?.section === "s1" ? "black" : currentSection?.section === "s3" ? "#F4C542" : "white"}
+            sx={{
             maxWidth:"600px",
-            fontSize:'1.5rem', 
+            fontSize:'1.5rem',
             }}
         >{currentSection?.content.title}</Typography>
         <Typography component={"div"} variant='subtitle1' color={currentSection?.section==="s1"?"black":"white"} sx={{marginTop:"20px", marginBottom:"10px"}} dangerouslySetInnerHTML={{__html:`${currentSection?.content?.content}`}}/>

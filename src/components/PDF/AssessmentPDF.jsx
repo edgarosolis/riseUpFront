@@ -32,17 +32,17 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         <Page style={{ paddingBottom: 25 }}>
             <BannerPDF title={"Kingdom Calling Assessment"} subtitle={is360 ? "360 REPORT" : "SELF-ASSESSMENT REPORT"} userName={userName} completedAt={data.submission?.completedAt || data.submission?.updatedAt}/>
             <MiniBannerPDF title={"Embracing the Wonder of You"} color={"#F4C542"} center={true} titleSize="2.0"/>
-            <TextPDF text={`<b>Dear ${userName},</b><br><br>${!is360 ? 'This self-assessment report reflects how you answered questions about yourself.<br><br>' : ''}Welcome to your Kingdom Calling Assessment Report. This is a tool designed not to define you, but to reveal who you are and the leader for the Kingdom you are called to be. This is not just data. <b>This is discovery.</b><br><br>Our prayer is that this report will stir something in your soul and serve as a prophetic guide into who God has uniquely made you to be as a Kingdom leader.<br><br>You were made to rise up. Jesus said, "You did not choose me, but I chose you and appointed you so that you might go and bear fruit — fruit that will last" (John 15:16). This report is part of His invitation to walk boldly in the good works He prepared in advance for you (Ephesians. 2:10).`}/>
+            <TextPDF text={`<b>Dear ${userName},</b><br><br>Welcome to your Kingdom Calling Assessment Report. This is a tool designed not to define you, but to reveal who you are and the leader for the Kingdom you are called to be. This is not just data. <b>This is discovery.</b>${!is360 ? '<br><br>This self-assessment report reflects how you answered questions about yourself.' : ''}<br><br>Our prayer is that this report will stir something in your soul and serve as a prophetic guide into who God has uniquely made you to be as a Kingdom leader.<br><br>You were made to rise up. Jesus said, "You did not choose me, but I chose you and appointed you so that you might go and bear fruit — fruit that will last" (John 15:16). This report is part of His invitation to walk boldly in the good works He prepared in advance for you (Ephesians. 2:10).`}/>
             {!is360 && (
-                <View>
-                    <TextPDF text={`If you are interested, we also offer a 360-degree assessment where you can invite others to confidentially answer the same questions about you from their perspectives.`}/>
-                    <View style={{ marginHorizontal: 45, marginTop: 5 }}>
-                        <Link src="https://www.theriseupculture.com/kingdom-calling" style={{ textDecoration: 'none' }}>
-                            <View style={[stylesPDF.buttonBox, { backgroundColor: '#D4AF37', alignSelf: 'flex-start' }]}>
-                                <Text style={stylesPDF.buttonText}>{"> More Details"}</Text>
-                            </View>
-                        </Link>
-                    </View>
+                <View style={{ marginHorizontal: 45, marginTop: 15, backgroundColor: '#FFF8E1', borderRadius: 6, padding: 18, borderLeftWidth: 4, borderLeftColor: '#D4AF37' }}>
+                    <Text style={{ fontSize: 11.5, lineHeight: 1.25, color: '#333' }}>
+                        If you are interested, we also offer a 360-degree assessment where you can invite others to confidentially answer the same questions about you from their perspectives.
+                    </Text>
+                    <Link src="https://www.theriseupculture.com/kingdom-calling" style={{ textDecoration: 'none', marginTop: 10 }}>
+                        <View style={[stylesPDF.buttonBox, { backgroundColor: '#D4AF37', alignSelf: 'flex-start', marginLeft: 0 }]}>
+                            <Text style={stylesPDF.buttonText}>{"> More Details"}</Text>
+                        </View>
+                    </Link>
                 </View>
             )}
             <PageFooter />
