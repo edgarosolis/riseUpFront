@@ -209,7 +209,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         </Page>
         <Page style={{ paddingBottom: 25 }}>
             <TextPDF text={`You do not have to do everything at once. Take one faithful step at www.theriseupculture.com`}/>
-            <LeaderReportPDF title="YOUR NEXT STEP" info="Take our "Calling Course" or request a Coaching session to go over your results" cardColor="#000000" titleColor="#F4C542" infoColor="white" button={true} buttonText={"Course"} buttonLink={""} buttonColor="primary"/>
+            <LeaderReportPDF title="YOUR NEXT STEP" info={'Take our "Calling Course" or request a Coaching session to go over your results'} cardColor="#000000" titleColor="#F4C542" infoColor="white" button={true} buttonText={"Course"} buttonLink={""} buttonColor="primary"/>
             {/* <LeaderReportPDF title="YOUR NEXT READ" info="So, You're a Leader… Now What? (coming soon by Drew East)." cardColor="#000000" titleColor="#F4C542" infoColor="white"/> */}
             <TextPDF text={`The best leaders aren't the loudest in the room. They're the ones who know who they are, walk with Jesus, and say "yes" to the call. That's you.`}/>
             <TextPDF text={`<b>Welcome to the adventure. The world will never be the same.</b>`}/>
