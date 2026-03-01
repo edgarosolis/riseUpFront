@@ -59,19 +59,28 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 </View>
             )}
             <MiniBannerPDF title={"Understanding the Report"} color={"#383838"}/>
-            <TextPDF text={`The Kingdom Calling Assessment explores three layers of your God-designed leadership:
-            <br>
-            <br>
-            <b>1. Your Sphere</b> – Where God has designed you to show up and lead.
-            <br>
-            <br>
-            <b>2. Your Five-Fold Personality</b> – How Jesus expresses His heart through you (apostolic, prophetic, evangelistic, shepherd, or teacher personalities).
-            <br>
-            <br>
-            <b>3. Your Biblical DNA</b> – The values, instincts, and anointing that shape your Kingdom expression and impact.
-            <br>
-            <br>
-            These are not labels to wear, but lenses to look through — helping you interpret your life, leadership, and legacy with clarity and confidence.`}/>
+            <TextPDF text={`The Kingdom Calling Assessment explores three layers of your God-designed leadership:`}/>
+            <View style={{ paddingHorizontal: 45 }}>
+                <View style={{ flexDirection: 'row', marginTop: 8 }}>
+                    <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25, width: 20 }}>1.</Text>
+                    <Text style={{ fontSize: 11.5, flex: 1, lineHeight: 1.25 }}>
+                        <Text style={{ fontWeight: 'bold' }}>Your Sphere</Text> – Where God has designed you to show up and lead.
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginTop: 8 }}>
+                    <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25, width: 20 }}>2.</Text>
+                    <Text style={{ fontSize: 11.5, flex: 1, lineHeight: 1.25 }}>
+                        <Text style={{ fontWeight: 'bold' }}>Your Five-Fold Personality</Text> – How Jesus expresses His heart through you (apostolic, prophetic, evangelistic, shepherd, or teacher personalities).
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginTop: 8 }}>
+                    <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25, width: 20 }}>3.</Text>
+                    <Text style={{ fontSize: 11.5, flex: 1, lineHeight: 1.25 }}>
+                        <Text style={{ fontWeight: 'bold' }}>Your Biblical DNA</Text> – The values, instincts, and anointing that shape your Kingdom expression and impact.
+                    </Text>
+                </View>
+            </View>
+            <TextPDF text={`These are not labels to wear, but lenses to look through — helping you interpret your life, leadership, and legacy with clarity and confidence.`}/>
             <MiniBannerPDF title={"How to Use This Report"} color={"#383838"}/>
             <TextPDF text={`Before you analyze, pause. Invite the Holy Spirit into this moment.<br><br>Consider praying: "Lord, You know me better than I know myself. Speak through these insights. Confirm what's true. Challenge what's misaligned. Reveal what You see in me."
             <br>
