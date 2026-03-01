@@ -107,10 +107,10 @@ const AssessmentMenu = () => {
                                         <CardContent sx={{ textAlign: "center" }}>
                                             <GroupsIcon sx={{ fontSize: 60, color: "#1976d2", mb: 2 }} />
                                             <Typography variant="h6" fontWeight={600} gutterBottom>
-                                                360 - {g360.group?.name}
+                                                My 360-Degree Report
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                                Manage your 360 review
+                                                Manage your 360-degree review
                                             </Typography>
                                             {g360.reportReady
                                                 ? <Chip label="Report Ready" color="info" size="small" />
