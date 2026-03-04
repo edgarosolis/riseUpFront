@@ -249,12 +249,35 @@ const Setup360 = () => {
     return (
         <Container maxWidth="md" sx={{ py: { xs: 3, md: 5 } }}>
             {/* Header */}
-            <Typography variant="h4" fontWeight={600} color="secondary" sx={{ mb: 1, textAlign: "center" }}>
-                360 Review Setup
+            <Typography variant="h4" fontWeight={700} color="secondary" sx={{ mb: 2, textAlign: "center" }}>
+                Welcome to your 360-degree assessment
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 3, textAlign: "center" }}>
-                {group360.group?.name}
-            </Typography>
+
+            {/* Intro */}
+            <Box sx={{ textAlign: "center", px: { xs: 2, md: 6 }, mb: 3 }}>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                    You will courageously ask for others to share how they see you in terms of what sphere you thrive in,
+                    what Five-Fold personality shows up most often for you, and what Biblical DNA that most see in you.
+                    By now you should have completed your Self-assessment and now is time to pursue outside feedback, counsel, and advice.
+                </Typography>
+                <Typography variant="body2" color="text.secondary" fontWeight={600} sx={{ mb: 1, textAlign: "left" }}>
+                    How to get started:
+                </Typography>
+                <Box component="ol" sx={{ textAlign: "left", pl: { xs: 2, md: 3 }, m: 0 }}>
+                    <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                        <strong>Add reviewers</strong> — Click "Add Reviewer" below and enter their name and email. You can add up to 10 people who know you well (friends, family, coworkers, mentors).
+                    </Typography>
+                    <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                        <strong>Invite them</strong> — Once added, click "Invite All" to send each reviewer an email with a link to complete their assessment about you.
+                    </Typography>
+                    <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                        <strong>Send reminders</strong> — Use "Remind All" to nudge anyone who hasn't responded yet.
+                    </Typography>
+                    <Typography component="li" variant="body2" color="text.secondary">
+                        <strong>Generate your report</strong> — After at least 3 reviewers complete their assessments, click "Generate Report" to see your full 360 results.
+                    </Typography>
+                </Box>
+            </Box>
 
             {/* Alert */}
             {alert.show && (
@@ -326,7 +349,7 @@ const Setup360 = () => {
             {/* Reviewer Cards */}
             {reviewers.length === 0 ? (
                 <Typography variant="body1" color="text.secondary" sx={{ textAlign: "center", py: 4 }}>
-                    No reviewers yet. Add reviewers to get started with your 360 review.
+                    No reviewers yet. Use the "Add Reviewer" button above to invite people who know you well.
                 </Typography>
             ) : (
                 <Grid container spacing={2}>

@@ -3,7 +3,6 @@ import WaveBannerReport from "../../components/Banners/WaveBannerReport"
 import { useContext, useEffect, useState } from "react"
 import { AssessmentContext } from "../../context/assessment"
 import ReportIntro from "../../components/Texts/ReportIntro"
-import VideoReport from "../../components/Video/VideoReport"
 import MiniBanner from "../../components/Banners/MiniBanner"
 import ReportResults from "../../components/Texts/ReportResults"
 import ReportUnderstanding from "../../components/Texts/ReportUnderstanding"
@@ -95,19 +94,18 @@ const Report360 = () => {
           </Box>
           :
           <Box sx={{ paddingBottom: "50px" }}>
-            <WaveBannerReport title={currentAssessment?.title} subtitle="360 REPORT" completedAt={userSubmission?.completedAt || userSubmission?.updatedAt} />
+            <WaveBannerReport title={currentAssessment?.title} subtitle="360-DEGREE REPORT" completedAt={userSubmission?.completedAt || userSubmission?.updatedAt} />
             <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"} />
             <ReportIntro is360={true} />
-            <VideoReport />
-            <MiniBanner title={"Your Result"} />
-            {reportInfo && <ReportResults reportInfo={reportInfo} />}
+            <MiniBanner title={"Your Results"} />
+            {reportInfo && <ReportResults reportInfo={reportInfo} title="How you see yourself:" />}
             {reviewerReport && reviewerReport.length > 0 && (
-              <Box sx={{ backgroundColor: "#f5f5f5", py: 2 }}>
-                <Typography variant="h6" fontWeight={600} textAlign="center" sx={{ mb: 1 }}>
-                  Reviewer Feedback ({reviewerCount} reviewer{reviewerCount !== 1 ? "s" : ""})
-                </Typography>
-                <ReportResults reportInfo={reviewerReport} />
-              </Box>
+              <>
+                <Box sx={{ display: "flex", justifyContent: "center", py: 0.5 }}>
+                  <Box sx={{ width: "60%", borderBottom: "2px solid #D4AF37" }} />
+                </Box>
+                <ReportResults reportInfo={reviewerReport} title="How others see you:" variant="others" />
+              </>
             )}
             <MiniBanner title={"Understanding the Report"} />
             <ReportUnderstanding />
@@ -115,15 +113,15 @@ const Report360 = () => {
             <ReportHowTo />
             {
               reportInfo && currentAssessment?.sections.map((s, i) => (
-                <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={() => callReportData(true)} saveFn={updateSubmission360} reviewerSection={getReviewerSection(s.customId)} />
+                <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={() => callReportData(true)} saveFn={updateSubmission360} reviewerSection={getReviewerSection(s.customId)} is360={true} />
               ))
             }
             <Separator sectionColor={"#6E5600"} />
             <SectionReportBanner sectionColor={"#6E5600"} title={"The Wonder of You (FIVE-FOLD PERSONALITY + BIBLICAL DNA)"} index={3} intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`} />
-            {finalSection() && <Results sectionColor={"#6E5600"} title={"The Wonder of You"} currentSection={finalSection()} />}
+            {finalSection() && <Results sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={finalSection()} />}
             {getReviewerSection("r1") && (
               <Box sx={{ backgroundColor: "#f5f5f5" }}>
-                <Results sectionColor={"#6E5600"} title={"Reviewer Perspective: The Wonder of You"} currentSection={getReviewerSection("r1")} />
+                <Results sectionColor={"#6E5600"} title={"How others see you:"} currentSection={getReviewerSection("r1")} />
               </Box>
             )}
             <MiniBanner title={"Next Steps: A Spiritual Response."} />

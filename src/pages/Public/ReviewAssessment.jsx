@@ -121,11 +121,6 @@ const ReviewAssessment = () => {
                 <Typography variant="h5" fontWeight={600}>
                     360 Review for {revieweeName}
                 </Typography>
-                {groupName && (
-                    <Typography variant="body2" sx={{ color: "#ccc", mt: 0.5 }}>
-                        {groupName}
-                    </Typography>
-                )}
             </Box>
 
             {/* Section Banner + Bar (matching personal assessment style) */}

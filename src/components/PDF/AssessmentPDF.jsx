@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Document,Image,Link,Page, Text, View } from '@react-pdf/renderer';
 import BannerPDF from '../Banners/BannerPDF';
 import TextPDF from '../Texts/TextPDF';
@@ -8,6 +9,9 @@ import ResultsPDF from '../Cards/ResultsPDF';
 import SectionTablePDF from '../Tables/SectionTablePDF';
 import ReportResultsPDF from '../Texts/ReportResultsPDF';
 import RiseUpLogo from '../../assets/images/RiseUpLogo.png';
+import Section1 from '../../assets/images/Section1.png';
+import Section2 from '../../assets/images/Section2.png';
+import Section3 from '../../assets/images/Section3.png';
 import { stylesPDF } from './Styles';
 import { Font } from '@react-pdf/renderer';
 
@@ -30,9 +34,9 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
     return (
     <Document>
         <Page style={{ paddingBottom: 25 }}>
-            <BannerPDF title={"Kingdom Calling Assessment"} subtitle={is360 ? "360 REPORT" : "SELF-ASSESSMENT REPORT"} userName={userName} completedAt={data.submission?.completedAt || data.submission?.updatedAt}/>
+            <BannerPDF title={"Kingdom Calling Assessment"} subtitle={is360 ? "360-DEGREE REPORT" : "SELF-ASSESSMENT REPORT"} userName={userName} completedAt={data.submission?.completedAt || data.submission?.updatedAt}/>
             <MiniBannerPDF title={"Embracing the Wonder of You"} color={"#F4C542"} center={true} titleSize="2.0"/>
-            <TextPDF text={`<b>Dear ${userName},</b><br><br>Welcome to your Kingdom Calling Assessment Report. This is a tool designed not to define you, but to reveal who you are and the leader for the Kingdom you are called to be. This is not just data. <b>This is discovery.</b>${!is360 ? '<br><br>This self-assessment report reflects how you answered questions about yourself.' : ''}<br><br>Our prayer is that this report will stir something in your soul and serve as a prophetic guide into who God has uniquely made you to be as a Kingdom leader.<br><br>You were made to rise up. Jesus said, "You did not choose me, but I chose you and appointed you so that you might go and bear fruit — fruit that will last" (John 15:16). This report is part of His invitation to walk boldly in the good works He prepared in advance for you (Ephesians. 2:10).`}/>
+            <TextPDF text={`<b>Dear ${userName},</b><br><br>Welcome to your Kingdom Calling Assessment Report. This is a tool designed not to define you, but to reveal who you are and the leader for the Kingdom you are called to be. This is not just data. <b>This is discovery.</b>${!is360 ? '<br><br>This self-assessment report reflects how you answered questions about yourself.' : ''}<br><br>Our prayer is that this report will stir something in your soul and serve as a prophetic guide into who God has uniquely made you to be as a Kingdom leader.<br><br>You were made to rise up. Jesus said, "You did not choose me, but I chose you and appointed you so that you might go and bear fruit — fruit that will last" (John 15:16). This report is part of His invitation to walk boldly in the good works He prepared in advance for you (Ephesians. 2:10).${is360 ? '<br><br>You have courageously asked for others to share how they see you in terms of what sphere you thrive in, what Five-Fold personality shows up most often for you, and what Biblical DNA that most see in you. It is always good to pursue outside feedback, counsel, and advice. Review your results to gain insights that will help you uncover and unleash your calling!<br><br>Review how you see yourself and how others see you as data points. The real gold in your calling comes from personal reflection in a prayerful conversation with your Creator.' : ''}`}/>
             {!is360 && (
                 <View style={{ marginHorizontal: 45, marginTop: 15, backgroundColor: '#FFF8E1', borderRadius: 6, padding: 18, borderLeftWidth: 4, borderLeftColor: '#D4AF37' }}>
                     <Text style={{ fontSize: 11.5, lineHeight: 1.25, color: '#333' }}>
@@ -48,15 +52,10 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <PageFooter />
         </Page>
         <Page style={{ paddingBottom: 25 }}>
-            <MiniBannerPDF title={"Your Result"} color={"#383838"}/>
-            <ReportResultsPDF reportInfo={data.report}/>
+            <MiniBannerPDF title={is360 ? "Your Results" : "Your Result"} color={"#383838"}/>
+            <ReportResultsPDF reportInfo={data.report} title={is360 ? "How you see yourself:" : undefined}/>
             {is360 && reviewerReport && reviewerReport.length > 0 && (
-                <View>
-                    <Text style={{ fontSize: 12, fontWeight: "bold", textAlign: "center", marginBottom: 6 }}>
-                        Reviewer Feedback ({reviewerCount} reviewer{reviewerCount !== 1 ? "s" : ""})
-                    </Text>
-                    <ReportResultsPDF reportInfo={reviewerReport}/>
-                </View>
+                <ReportResultsPDF reportInfo={reviewerReport} title="How others see you:"/>
             )}
             <MiniBannerPDF title={"Understanding the Report"} color={"#383838"}/>
             <TextPDF text={`The Kingdom Calling Assessment explores three layers of your God-designed leadership:`}/>
@@ -81,6 +80,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 </View>
             </View>
             <TextPDF text={`These are not labels to wear, but lenses to look through — helping you interpret your life, leadership, and legacy with clarity and confidence.`}/>
+            <View break />
             <MiniBannerPDF title={"How to Use This Report"} color={"#383838"}/>
             <TextPDF text={`Before you analyze, pause. Invite the Holy Spirit into this moment.<br><br>Consider praying: "Lord, You know me better than I know myself. Speak through these insights. Confirm what's true. Challenge what's misaligned. Reveal what You see in me."
             <br>
@@ -103,21 +103,43 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         {
             sections.map((s,i)=>{
                 const displayTitle = s.customId === 's1' ? s.title.replace('Sphere', 'Sphere(s)') : s.title;
-                return (
-                <Page key={i} style={{ paddingBottom: 25 }}>
-                    <MiniBannerPDF title={""} color={s.color}/>
-                    <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={displayTitle} intro={s.report.intro} image={s.image}/>
-                    <ResultsPDF sectionColor={s?.color} title={displayTitle} currentSection={data.report.find(cs=>cs.section === s.customId)}/>
-                    {is360 && getReviewerSection(s.customId) && (
-                        <ResultsPDF sectionColor={s?.color} title={`Reviewer Perspective: ${displayTitle}`} currentSection={getReviewerSection(s.customId)}/>
-                    )}
-                    {
-                        s.report.hasTable &&
-                        <SectionTablePDF tableInfo={s.report.tableInfo}/>
-                    }
-                    {
-                        s.report.questions.length > 0 && (
-                            <View break={s.report.hasTable}>
+                const getUserTitle360 = () => s.customId === 's1' ? "Where you see yourself:" : "How you see yourself:";
+                const getReviewerTitle360 = () => s.customId === 's1' ? "Where others see you:" : "How others see you:";
+                const getReflectionTitle = () => {
+                    if (s.customId === 's1') return 'Your Sphere(s) Reflection';
+                    if (s.customId === 's2') return 'Your Five-Fold Personality Reflection';
+                    if (s.customId === 's3') return 'Your Biblical DNA Reflection';
+                    return 'Your Reflection';
+                };
+                const sectionImages = { s1: Section1, s2: Section2, s3: Section3 };
+                const currentResult = data.report.find(cs=>cs.section === s.customId);
+
+                if (!is360) {
+                    return (
+                    <Fragment key={i}>
+                        <Page style={{ paddingBottom: 25 }}>
+                            <MiniBannerPDF title={""} color={s.color}/>
+                            <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={displayTitle} intro={s.report.intro} image={s.image}/>
+                            <ResultsPDF sectionColor={s?.color} title={displayTitle} currentSection={currentResult}/>
+                            {
+                                s.report.hasTable &&
+                                <SectionTablePDF tableInfo={s.report.tableInfo}/>
+                            }
+                            <PageFooter />
+                        </Page>
+                        {s.report.questions.length > 0 && (
+                            <Page style={{ paddingBottom: 25 }}>
+                                <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
+                                    <View style={{ flex: 1 }}>
+                                        <Text style={[stylesPDF.bannerTitle2, { fontSize: 23.8 }]}>{getReflectionTitle()}</Text>
+                                        <Text style={{ fontSize: 13, color: 'white', fontWeight: 'bold', marginTop: 6 }}>{currentResult?.content?.title || ''}</Text>
+                                    </View>
+                                    {sectionImages[s.customId] && (
+                                        <View style={{ width: 70, height: 70, borderRadius: 35, backgroundColor: '#FFF8E1', justifyContent: 'center', alignItems: 'center', marginLeft: 15 }}>
+                                            <Image src={sectionImages[s.customId]} style={{ width: 50, objectFit: 'contain' }} />
+                                        </View>
+                                    )}
+                                </View>
                                 {s.report.questions.map((q,qi)=>(
                                     <View key={qi} wrap={false}>
                                         <TextPDF text={`<b>${q.text}</b>
@@ -126,21 +148,88 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                         `}/>
                                     </View>
                                 ))}
+                                <PageFooter />
+                            </Page>
+                        )}
+                    </Fragment>
+                    );
+                }
+
+                const reviewerResult = getReviewerSection(s.customId);
+
+                return (
+                <Fragment key={i}>
+                    <Page style={{ paddingBottom: 25 }}>
+                        <MiniBannerPDF title={""} color={s.color}/>
+                        <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={displayTitle} intro={s.report.intro} image={s.image}/>
+                        <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
+                        {reviewerResult && (
+                            <ResultsPDF sectionColor={s?.color} title={getReviewerTitle360()} currentSection={reviewerResult}/>
+                        )}
+                        {
+                            s.report.hasTable &&
+                            <SectionTablePDF tableInfo={s.report.tableInfo}/>
+                        }
+                        <PageFooter />
+                    </Page>
+                    {(s.report.questions.length > 0 || true) && (
+                        <Page style={{ paddingBottom: 25 }}>
+                            <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={[stylesPDF.bannerTitle2, { fontSize: 23.8 }]}>{getReflectionTitle()}</Text>
+                                    <Text style={{ fontSize: 11, color: 'white', marginTop: 6 }}>
+                                        <Text style={{ fontWeight: 'bold' }}>How you see yourself: </Text>
+                                        <Text>{currentResult?.content?.title || ''}</Text>
+                                    </Text>
+                                    {reviewerResult && (
+                                        <Text style={{ fontSize: 11, color: 'white', marginTop: 3 }}>
+                                            <Text style={{ fontWeight: 'bold' }}>How others see you: </Text>
+                                            <Text>{reviewerResult?.content?.title || ''}</Text>
+                                        </Text>
+                                    )}
+                                </View>
+                                {sectionImages[s.customId] && (
+                                    <View style={{ width: 70, height: 70, borderRadius: 35, backgroundColor: '#FFF8E1', justifyContent: 'center', alignItems: 'center', marginLeft: 15 }}>
+                                        <Image src={sectionImages[s.customId]} style={{ width: 50, objectFit: 'contain' }} />
+                                    </View>
+                                )}
                             </View>
-                        )
-                    }
-                    <PageFooter />
-                </Page>
+                            <View wrap={false}>
+                                <TextPDF text={`<b>What resonates most when you review how you see yourself and how others see you?</b>
+                                <br>
+                                ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-1`))?.value || "" }
+                                `}/>
+                                <TextPDF text={`<b>If others see you differently, what insights can you gain?</b>
+                                <br>
+                                ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-2`))?.value || "" }
+                                `}/>
+                            </View>
+                            {s.report.questions.length > 0 && (
+                                <View>
+                                    {s.report.questions.map((q,qi)=>(
+                                        <View key={qi} wrap={false}>
+                                            <TextPDF text={`<b>${q.text}</b>
+                                            <br>
+                                            ${(data.submission.answers.find(a=>a.customId === q.customId))?.value || "" }
+                                            `}/>
+                                        </View>
+                                    ))}
+                                </View>
+                            )}
+                            <PageFooter />
+                        </Page>
+                    )}
+                </Fragment>
                 );
             })
         }
         <Page style={{ paddingBottom: 25 }}>
             <MiniBannerPDF title={""} color={"#6E5600"}/>
-            <SectionReportBannerPDF sectionColor={"#6E5600"} index={3} title={"The Wonder of You (FIVE-FOLD PERSONALITY + BIBLICAL DNA)"}
+            <SectionReportBannerPDF sectionColor={"#6E5600"} index={3} title={"The Wonder of You"} subtitle={"(FIVE-FOLD PERSONALITY + BIBLICAL DNA)"}
             intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`}/>
-            <ResultsPDF sectionColor={"#6E5600"} title={'The Wonder of You'} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
+            <ResultsPDF sectionColor={"#6E5600"} title={is360 ? "How do you see yourself:" : "The Wonder of You"} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
             {is360 && getReviewerSection("r1") && (
-                <ResultsPDF sectionColor={"#6E5600"} title={"Reviewer Perspective: The Wonder of You"} currentSection={getReviewerSection("r1")}/>
+                <ResultsPDF sectionColor={"#6E5600"} title={"How others see you:"} currentSection={getReviewerSection("r1")}/>
             )}
             <PageFooter />
         </Page>

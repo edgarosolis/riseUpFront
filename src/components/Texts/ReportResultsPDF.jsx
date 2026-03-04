@@ -1,41 +1,42 @@
 import { Text, View } from "@react-pdf/renderer";
 import { stylesPDF } from "../PDF/Styles";
 
-const ReportResultsPDF = ({ reportInfo }) => {
+const cardColors = {
+  sphere: "#FFC700",
+  fiveFold: "#CDA310",
+  dna: "#907000",
+};
+
+const ReportResultsPDF = ({ reportInfo, title }) => {
   if (!reportInfo || !Array.isArray(reportInfo) || reportInfo.length === 0) return null;
 
   const sphere = reportInfo.find(r => r.section === "s1");
   const fiveFold = reportInfo.find(r => r.section === "s2");
   const biblicalDna = reportInfo.find(r => r.section === "s3");
 
+  const cards = [
+    { data: sphere, label: "Sphere:", color: cardColors.sphere },
+    { data: fiveFold, label: "5-Fold Leaning:", color: cardColors.fiveFold },
+    { data: biblicalDna, label: "Biblical DNA:", color: cardColors.dna },
+  ].filter(c => c.data);
+
   return (
-    <View style={stylesPDF.resultsRow} wrap={false}>
-      {sphere && <View style={stylesPDF.resultBlock}>
-        <Text style={[stylesPDF.resultLabel, { color: "#D4AF37" }]}>
-          Sphere:
-        </Text>
-        <Text style={stylesPDF.resultValue}>
-          {sphere.content?.title || "N/A"}
-        </Text>
-      </View>}
-
-      {fiveFold && <View style={stylesPDF.resultBlock}>
-        <Text style={[stylesPDF.resultLabel, { color: "#F4C542" }]}>
-          5-Fold Leaning:
-        </Text>
-        <Text style={stylesPDF.resultValue}>
-          {fiveFold.content?.title || "N/A"}
-        </Text>
-      </View>}
-
-      {biblicalDna && <View style={stylesPDF.resultBlock}>
-        <Text style={[stylesPDF.resultLabel, { color: "#FFC700" }]}>
-          Biblical DNA:
-        </Text>
-        <Text style={stylesPDF.resultValue}>
-          {biblicalDna.content?.title || "N/A"}
-        </Text>
-      </View>}
+    <View style={stylesPDF.resultsContainer} wrap={false}>
+      {title && (
+        <Text style={stylesPDF.resultsTitle}>{title}</Text>
+      )}
+      <View style={stylesPDF.resultsRow}>
+        {cards.map((card, i) => (
+          <View key={i} style={stylesPDF.resultCard}>
+            <Text style={[stylesPDF.resultLabel, { color: card.color }]}>
+              {card.label}
+            </Text>
+            <Text style={stylesPDF.resultValue}>
+              {card.data.content?.title || "N/A"}
+            </Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 };
