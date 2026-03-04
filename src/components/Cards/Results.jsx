@@ -23,7 +23,7 @@ const Results = ({sectionColor,title,currentSection}) => {
             <Typography
               component="div"
               variant="subtitle1"
-              sx={{ color: "#333" }}
+              sx={{ color: "#333", "& p": { mb: 1.5 }, "& br": { display: "block", content: '""', mt: 1 } }}
               dangerouslySetInnerHTML={{__html: currentSection?.content?.content}}
             />
           </Box>
