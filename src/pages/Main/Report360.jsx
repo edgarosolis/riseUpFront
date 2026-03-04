@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react"
 import { AssessmentContext } from "../../context/assessment"
 import ReportIntro from "../../components/Texts/ReportIntro"
 import MiniBanner from "../../components/Banners/MiniBanner"
-import ReportResults from "../../components/Texts/ReportResults"
+import ReportResults, { ReportResultsSideBySide } from "../../components/Texts/ReportResults"
 import ReportUnderstanding from "../../components/Texts/ReportUnderstanding"
 import ReportHowTo from "../../components/Texts/ReportHowTo"
 import SectionsReport from "../../components/SectionsReport"
@@ -98,14 +98,10 @@ const Report360 = () => {
             <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"} />
             <ReportIntro is360={true} />
             <MiniBanner title={"Your Results"} />
-            {reportInfo && <ReportResults reportInfo={reportInfo} title="How you see yourself:" />}
-            {reviewerReport && reviewerReport.length > 0 && (
-              <>
-                <Box sx={{ display: "flex", justifyContent: "center", py: 0.5 }}>
-                  <Box sx={{ width: "60%", borderBottom: "2px solid #D4AF37" }} />
-                </Box>
-                <ReportResults reportInfo={reviewerReport} title="How others see you:" variant="others" />
-              </>
+            {reportInfo && reviewerReport && reviewerReport.length > 0 ? (
+              <ReportResultsSideBySide selfReport={reportInfo} reviewerReport={reviewerReport} />
+            ) : (
+              reportInfo && <ReportResults reportInfo={reportInfo} />
             )}
             <MiniBanner title={"Understanding the Report"} />
             <ReportUnderstanding />
