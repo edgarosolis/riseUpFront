@@ -9,7 +9,6 @@ import ReportUnderstanding from "../../components/Texts/ReportUnderstanding"
 import ReportHowTo from "../../components/Texts/ReportHowTo"
 import SectionsReport from "../../components/SectionsReport"
 import ReportNextSteps from "../../components/Texts/ReportNextSteps"
-import ReportLeader from "../../components/Texts/ReportLeader"
 import { UserContext } from "../../context/user"
 import { getGroup360sByUserId, getReport360Info, getActiveUserSubmission, updateSubmission360 } from "../../axios/axiosFunctions"
 import DownloadSection from "../../components/DownloadSection"
@@ -139,8 +138,20 @@ const Report360 = () => {
             />
             <MiniBanner title={"Next Steps: A Spiritual Response."} />
             <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={() => callReportData(true)} saveFn={updateSubmission360} />
-            <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
-            <ReportLeader />
+            <Container maxWidth="xl">
+              <Box sx={{ backgroundColor: "#000", borderRadius: "8px", px: 3, py: 2.5, mx: { xs: 1, sm: 3, md: 5 }, my: 3, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Box>
+                  <Typography variant="h6" sx={{ color: "#F4C542", fontWeight: 700 }}>YOUR NEXT STEP</Typography>
+                  <Typography variant="body1" sx={{ color: "#fff", mt: 0.5 }}>Take our "Calling Course" or request a Coaching session to go over your results</Typography>
+                </Box>
+                <Box component="a" href="https://www.theriseupculture.com/kingdom-calling" target="_blank" rel="noopener noreferrer" sx={{ backgroundColor: "#F4C542", color: "#000", fontWeight: 700, px: 2.5, py: 1, borderRadius: "4px", textDecoration: "none", whiteSpace: "nowrap", ml: 2 }}>COURSE</Box>
+              </Box>
+              <Typography variant="h4" fontWeight={700} sx={{ mx: { xs: 1, sm: 3, md: 5 }, my: 3 }}>Welcome to the adventure. The world will never be the same.</Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, mb: 2 }}>
+                <img src={require("../../assets/images/RiseUpLogo.png")} alt="Rise Up Logo" style={{ width: "clamp(80px, 20vw, 150px)" }} />
+                <Typography component="a" href="https://www.theriseupculture.com" target="_blank" rel="noopener noreferrer" sx={{ color: "#000", fontWeight: 600, mt: 1, textDecoration: "none" }}>www.theriseupculture.com</Typography>
+              </Box>
+            </Container>
             <DownloadSection sections={currentAssessment?.sections} fetchData={callReportData} userSubmission={userSubmission} userName={`${currentUser?.firstName || ""} ${currentUser?.lastName || ""}`} is360={true} />
           </Box>
       }

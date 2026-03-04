@@ -8,6 +8,7 @@ import SectionReportBannerPDF from '../Banners/SectionReportBannerPDF';
 import ResultsPDF from '../Cards/ResultsPDF';
 import SectionTablePDF from '../Tables/SectionTablePDF';
 import ReportResultsPDF, { ReportResultsSideBySidePDF } from '../Texts/ReportResultsPDF';
+import RiseUpLogo from '../../assets/images/RiseUpLogo.png';
 import Section1 from '../../assets/images/Section1.png';
 import Section2 from '../../assets/images/Section2.png';
 import Section3 from '../../assets/images/Section3.png';
@@ -161,16 +162,13 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
 
                 const questionsToExclude360 = {
                     s1: [
-                        "When and where do you feel most alive, purposeful and fruitful in your leadership?",
-                        "What environments seem to draw out your natural influence and passion?",
-                        "What dreams or nudges keep coming up when you pray about where God wants to use you?",
+                        "When and where do you feel most alive",
+                        "What environments seem to draw out your natural influence",
+                        "What dreams or nudges keep coming up",
                     ],
                     s2: [
-                        "How do people experience transformation when they're around you?",
-                        "Is there a part of your leadership style that you've been hesitant to embrace",
-                    ],
-                    s3: [
-                        "If your life reflected the legacy of a Biblical leader",
+                        "How do people experience transformation",
+                        "Is there a part of your leadership style",
                     ],
                 };
                 const excludeList = questionsToExclude360[s.customId] || [];
@@ -335,15 +333,12 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <PageFooter />
         </Page>
         <Page style={{ paddingBottom: 25 }}>
-            <MiniBannerPDF title={"You Are A Leader"} subtitle={"Now Step into It"} color={"#383838"}/>
-            <TextPDF text={`<b>Your Kingdom Calling Report is not an endpoint. It is an invitation.</b><br><br>You now have language for the wonder of how God uniquely designed you. The next step is learning how to live it out with confidence, clarity, and purpose within the Body of Christ.
-            <br>
-            <br>
-            <b>Choose the next step that fits where you are right now:</b>`}/>
-            <LeaderReportPDF title="Deepen Your Understanding" info="Read our eBook, Understanding Your Kingdom Calling Report, to learn how your Sphere of Influence, Biblical DNA, and 5-Fold Personality work together and how God may be inviting you to serve and lead within your local church." button={true} buttonText={"E-Book"} buttonLink="https://www.theriseupculture.com/kingdom-calling" cardColor="#D4AF37" titleColor="white" buttonColor="secondary"/>
-            <LeaderReportPDF title="Go Deeper in Activation" info="Take the Kingdom Calling Course to explore your calling in a more personal and practical way, with teaching, reflection, and activation steps designed to help you move from insight to action." button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/kingdom-calling" cardColor="#D4AF37" titleColor="white" buttonColor="secondary"/>
-            <LeaderReportPDF title="Get Personal Support" info="Book a Calling Coach Session with The Rise Up Culture Team if you would like to walk through your results one-on-one and gain clarity on what obedience and faithfulness look like in this season." button={true} buttonText={"Book"} buttonLink="https://www.theriseupculture.com/kingdom-calling" cardColor="#D4AF37" titleColor="white" buttonColor="secondary"/>
-            <LeaderReportPDF title="Keep Growing as a Leader" info="We also recommend You Are A Leader by Drew East as your next read, a powerful reminder that leadership begins with identity and surrender, not position." button={true} buttonText={"Read"} buttonLink="https://www.theriseupculture.com/course/you-are-a-leader-pdf" cardColor="#D4AF37" titleColor="white" buttonColor="secondary"/>
+            <LeaderReportPDF title="YOUR NEXT STEP" info={'Take our "Calling Course" or request a Coaching session to go over your results'} cardColor="#000000" titleColor="#F4C542" infoColor="white" button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/kingdom-calling" buttonColor="primary"/>
+            <TextPDF text={`<b>Welcome to the adventure. The world will never be the same.</b>`}/>
+            <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>
+                <Image src={RiseUpLogo} style={{ width: 120 }} />
+                <Link src="https://www.theriseupculture.com" style={{ color: '#000', fontSize: 12, fontWeight: 'bold', marginTop: 6, textDecoration: 'none' }}>www.theriseupculture.com</Link>
+            </View>
             <PageFooter />
         </Page>
     </Document>

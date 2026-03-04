@@ -44,11 +44,8 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
             "What dreams or nudges keep coming up",
         ],
         s2: [
-            "How do people experience transformation when they're around you",
-            "Is there a part of your leadership style that you've been hesitant",
-        ],
-        s3: [
-            "If your life reflected the legacy of a Biblical leader",
+            "How do people experience transformation",
+            "Is there a part of your leadership style",
         ],
     };
 
