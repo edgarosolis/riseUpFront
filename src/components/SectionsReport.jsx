@@ -36,19 +36,19 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
         ...(section?.customId === 's1' ? [{ customId: `${section?.customId}-reflect-3`, text: "What dreams or nudges keep coming up when you pray about where God wants to use you?" }] : []),
     ] : [];
 
-    // Questions to exclude from 360 reports per section
+    // Questions to exclude from 360 reports per section (partial match)
     const questionsToExclude360 = {
         s1: [
-            "When and where do you feel most alive, purposeful and fruitful in your leadership?",
-            "What environments seem to draw out your natural influence and passion?",
-            "What dreams or nudges keep coming up when you pray about where God wants to use you?",
+            "When and where do you feel most alive",
+            "What environments seem to draw out your natural influence",
+            "What dreams or nudges keep coming up",
         ],
         s2: [
-            "How do people experience transformation when they're around you? What patterns do you notice?",
-            "Is there a part of your leadership style that you've been hesitant to embrace or have yet to fully explore?",
+            "How do people experience transformation when they're around you",
+            "Is there a part of your leadership style that you've been hesitant",
         ],
         s3: [
-            "If your life reflected the legacy of a Biblical leader, what would you want that legacy to be?",
+            "If your life reflected the legacy of a Biblical leader",
         ],
     };
 
