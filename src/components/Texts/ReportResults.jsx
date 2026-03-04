@@ -24,11 +24,12 @@ const ResultCard = ({ card }) => (
             backgroundColor: "#fff",
             borderRadius: "12px",
             boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-            p: 3,
+            px: 2.5,
+            py: 2,
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
-            gap: 1,
+            gap: 0.5,
         }}
     >
         <Box
