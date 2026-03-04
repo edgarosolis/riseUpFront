@@ -4,7 +4,7 @@ const Results = ({sectionColor,title,currentSection}) => {
 
     return (
     <Container maxWidth="xl">
-        <Box sx={{ mx: { xs: 0, sm: -2 }, my: 3, borderRadius: "12px", overflow: "hidden" }}>
+        <Box sx={{ mx: { xs: 1, sm: 3, md: 5 }, my: 3, borderRadius: "12px", overflow: "hidden" }}>
           <Box sx={{ backgroundColor: sectionColor, px: 3, py: 2 }}>
             <Typography
               variant="body2"
