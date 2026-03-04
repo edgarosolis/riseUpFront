@@ -165,10 +165,6 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                     <Page style={{ paddingBottom: 25 }}>
                         <MiniBannerPDF title={""} color={s.color}/>
                         <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={displayTitle} intro={s.report.intro} image={s.image}/>
-                        <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
-                        {reviewerResult && (
-                            <ResultsPDF sectionColor={s?.color} title={getReviewerTitle360()} currentSection={reviewerResult}/>
-                        )}
                         {
                             s.report.hasTable &&
                             <SectionTablePDF tableInfo={s.report.tableInfo}/>
@@ -180,16 +176,6 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                                 <View style={{ flex: 1 }}>
                                     <Text style={[stylesPDF.bannerTitle2, { fontSize: 23.8 }]}>{getReflectionTitle()}</Text>
-                                    <Text style={{ fontSize: 11, color: 'white', marginTop: 6 }}>
-                                        <Text style={{ fontWeight: 'bold' }}>How you see yourself: </Text>
-                                        <Text>{currentResult?.content?.title || ''}</Text>
-                                    </Text>
-                                    {reviewerResult && (
-                                        <Text style={{ fontSize: 11, color: 'white', marginTop: 3 }}>
-                                            <Text style={{ fontWeight: 'bold' }}>How others see you: </Text>
-                                            <Text>{reviewerResult?.content?.title || ''}</Text>
-                                        </Text>
-                                    )}
                                 </View>
                                 {sectionImages[s.customId] && (
                                     <View style={{ width: 70, height: 70, borderRadius: 35, backgroundColor: '#FFF8E1', justifyContent: 'center', alignItems: 'center', marginLeft: 15 }}>
@@ -197,6 +183,10 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     </View>
                                 )}
                             </View>
+                            <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
+                            {reviewerResult && (
+                                <ResultsPDF sectionColor={s?.color} title={getReviewerTitle360()} currentSection={reviewerResult}/>
+                            )}
                             <View wrap={false}>
                                 <TextPDF text={`<b>What resonates most when you review how you see yourself and how others see you?</b>
                                 <br>
