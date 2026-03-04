@@ -28,9 +28,9 @@ const ReportResultsPDF = ({ reportInfo, title }) => {
       <View style={stylesPDF.resultsRow}>
         {cards.map((card, i) => (
           <View key={i} style={stylesPDF.resultCard}>
-            <Text style={[stylesPDF.resultLabel, { color: card.color }]}>
-              {card.label}
-            </Text>
+            <View style={[stylesPDF.resultPill, { backgroundColor: card.color }]}>
+              <Text style={stylesPDF.resultPillText}>{card.label}</Text>
+            </View>
             <Text style={stylesPDF.resultValue}>
               {card.data.content?.title || "N/A"}
             </Text>

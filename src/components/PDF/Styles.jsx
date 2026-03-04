@@ -187,7 +187,7 @@ export const stylesPDF = StyleSheet.create({
   },
   resultsContainer: {
     backgroundColor: "#FFF8E1",
-    paddingVertical: 14,
+    paddingVertical: 16,
     paddingHorizontal: 40,
     marginVertical: 4,
   },
@@ -195,7 +195,7 @@ export const stylesPDF = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 8,
+    marginBottom: 10,
     color: "#333",
   },
   resultsRow: {
@@ -208,11 +208,21 @@ export const stylesPDF = StyleSheet.create({
     flexDirection: "column",
     width: "31%",
     backgroundColor: "#FFFFFF",
-    borderLeftWidth: 4,
-    borderLeftColor: "#D4AF37",
-    borderRadius: 6,
-    paddingVertical: 10,
+    borderRadius: 8,
+    paddingVertical: 12,
     paddingHorizontal: 10,
+  },
+  resultPill: {
+    alignSelf: "flex-start",
+    borderRadius: 12,
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    marginBottom: 6,
+  },
+  resultPillText: {
+    fontSize: 9,
+    fontWeight: "bold",
+    color: "#FFFFFF",
   },
   resultBlock: {
     flexDirection: "column",
