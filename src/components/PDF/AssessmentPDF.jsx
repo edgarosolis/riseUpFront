@@ -333,7 +333,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <PageFooter />
         </Page>
         <Page style={{ paddingBottom: 25 }}>
-            <LeaderReportPDF title="YOUR NEXT STEP" info={'Take our "Calling Course" or request a Coaching session to go over your results'} cardColor="#000000" titleColor="#F4C542" infoColor="white" button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/kingdom-calling" buttonColor="primary"/>
+            <LeaderReportPDF title="YOUR NEXT STEP" info={'Take our "Calling Course" or request a Coaching session to go over your results'} cardColor="#000000" titleColor="#F4C542" infoColor="white" button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/course/your-kingdom-calling" buttonColor="primary"/>
             <TextPDF text={`<b>Welcome to the adventure. The world will never be the same.</b>`}/>
             <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>
                 <Image src={RiseUpLogo} style={{ width: 120 }} />
