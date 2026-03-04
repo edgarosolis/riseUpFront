@@ -183,9 +183,17 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     </View>
                                 )}
                             </View>
-                            <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
-                            {reviewerResult && (
-                                <ResultsPDF sectionColor={s?.color} title={getReviewerTitle360()} currentSection={reviewerResult}/>
+                            {reviewerResult ? (
+                                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }} wrap={false}>
+                                    <View style={{ flex: 1 }}>
+                                        <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult} noMargin />
+                                    </View>
+                                    <View style={{ flex: 1 }}>
+                                        <ResultsPDF sectionColor={s?.color} title={getReviewerTitle360()} currentSection={reviewerResult} noMargin />
+                                    </View>
+                                </View>
+                            ) : (
+                                <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
                             )}
                             <View wrap={false}>
                                 <TextPDF text={`<b>What resonates most when you review how you see yourself and how others see you?</b>

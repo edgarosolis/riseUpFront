@@ -39,11 +39,19 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
         <>
             <Separator sectionColor={section?.color}/>
             <SectionReportBanner sectionColor={section?.color} title={displayTitle} index={index} intro={section?.report?.intro} image={section?.image}/>
-            <Results sectionColor={section?.color} title={getUserTitle()} currentSection={currentSection}/>
-            {reviewerSection && (
-                <Box sx={{ backgroundColor: "#f5f5f5" }}>
-                    <Results sectionColor={section?.color} title={getReviewerTitle()} currentSection={reviewerSection}/>
-                </Box>
+            {reviewerSection ? (
+                <Container maxWidth="xl">
+                    <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, mx: { xs: 1, sm: 3, md: 5 }, my: 3 }}>
+                        <Box sx={{ flex: 1, minWidth: 0 }}>
+                            <Results sectionColor={section?.color} title={getUserTitle()} currentSection={currentSection} noWrapper />
+                        </Box>
+                        <Box sx={{ flex: 1, minWidth: 0 }}>
+                            <Results sectionColor={section?.color} title={getReviewerTitle()} currentSection={reviewerSection} noWrapper />
+                        </Box>
+                    </Box>
+                </Container>
+            ) : (
+                <Results sectionColor={section?.color} title={getUserTitle()} currentSection={currentSection}/>
             )}
             {is360 && reflectionQuestions.length > 0 && (
                 <QuestionsReportSections questions={reflectionQuestions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
