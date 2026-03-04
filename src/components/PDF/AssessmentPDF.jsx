@@ -7,7 +7,7 @@ import LeaderReportPDF from '../Cards/LeaderReportPDF';
 import SectionReportBannerPDF from '../Banners/SectionReportBannerPDF';
 import ResultsPDF from '../Cards/ResultsPDF';
 import SectionTablePDF from '../Tables/SectionTablePDF';
-import ReportResultsPDF from '../Texts/ReportResultsPDF';
+import ReportResultsPDF, { ReportResultsSideBySidePDF } from '../Texts/ReportResultsPDF';
 import RiseUpLogo from '../../assets/images/RiseUpLogo.png';
 import Section1 from '../../assets/images/Section1.png';
 import Section2 from '../../assets/images/Section2.png';
@@ -53,10 +53,14 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         </Page>
         <Page style={{ paddingBottom: 25 }}>
             <MiniBannerPDF title={is360 ? "Your Results" : "Your Result"} color={"#383838"}/>
-            <ReportResultsPDF reportInfo={data.report} title={is360 ? "How you see yourself:" : undefined}/>
-            {is360 && reviewerReport && reviewerReport.length > 0 && (
-                <ReportResultsPDF reportInfo={reviewerReport} title="How others see you:"/>
+            {is360 && reviewerReport && reviewerReport.length > 0 ? (
+                <ReportResultsSideBySidePDF selfReport={data.report} reviewerReport={reviewerReport}/>
+            ) : (
+                <ReportResultsPDF reportInfo={data.report}/>
             )}
+            <PageFooter />
+        </Page>
+        <Page style={{ paddingBottom: 25 }}>
             <MiniBannerPDF title={"Understanding the Report"} color={"#383838"}/>
             <TextPDF text={`The Kingdom Calling Assessment explores three layers of your God-designed leadership:`}/>
             <View style={{ paddingHorizontal: 45 }}>
@@ -80,7 +84,6 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 </View>
             </View>
             <TextPDF text={`These are not labels to wear, but lenses to look through — helping you interpret your life, leadership, and legacy with clarity and confidence.`}/>
-            <View break />
             <MiniBannerPDF title={"How to Use This Report"} color={"#383838"}/>
             <TextPDF text={`Before you analyze, pause. Invite the Holy Spirit into this moment.<br><br>Consider praying: "Lord, You know me better than I know myself. Speak through these insights. Confirm what's true. Challenge what's misaligned. Reveal what You see in me."
             <br>
