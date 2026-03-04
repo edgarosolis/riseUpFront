@@ -33,7 +33,31 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
     const reflectionQuestions = is360 ? [
         { customId: `${section?.customId}-reflect-1`, text: "What resonates most when you review how you see yourself and how others see you?" },
         { customId: `${section?.customId}-reflect-2`, text: "If others see you differently, what insights can you gain?" },
+        ...(section?.customId === 's1' ? [{ customId: `${section?.customId}-reflect-3`, text: "What dreams or nudges keep coming up when you pray about where God wants to use you?" }] : []),
     ] : [];
+
+    // Questions to exclude from 360 reports per section
+    const questionsToExclude360 = {
+        s1: [
+            "When and where do you feel most alive, purposeful and fruitful in your leadership?",
+            "What environments seem to draw out your natural influence and passion?",
+            "What dreams or nudges keep coming up when you pray about where God wants to use you?",
+        ],
+        s2: [
+            "How do people experience transformation when they're around you? What patterns do you notice?",
+            "Is there a part of your leadership style that you've been hesitant to embrace or have yet to fully explore?",
+        ],
+        s3: [
+            "If your life reflected the legacy of a Biblical leader, what would you want that legacy to be?",
+        ],
+    };
+
+    const getFilteredQuestions = () => {
+        const questions = section?.report?.questions || [];
+        if (!is360 || !questionsToExclude360[section?.customId]) return questions;
+        const excludeList = questionsToExclude360[section.customId];
+        return questions.filter(q => !excludeList.some(ex => q.text?.includes(ex)));
+    };
 
     return (
         <>
@@ -87,7 +111,7 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
                     </Grid>
                 </Container>
             }
-            <QuestionsReportSections questions={section?.report?.questions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
+            <QuestionsReportSections questions={getFilteredQuestions()} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
         </>
     )
 }

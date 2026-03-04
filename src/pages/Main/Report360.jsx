@@ -16,6 +16,8 @@ import DownloadSection from "../../components/DownloadSection"
 import Separator from "../../components/Banners/Separator"
 import SectionReportBanner from "../../components/Banners/SectionReportBanner"
 import Results from "../../components/Cards/Results"
+import QuestionsReportSections from "../../components/QuestionsReportSections"
+import { Container } from "@mui/material"
 import { useParams } from "react-router"
 
 const Report360 = () => {
@@ -114,12 +116,27 @@ const Report360 = () => {
             }
             <Separator sectionColor={"#6E5600"} />
             <SectionReportBanner sectionColor={"#6E5600"} title={"The Wonder of You (FIVE-FOLD PERSONALITY + BIBLICAL DNA)"} index={3} intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`} />
-            {finalSection() && <Results sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={finalSection()} />}
-            {getReviewerSection("r1") && (
-              <Box sx={{ backgroundColor: "#f5f5f5" }}>
-                <Results sectionColor={"#6E5600"} title={"How others see you:"} currentSection={getReviewerSection("r1")} />
-              </Box>
+            {finalSection() && getReviewerSection("r1") ? (
+              <Container maxWidth="xl">
+                <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, mx: { xs: 1, sm: 3, md: 5 }, my: 3 }}>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Results sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={finalSection()} noWrapper />
+                  </Box>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Results sectionColor={"#6E5600"} title={"How others see you:"} currentSection={getReviewerSection("r1")} noWrapper />
+                  </Box>
+                </Box>
+              </Container>
+            ) : (
+              finalSection() && <Results sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={finalSection()} />
             )}
+            <QuestionsReportSections
+              questions={[{ customId: "r1-reflect-1", text: "Wonder of You Reflection: As you read the descriptions above, highlight what resonates most for you and summarize it here." }]}
+              answers={userSubmission?.answers}
+              submissionId={userSubmission?._id}
+              callUserSubmission={() => callReportData(true)}
+              saveFn={updateSubmission360}
+            />
             <MiniBanner title={"Next Steps: A Spiritual Response."} />
             <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={() => callReportData(true)} saveFn={updateSubmission360} />
             <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />

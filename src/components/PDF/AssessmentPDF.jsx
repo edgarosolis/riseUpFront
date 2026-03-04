@@ -8,7 +8,6 @@ import SectionReportBannerPDF from '../Banners/SectionReportBannerPDF';
 import ResultsPDF from '../Cards/ResultsPDF';
 import SectionTablePDF from '../Tables/SectionTablePDF';
 import ReportResultsPDF, { ReportResultsSideBySidePDF } from '../Texts/ReportResultsPDF';
-import RiseUpLogo from '../../assets/images/RiseUpLogo.png';
 import Section1 from '../../assets/images/Section1.png';
 import Section2 from '../../assets/images/Section2.png';
 import Section3 from '../../assets/images/Section3.png';
@@ -160,6 +159,23 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
 
                 const reviewerResult = getReviewerSection(s.customId);
 
+                const questionsToExclude360 = {
+                    s1: [
+                        "When and where do you feel most alive, purposeful and fruitful in your leadership?",
+                        "What environments seem to draw out your natural influence and passion?",
+                        "What dreams or nudges keep coming up when you pray about where God wants to use you?",
+                    ],
+                    s2: [
+                        "How do people experience transformation when they're around you?",
+                        "Is there a part of your leadership style that you've been hesitant to embrace",
+                    ],
+                    s3: [
+                        "If your life reflected the legacy of a Biblical leader",
+                    ],
+                };
+                const excludeList = questionsToExclude360[s.customId] || [];
+                const filteredQuestions = s.report.questions.filter(q => !excludeList.some(ex => q.text?.includes(ex)));
+
                 return (
                 <Fragment key={i}>
                     <Page style={{ paddingBottom: 25 }}>
@@ -171,7 +187,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                         }
                         <PageFooter />
                     </Page>
-                    {(s.report.questions.length > 0 || true) && (
+                    {(filteredQuestions.length > 0 || true) && (
                         <Page style={{ paddingBottom: 25 }}>
                             <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                                 <View style={{ flex: 1 }}>
@@ -205,9 +221,17 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                 ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-2`))?.value || "" }
                                 `}/>
                             </View>
-                            {s.report.questions.length > 0 && (
+                            {s.customId === 's1' && (
+                                <View wrap={false}>
+                                    <TextPDF text={`<b>What dreams or nudges keep coming up when you pray about where God wants to use you?</b>
+                                    <br>
+                                    ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-3`))?.value || "" }
+                                    `}/>
+                                </View>
+                            )}
+                            {filteredQuestions.length > 0 && (
                                 <View>
-                                    {s.report.questions.map((q,qi)=>(
+                                    {filteredQuestions.map((q,qi)=>(
                                         <View key={qi} wrap={false}>
                                             <TextPDF text={`<b>${q.text}</b>
                                             <br>
@@ -228,9 +252,25 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <MiniBannerPDF title={""} color={"#6E5600"}/>
             <SectionReportBannerPDF sectionColor={"#6E5600"} index={3} title={"The Wonder of You"} subtitle={"(FIVE-FOLD PERSONALITY + BIBLICAL DNA)"}
             intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`}/>
-            <ResultsPDF sectionColor={"#6E5600"} title={is360 ? "How do you see yourself:" : "The Wonder of You"} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
-            {is360 && getReviewerSection("r1") && (
-                <ResultsPDF sectionColor={"#6E5600"} title={"How others see you:"} currentSection={getReviewerSection("r1")}/>
+            {is360 && getReviewerSection("r1") ? (
+                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }} wrap={false}>
+                    <View style={{ flex: 1 }}>
+                        <ResultsPDF sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={data.report.find(cs=>cs.section === 'r1')} noMargin />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <ResultsPDF sectionColor={"#6E5600"} title={"How others see you:"} currentSection={getReviewerSection("r1")} noMargin />
+                    </View>
+                </View>
+            ) : (
+                <ResultsPDF sectionColor={"#6E5600"} title={is360 ? "How do you see yourself:" : "The Wonder of You"} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
+            )}
+            {is360 && (
+                <View wrap={false}>
+                    <TextPDF text={`<b>Wonder of You Reflection: As you read the descriptions above, highlight what resonates most for you and summarize it here.</b>
+                    <br>
+                    ${(data.submission.answers.find(a=>a.customId === "r1-reflect-1"))?.value || "" }
+                    `}/>
+                </View>
             )}
             <PageFooter />
         </Page>
@@ -304,18 +344,6 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <LeaderReportPDF title="Go Deeper in Activation" info="Take the Kingdom Calling Course to explore your calling in a more personal and practical way, with teaching, reflection, and activation steps designed to help you move from insight to action." button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/kingdom-calling" cardColor="#D4AF37" titleColor="white" buttonColor="secondary"/>
             <LeaderReportPDF title="Get Personal Support" info="Book a Calling Coach Session with The Rise Up Culture Team if you would like to walk through your results one-on-one and gain clarity on what obedience and faithfulness look like in this season." button={true} buttonText={"Book"} buttonLink="https://www.theriseupculture.com/kingdom-calling" cardColor="#D4AF37" titleColor="white" buttonColor="secondary"/>
             <LeaderReportPDF title="Keep Growing as a Leader" info="We also recommend You Are A Leader by Drew East as your next read, a powerful reminder that leadership begins with identity and surrender, not position." button={true} buttonText={"Read"} buttonLink="https://www.theriseupculture.com/course/you-are-a-leader-pdf" cardColor="#D4AF37" titleColor="white" buttonColor="secondary"/>
-            <PageFooter />
-        </Page>
-        <Page style={{ paddingBottom: 25 }}>
-            <TextPDF text={`You do not have to do everything at once. Take one faithful step at www.theriseupculture.com`}/>
-            <LeaderReportPDF title="YOUR NEXT STEP" info={'Take our "Calling Course" or request a Coaching session to go over your results'} cardColor="#000000" titleColor="#F4C542" infoColor="white" button={true} buttonText={"Course"} buttonLink={""} buttonColor="primary"/>
-            {/* <LeaderReportPDF title="YOUR NEXT READ" info="So, You're a Leader… Now What? (coming soon by Drew East)." cardColor="#000000" titleColor="#F4C542" infoColor="white"/> */}
-            <TextPDF text={`The best leaders aren't the loudest in the room. They're the ones who know who they are, walk with Jesus, and say "yes" to the call. That's you.`}/>
-            <TextPDF text={`<b>Welcome to the adventure. The world will never be the same.</b>`}/>
-            <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>
-                <Image src={RiseUpLogo} style={{ width: 120 }} />
-                <Link src="https://www.theriseupculture.com" style={{ color: '#000', fontSize: 12, fontWeight: 'bold', marginTop: 6, textDecoration: 'none' }}>www.theriseupculture.com</Link>
-            </View>
             <PageFooter />
         </Page>
     </Document>
