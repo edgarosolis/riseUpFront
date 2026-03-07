@@ -117,7 +117,7 @@ const Report360 = () => {
                 maxWidth: "800px",
                 mx: "auto",
               }}>
-                <Typography variant="h6" sx={{ color: "#333", lineHeight: 1.8, fontWeight: 400, fontSize: { xs: "1rem", sm: "1.15rem", md: "1.25rem" } }}>
+                <Typography variant="h6" sx={{ color: "#333", lineHeight: 1.8, fontWeight: 700, fontSize: { xs: "1rem", sm: "1.15rem", md: "1.25rem" } }}>
                   This overview of your results reflects how you see yourself and how others see you. Throughout the report, we will encourage you to pray and reflect to get the most out of this experience.
                 </Typography>
                 <Typography variant="h6" sx={{ color: "#333", lineHeight: 1.8, mt: 2, fontWeight: 400, fontSize: { xs: "1rem", sm: "1.15rem", md: "1.25rem" } }}>
