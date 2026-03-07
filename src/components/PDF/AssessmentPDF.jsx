@@ -219,9 +219,9 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                         }
                         <PageFooter />
                     </Page>
-                    {/* Reflection page - content heavy, no logo to avoid overflow */}
                     {(filteredQuestions.length > 0 || reviewerResult) && (
                         <Page style={{ paddingBottom: 25 }}>
+                            <BgLogo />
                             <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                                 <View style={{ flex: 1 }}>
                                     <Text style={[stylesPDF.bannerTitle2, { fontSize: 23.8 }]}>{getReflectionTitle()}</Text>
