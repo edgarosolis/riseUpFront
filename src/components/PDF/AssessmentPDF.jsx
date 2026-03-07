@@ -26,11 +26,11 @@ const PageFooter = () => (
 );
 
 const BgLogo = () => (
-    <View style={{ position: 'absolute', bottom: 35, left: 0, right: 0, flexDirection: 'row', justifyContent: 'center' }}>
-        <View style={{ opacity: 0.15 }}>
-            <Image src={RiseUpLogo} style={{ width: 65, height: 65 }} />
-        </View>
-    </View>
+    <Image
+        src={RiseUpLogo}
+        style={{ position: 'absolute', bottom: 40, left: 273.5, width: 65, height: 65, opacity: 0.12 }}
+        fixed
+    />
 );
 
 const AssessmentPDF = ({ data, sections, userName, is360 }) => {
@@ -258,14 +258,11 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                 ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-3`))?.value || "" }
                                 `}/>
                             )}
-                            {filteredQuestions.map((q,qi)=>(
-                                <View key={qi}>
-                                    <TextPDF text={`<b>${q.text}</b>
-                                    <br>
-                                    ${(data.submission.answers.find(a=>a.customId === q.customId))?.value || "" }
-                                    `}/>
-                                </View>
-                            ))}
+                            {filteredQuestions.length > 0 && (
+                                <TextPDF text={filteredQuestions.map(q =>
+                                    `<b>${q.text}</b><br>${(data.submission.answers.find(a=>a.customId === q.customId))?.value || ""}`
+                                ).join('<br><br>')} />
+                            )}
                             <PageFooter />
                         </Page>
                     )}
