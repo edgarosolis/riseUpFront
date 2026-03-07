@@ -26,8 +26,8 @@ const PageFooter = () => (
 );
 
 const WatermarkLogo = () => (
-    <View style={{ position: 'absolute', bottom: 30, left: 0, right: 0, alignItems: 'center', opacity: 0.12 }}>
-        <Image src={RiseUpLogo} style={{ width: 70 }} />
+    <View style={{ alignItems: 'center', marginTop: 30 }}>
+        <Image src={RiseUpLogo} style={{ width: 60 }} />
     </View>
 );
 
