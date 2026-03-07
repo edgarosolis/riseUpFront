@@ -200,7 +200,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                         </View>
                         <PageFooter />
                     </Page>
-                    {(filteredQuestions.length > 0 || true) && (
+                    {(filteredQuestions.length > 0 || reviewerResult) && (
                         <Page style={{ paddingBottom: 25 }}>
                             <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                                 <View style={{ flex: 1 }}>
