@@ -244,25 +244,19 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             ) : (
                                 <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
                             )}
-                            <TextPDF text={`<b>What resonates most when you review how you see yourself and how others see you?</b>
-                            <br>
-                            ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-1`))?.value || "" }
-                            `}/>
-                            <TextPDF text={`<b>If others see you differently, what insights can you gain?</b>
-                            <br>
-                            ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-2`))?.value || "" }
-                            `}/>
-                            {s.customId === 's1' && (
-                                <TextPDF text={`<b>What dreams or nudges keep coming up when you pray about where God wants to use you?</b>
-                                <br>
-                                ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-3`))?.value || "" }
-                                `}/>
-                            )}
-                            {filteredQuestions.length > 0 && (
-                                <TextPDF text={filteredQuestions.map(q =>
-                                    `<b>${q.text}</b><br>${(data.submission.answers.find(a=>a.customId === q.customId))?.value || ""}`
-                                ).join('<br><br>')} />
-                            )}
+                            {(() => {
+                                const allQs = [
+                                    { text: "What resonates most when you review how you see yourself and how others see you?", id: `${s.customId}-reflect-1` },
+                                    { text: "If others see you differently, what insights can you gain?", id: `${s.customId}-reflect-2` },
+                                    ...(s.customId === 's1' ? [{ text: "What dreams or nudges keep coming up when you pray about where God wants to use you?", id: `${s.customId}-reflect-3` }] : []),
+                                    ...filteredQuestions.map(q => ({ text: q.text, id: q.customId })),
+                                ];
+                                return (
+                                    <TextPDF text={allQs.map(q =>
+                                        `<b>${q.text}</b><br>${(data.submission.answers.find(a=>a.customId === q.id))?.value || ""}`
+                                    ).join('<br><br>')} />
+                                );
+                            })()}
                             <PageFooter />
                         </Page>
                     )}
