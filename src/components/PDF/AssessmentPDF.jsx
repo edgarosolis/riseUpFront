@@ -26,8 +26,8 @@ const PageFooter = () => (
 );
 
 const WatermarkLogo = () => (
-    <View style={{ position: 'absolute', bottom: 30, left: 0, right: 0, alignItems: 'center' }}>
-        <Image src={RiseUpLogo} style={{ width: 70, opacity: 0.12 }} />
+    <View style={{ position: 'absolute', bottom: 30, left: 0, right: 0, alignItems: 'center', opacity: 0.12 }}>
+        <Image src={RiseUpLogo} style={{ width: 70 }} />
     </View>
 );
 
@@ -173,6 +173,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                         `}/>
                                     </View>
                                 ))}
+                                <WatermarkLogo />
                                 <PageFooter />
                             </Page>
                         )}
@@ -221,7 +222,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                 )}
                             </View>
                             {reviewerResult ? (
-                                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }} wrap={false}>
+                                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }}>
                                     <View style={{ flex: 1 }}>
                                         <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult} noMargin />
                                     </View>
@@ -232,7 +233,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             ) : (
                                 <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
                             )}
-                            <View wrap={false}>
+                            <View>
                                 <TextPDF text={`<b>What resonates most when you review how you see yourself and how others see you?</b>
                                 <br>
                                 ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-1`))?.value || "" }
@@ -243,7 +244,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                 `}/>
                             </View>
                             {s.customId === 's1' && (
-                                <View wrap={false}>
+                                <View>
                                     <TextPDF text={`<b>What dreams or nudges keep coming up when you pray about where God wants to use you?</b>
                                     <br>
                                     ${(data.submission.answers.find(a=>a.customId === `${s.customId}-reflect-3`))?.value || "" }
@@ -262,6 +263,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     ))}
                                 </View>
                             )}
+                            <WatermarkLogo />
                             <PageFooter />
                         </Page>
                     )}
@@ -274,7 +276,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <SectionReportBannerPDF sectionColor={"#6E5600"} index={3} title={"The Wonder of You"} subtitle={"(FIVE-FOLD PERSONALITY + BIBLICAL DNA)"}
             intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`}/>
             {is360 && getReviewerSection("r1") ? (
-                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }} wrap={false}>
+                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }}>
                     <View style={{ flex: 1 }}>
                         <ResultsPDF sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={data.report.find(cs=>cs.section === 'r1')} noMargin />
                     </View>
@@ -286,7 +288,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 <ResultsPDF sectionColor={"#6E5600"} title={is360 ? "How do you see yourself:" : "The Wonder of You"} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
             )}
             {is360 && (
-                <View wrap={false}>
+                <View>
                     <TextPDF text={`<b>Wonder of You Reflection: As you read the descriptions above, highlight what resonates most for you and summarize it here.</b>
                     <br>
                     ${(data.submission.answers.find(a=>a.customId === "r1-reflect-1"))?.value || "" }
