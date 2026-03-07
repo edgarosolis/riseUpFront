@@ -13,9 +13,20 @@ const DownloadSection = ({ fetchData, sections, userSubmission, userName, is360 
 
   const handleFetchData = async () => {
     setIsFetchingAPI(true);
+    const latestAnswers = userSubmission?.answers;
     try {
       const data = await fetchData(true);
       if (data.report && data.submission) {
+        // Merge latest web answers into the submission for the PDF
+        if (latestAnswers) {
+          const merged = [...(data.submission.answers || [])];
+          latestAnswers.forEach(a => {
+            const idx = merged.findIndex(m => m.customId === a.customId);
+            if (idx !== -1) merged[idx] = a;
+            else merged.push(a);
+          });
+          data.submission = { ...data.submission, answers: merged };
+        }
         setApiData(data);
         setLastProcessedSubmission(data.submission);
       }
