@@ -25,6 +25,12 @@ const PageFooter = () => (
     />
 );
 
+const WatermarkLogo = () => (
+    <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 30 }}>
+        <Image src={RiseUpLogo} style={{ width: 90 }} />
+    </View>
+);
+
 const AssessmentPDF = ({ data, sections, userName, is360 }) => {
 
     const reviewerReport = data.reviewerReport;
@@ -70,6 +76,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                     </View>
                 </View>
             )}
+            <WatermarkLogo />
             <PageFooter />
         </Page>
         <Page style={{ paddingBottom: 25 }}>
@@ -195,9 +202,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             s.report.hasTable &&
                             <SectionTablePDF tableInfo={s.report.tableInfo}/>
                         }
-                        <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 20 }}>
-                            <Image src={RiseUpLogo} style={{ width: 80, opacity: 0.15 }} />
-                        </View>
+                        <WatermarkLogo />
                         <PageFooter />
                     </Page>
                     {(filteredQuestions.length > 0 || reviewerResult) && (
@@ -285,6 +290,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                     `}/>
                 </View>
             )}
+            <WatermarkLogo />
             <PageFooter />
         </Page>
         <Page style={{ paddingBottom: 25 }}>
@@ -360,7 +366,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <TextPDF text={`You do not have to do everything at once. Take one faithful step at www.theriseupculture.com`}/>
             <LeaderReportPDF title="YOUR NEXT STEP" info={'Take our "Calling Course" or request a Coaching session to go over your results'} cardColor="#000000" titleColor="#F4C542" infoColor="white" button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/course/your-kingdom-calling" buttonColor="primary"/>
             <TextPDF text={`The best leaders aren't the loudest in the room. They're the ones who know who they are, walk with Jesus, and say "yes" to the call. That's you.<br><br><b>Welcome to the adventure. The world will never be the same.</b>`}/>
-            <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>
+            <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 20 }}>
                 <Image src={RiseUpLogo} style={{ width: 120 }} />
                 <Link src="https://www.theriseupculture.com" style={{ color: '#000', fontSize: 12, fontWeight: 'bold', marginTop: 6, textDecoration: 'none' }}>www.theriseupculture.com</Link>
             </View>
