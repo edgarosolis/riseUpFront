@@ -11,6 +11,7 @@ import SectionsReport from "../../components/SectionsReport"
 import ReportNextSteps from "../../components/Texts/ReportNextSteps"
 import { UserContext } from "../../context/user"
 import { getGroup360sByUserId, getReport360Info, getActiveUserSubmission, updateSubmission360 } from "../../axios/axiosFunctions"
+import ReportLeader from "../../components/Texts/ReportLeader"
 import DownloadSection from "../../components/DownloadSection"
 import Separator from "../../components/Banners/Separator"
 import SectionReportBanner from "../../components/Banners/SectionReportBanner"
@@ -104,6 +105,25 @@ const Report360 = () => {
             ) : (
               reportInfo && <ReportResults reportInfo={reportInfo} />
             )}
+            <Box sx={{ backgroundColor: "#FFF8E1", px: { xs: 3, sm: 5, md: 8 }, pb: 4, pt: 1 }}>
+              <Box sx={{
+                backgroundColor: "#fff",
+                borderRadius: "12px",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+                px: { xs: 3, sm: 4 },
+                py: 3,
+                textAlign: "center",
+                maxWidth: "700px",
+                mx: "auto",
+              }}>
+                <Typography variant="body1" sx={{ color: "#333", lineHeight: 1.8 }}>
+                  This overview of your results reflects how you see yourself and how others see you. Throughout the report, we will encourage you to pray and reflect to get the most out of this experience.
+                </Typography>
+                <Typography variant="body1" sx={{ color: "#333", lineHeight: 1.8, mt: 2 }}>
+                  At the end of the report, we offer additional resources for your journey.
+                </Typography>
+              </Box>
+            </Box>
             <MiniBanner title={"Understanding the Report"} />
             <ReportUnderstanding />
             <MiniBanner title={"How to Use This Report"} />
@@ -138,20 +158,8 @@ const Report360 = () => {
             />
             <MiniBanner title={"Next Steps: A Spiritual Response."} />
             <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={() => callReportData(true)} saveFn={updateSubmission360} />
-            <Container maxWidth="xl">
-              <Box sx={{ backgroundColor: "#000", borderRadius: "8px", px: 3, py: 2.5, mx: { xs: 1, sm: 3, md: 5 }, my: 3, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Box>
-                  <Typography variant="h6" sx={{ color: "#F4C542", fontWeight: 700 }}>YOUR NEXT STEP</Typography>
-                  <Typography variant="body1" sx={{ color: "#fff", mt: 0.5 }}>Take our "Calling Course" or request a Coaching session to go over your results</Typography>
-                </Box>
-                <Box component="a" href="https://www.theriseupculture.com/course/your-kingdom-calling" target="_blank" rel="noopener noreferrer" sx={{ backgroundColor: "#F4C542", color: "#000", fontWeight: 700, px: 2.5, py: 1, borderRadius: "4px", textDecoration: "none", whiteSpace: "nowrap", ml: 2 }}>COURSE</Box>
-              </Box>
-              <Typography variant="h4" fontWeight={700} sx={{ mx: { xs: 1, sm: 3, md: 5 }, my: 3 }}>Welcome to the adventure. The world will never be the same.</Typography>
-              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, mb: 2 }}>
-                <img src={require("../../assets/images/RiseUpLogo.png")} alt="Rise Up Logo" style={{ width: "clamp(80px, 20vw, 150px)" }} />
-                <Typography component="a" href="https://www.theriseupculture.com" target="_blank" rel="noopener noreferrer" sx={{ color: "#000", fontWeight: 600, mt: 1, textDecoration: "none" }}>www.theriseupculture.com</Typography>
-              </Box>
-            </Container>
+            <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
+            <ReportLeader/>
             <DownloadSection sections={currentAssessment?.sections} fetchData={callReportData} userSubmission={userSubmission} userName={`${currentUser?.firstName || ""} ${currentUser?.lastName || ""}`} is360={true} />
           </Box>
       }

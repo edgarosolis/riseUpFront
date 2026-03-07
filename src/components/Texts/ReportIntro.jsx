@@ -26,10 +26,10 @@ const ReportIntro = ({ is360 }) => {
         {is360 && (
             <>
                 <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>
-                    You have courageously asked for others to share how they see you in terms of what sphere you thrive in, what Five-Fold personality shows up most often for you, and what Biblical DNA that most see in you. It is always good to pursue outside feedback, counsel, and advice. Review your results to gain insights that will help you uncover and unleash your calling!
+                    You have courageously asked for others to share how they see you in terms of what Sphere you thrive in, what Five-Fold personality shows up most often for you, and what Biblical DNA that most see in you. It is always good to pursue outside feedback, counsel, and advice. Review your results to gain insights that will help you uncover and unleash your calling!
                 </Typography>
                 <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>
-                    Review how you see yourself and how others see you as data points. The real gold in your calling comes from personal reflection in a prayerful conversation with your Creator.
+                    The real gold in your calling comes from personal reflection in a prayerful conversation with your Creator.
                 </Typography>
             </>
         )}
