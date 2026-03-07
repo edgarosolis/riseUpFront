@@ -105,7 +105,7 @@ const Report360 = () => {
             ) : (
               reportInfo && <ReportResults reportInfo={reportInfo} />
             )}
-            <Box sx={{ backgroundColor: "#FFF8E1", px: { xs: 3, sm: 6, md: 10 }, pb: 5, pt: 2 }}>
+            <Box sx={{ backgroundColor: "#FFF8E1", px: { xs: 3, sm: 6, md: 10 }, pb: 5, pt: 5 }}>
               <Box sx={{
                 backgroundColor: "#fff",
                 borderRadius: "16px",
