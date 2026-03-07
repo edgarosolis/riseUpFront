@@ -59,13 +59,15 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 <ReportResultsPDF reportInfo={data.report}/>
             )}
             {is360 && (
-                <View style={{ backgroundColor: '#FFF8E1', marginHorizontal: 35, marginTop: 12, borderRadius: 8, padding: 18 }}>
-                    <Text style={{ fontSize: 11, lineHeight: 1.5, color: '#333', textAlign: 'center' }}>
-                        This overview of your results reflects how you see yourself and how others see you. Throughout the report, we will encourage you to pray and reflect to get the most out of this experience.
-                    </Text>
-                    <Text style={{ fontSize: 11, lineHeight: 1.5, color: '#333', textAlign: 'center', marginTop: 8 }}>
-                        At the end of the report, we offer additional resources for your journey.
-                    </Text>
+                <View style={{ backgroundColor: '#FFF8E1', paddingHorizontal: 50, paddingBottom: 25, paddingTop: 15 }}>
+                    <View style={{ backgroundColor: '#fff', borderRadius: 10, paddingVertical: 22, paddingHorizontal: 28, borderWidth: 1, borderColor: '#E8DFC0' }}>
+                        <Text style={{ fontSize: 13, lineHeight: 1.6, color: '#333', textAlign: 'center' }}>
+                            This overview of your results reflects how you see yourself and how others see you. Throughout the report, we will encourage you to pray and reflect to get the most out of this experience.
+                        </Text>
+                        <Text style={{ fontSize: 13, lineHeight: 1.6, color: '#333', textAlign: 'center', marginTop: 10 }}>
+                            At the end of the report, we offer additional resources for your journey.
+                        </Text>
+                    </View>
                 </View>
             )}
             <PageFooter />
@@ -193,6 +195,9 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             s.report.hasTable &&
                             <SectionTablePDF tableInfo={s.report.tableInfo}/>
                         }
+                        <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 20 }}>
+                            <Image src={RiseUpLogo} style={{ width: 80, opacity: 0.15 }} />
+                        </View>
                         <PageFooter />
                     </Page>
                     {(filteredQuestions.length > 0 || true) && (
@@ -240,7 +245,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             {filteredQuestions.length > 0 && (
                                 <View>
                                     {filteredQuestions.map((q,qi)=>(
-                                        <View key={qi} wrap={false}>
+                                        <View key={qi}>
                                             <TextPDF text={`<b>${q.text}</b>
                                             <br>
                                             ${(data.submission.answers.find(a=>a.customId === q.customId))?.value || "" }

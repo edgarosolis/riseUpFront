@@ -105,21 +105,22 @@ const Report360 = () => {
             ) : (
               reportInfo && <ReportResults reportInfo={reportInfo} />
             )}
-            <Box sx={{ backgroundColor: "#FFF8E1", px: { xs: 3, sm: 5, md: 8 }, pb: 4, pt: 1 }}>
+            <Box sx={{ backgroundColor: "#FFF8E1", px: { xs: 3, sm: 6, md: 10 }, pb: 5, pt: 2 }}>
               <Box sx={{
                 backgroundColor: "#fff",
-                borderRadius: "12px",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-                px: { xs: 3, sm: 4 },
-                py: 3,
+                borderRadius: "16px",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                border: "1px solid #E8DFC0",
+                px: { xs: 3, sm: 5, md: 6 },
+                py: { xs: 3, sm: 4 },
                 textAlign: "center",
-                maxWidth: "700px",
+                maxWidth: "800px",
                 mx: "auto",
               }}>
-                <Typography variant="body1" sx={{ color: "#333", lineHeight: 1.8 }}>
+                <Typography variant="h6" sx={{ color: "#333", lineHeight: 1.8, fontWeight: 400, fontSize: { xs: "1rem", sm: "1.15rem", md: "1.25rem" } }}>
                   This overview of your results reflects how you see yourself and how others see you. Throughout the report, we will encourage you to pray and reflect to get the most out of this experience.
                 </Typography>
-                <Typography variant="body1" sx={{ color: "#333", lineHeight: 1.8, mt: 2 }}>
+                <Typography variant="h6" sx={{ color: "#333", lineHeight: 1.8, mt: 2, fontWeight: 400, fontSize: { xs: "1rem", sm: "1.15rem", md: "1.25rem" } }}>
                   At the end of the report, we offer additional resources for your journey.
                 </Typography>
               </Box>
