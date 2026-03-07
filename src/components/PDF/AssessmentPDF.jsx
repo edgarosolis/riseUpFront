@@ -26,7 +26,7 @@ const PageFooter = () => (
 );
 
 const WatermarkLogo = () => (
-    <View fixed style={{ position: 'absolute', bottom: 30, left: 0, right: 0, alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 30 }}>
         <Image src={RiseUpLogo} style={{ width: 70, opacity: 0.12 }} />
     </View>
 );
@@ -150,7 +150,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                 <SectionTablePDF tableInfo={s.report.tableInfo}/>
                             }
                             <WatermarkLogo />
-            <PageFooter />
+                            <PageFooter />
                         </Page>
                         {s.report.questions.length > 0 && (
                             <Page style={{ paddingBottom: 25 }}>
@@ -173,8 +173,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                         `}/>
                                     </View>
                                 ))}
-                                <WatermarkLogo />
-            <PageFooter />
+                                <PageFooter />
                             </Page>
                         )}
                     </Fragment>
@@ -207,7 +206,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             <SectionTablePDF tableInfo={s.report.tableInfo}/>
                         }
                         <WatermarkLogo />
-            <PageFooter />
+                        <PageFooter />
                     </Page>
                     {(filteredQuestions.length > 0 || reviewerResult) && (
                         <Page style={{ paddingBottom: 25 }}>
@@ -263,8 +262,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     ))}
                                 </View>
                             )}
-                            <WatermarkLogo />
-            <PageFooter />
+                            <PageFooter />
                         </Page>
                     )}
                 </Fragment>
@@ -356,7 +354,6 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <br>
             ${(data.submission.answers.find(a=>a.customId === "ntq2"))?.value || "" }
             `}/>
-            <WatermarkLogo />
             <PageFooter />
         </Page>
         <Page style={{ paddingBottom: 25 }}>
@@ -366,7 +363,6 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <LeaderReportPDF title="Go Deeper in Activation" info="Take the Kingdom Calling Course to explore your calling in a more personal and practical way, with teaching, reflection, and activation steps designed to help you move from insight to action." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/course/your-kingdom-calling" buttonColor="secondary"/>
             <LeaderReportPDF title="Get Personal Support" info="Book a Calling Coach Session with The Rise Up Culture Team if you would like to walk through your results one-on-one and gain clarity on what obedience and faithfulness look like in this season." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"Book"} buttonLink="https://www.theriseupculture.com/course/kingdom-calling-coaching" buttonColor="secondary"/>
             <LeaderReportPDF title="Keep Growing as a Leader" info="We also recommend You Are A Leader by Drew East as your next read, a powerful reminder that leadership begins with identity and surrender, not position." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"Read"} buttonLink="https://www.theriseupculture.com/course/you-are-a-leader-pdf" buttonColor="secondary"/>
-            <WatermarkLogo />
             <PageFooter />
         </Page>
         <Page style={{ paddingBottom: 25 }}>
@@ -377,7 +373,6 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 <Image src={RiseUpLogo} style={{ width: 120 }} />
                 <Link src="https://www.theriseupculture.com" style={{ color: '#000', fontSize: 12, fontWeight: 'bold', marginTop: 6, textDecoration: 'none' }}>www.theriseupculture.com</Link>
             </View>
-            <WatermarkLogo />
             <PageFooter />
         </Page>
     </Document>
