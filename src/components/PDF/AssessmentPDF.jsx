@@ -176,11 +176,9 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     )}
                                 </View>
                                 {s.report.questions.map((q,qi)=>(
-                                    <View key={qi}>
-                                        <TextPDF text={`<b>${q.text}</b>
-                                        <br>
-                                        ${(data.submission.answers.find(a=>a.customId === q.customId))?.value || "" }
-                                        `}/>
+                                    <View key={qi} style={{ paddingHorizontal: 45, paddingTop: 10 }}>
+                                        <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25, marginBottom: 4 }}>{q.text}</Text>
+                                        <Text style={{ fontSize: 11.5, lineHeight: 1.25 }}>{(data.submission.answers.find(a=>a.customId === q.customId))?.value || ""}</Text>
                                     </View>
                                 ))}
                                 <PageFooter />
@@ -252,8 +250,9 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     ...filteredQuestions.map(q => ({ text: q.text, id: q.customId })),
                                 ];
                                 return allQs.map((q, qi) => (
-                                    <View key={qi}>
-                                        <TextPDF text={`<b>${q.text}</b><br>${(data.submission.answers.find(a=>a.customId === q.id))?.value || ""}`}/>
+                                    <View key={qi} style={{ paddingHorizontal: 45, paddingTop: 10 }}>
+                                        <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25, marginBottom: 4 }}>{q.text}</Text>
+                                        <Text style={{ fontSize: 11.5, lineHeight: 1.25 }}>{(data.submission.answers.find(a=>a.customId === q.id))?.value || ""}</Text>
                                     </View>
                                 ));
                             })()}
