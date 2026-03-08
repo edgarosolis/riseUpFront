@@ -10,7 +10,7 @@ import ReportHowTo from "../../components/Texts/ReportHowTo"
 import SectionsReport from "../../components/SectionsReport"
 import ReportNextSteps from "../../components/Texts/ReportNextSteps"
 import { UserContext } from "../../context/user"
-import { getGroup360sByUserId, getReport360Info, getActiveUserSubmission, updateSubmission360 } from "../../axios/axiosFunctions"
+import { getGroup360sByUserId, getReport360Info, getActiveUserSubmission, saveProgress } from "../../axios/axiosFunctions"
 import ReportLeader from "../../components/Texts/ReportLeader"
 import DownloadSection from "../../components/DownloadSection"
 import Separator from "../../components/Banners/Separator"
@@ -131,7 +131,7 @@ const Report360 = () => {
             <ReportHowTo />
             {
               reportInfo && currentAssessment?.sections.map((s, i) => (
-                <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={() => callReportData(true)} saveFn={updateSubmission360} reviewerSection={getReviewerSection(s.customId)} is360={true} />
+                <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} userSubmission={userSubmission} refreshData={() => callReportData(true)} saveFn={saveProgress} reviewerSection={getReviewerSection(s.customId)} is360={true} />
               ))
             }
             <Separator sectionColor={"#6E5600"} />
@@ -155,10 +155,10 @@ const Report360 = () => {
               answers={userSubmission?.answers}
               submissionId={userSubmission?._id}
               callUserSubmission={() => callReportData(true)}
-              saveFn={updateSubmission360}
+              saveFn={saveProgress}
             />
             <MiniBanner title={"Next Steps: A Spiritual Response."} />
-            <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={() => callReportData(true)} saveFn={updateSubmission360} />
+            <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={() => callReportData(true)} saveFn={saveProgress} />
             <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
             <ReportLeader/>
             <DownloadSection sections={currentAssessment?.sections} fetchData={callReportData} userSubmission={userSubmission} userName={`${currentUser?.firstName || ""} ${currentUser?.lastName || ""}`} is360={true} />
