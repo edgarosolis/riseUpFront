@@ -23,10 +23,12 @@ const ReportNextSteps = ({ answers, submissionId, refreshData, saveFn }) => {
         return "";
     }
 
-    const doSave = async (answersToSave) => {
+    const myIds = new Set(["ntq1", "ntq2"]);
+    const doSave = async (allAnswers) => {
         setIsSaving(true);
         const save = saveFn || saveProgress;
-        const res = await save(submissionId, { answers: answersToSave });
+        const myAnswers = allAnswers.filter(a => myIds.has(a.customId));
+        const res = await save(submissionId, { answers: myAnswers });
         setSaveStatus(res ? "success" : "error");
         setIsSaving(false);
         setTimeout(() => setSaveStatus(null), 2500);

@@ -15,10 +15,13 @@ const QuestionsReportSections = ({ questions, answers, submissionId, callUserSub
         answersRef.current = answers;
     }, [answers]);
 
-    const doSave = async (answersToSave) => {
+    const doSave = async (allAnswers) => {
         setIsSaving(true);
         const save = saveFn || saveProgress;
-        const res = await save(submissionId, { answers: answersToSave });
+        // Only send this component's questions' answers to avoid overwriting other sections
+        const myIds = new Set(questions.map(q => q.customId));
+        const myAnswers = allAnswers.filter(a => myIds.has(a.customId));
+        const res = await save(submissionId, { answers: myAnswers });
         setSaveStatus(res ? "success" : "error");
         setIsSaving(false);
         setTimeout(() => setSaveStatus(null), 2500);
