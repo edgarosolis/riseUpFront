@@ -74,9 +74,6 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
             ) : (
                 <Results sectionColor={section?.color} title={getUserTitle()} currentSection={currentSection}/>
             )}
-            {is360 && reflectionQuestions.length > 0 && (
-                <QuestionsReportSections questions={reflectionQuestions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
-            )}
             {
                 section?.report?.hasTable &&
                 <Container maxWidth="xl" sx={{padding:"50px 0px"}}>
@@ -108,9 +105,12 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
                     </Grid>
                 </Container>
             }
-            {getFilteredQuestions().length > 0 && (
-                <QuestionsReportSections questions={getFilteredQuestions()} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
-            )}
+            {(() => {
+                const allQuestions = [...reflectionQuestions, ...getFilteredQuestions()];
+                return allQuestions.length > 0 ? (
+                    <QuestionsReportSections questions={allQuestions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
+                ) : null;
+            })()}
         </>
     )
 }

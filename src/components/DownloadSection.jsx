@@ -17,15 +17,14 @@ const DownloadSection = ({ fetchData, sections, userSubmission, userName, is360 
     try {
       const data = await fetchData(true);
       if (data.report && data.submission) {
-        // Merge latest web answers into the submission for the PDF
+        // Merge latest web answers into the submission for the PDF (mutate in place to preserve reference)
         if (latestAnswers) {
-          const merged = [...(data.submission.answers || [])];
+          if (!data.submission.answers) data.submission.answers = [];
           latestAnswers.forEach(a => {
-            const idx = merged.findIndex(m => m.customId === a.customId);
-            if (idx !== -1) merged[idx] = a;
-            else merged.push(a);
+            const idx = data.submission.answers.findIndex(m => m.customId === a.customId);
+            if (idx !== -1) data.submission.answers[idx] = a;
+            else data.submission.answers.push(a);
           });
-          data.submission = { ...data.submission, answers: merged };
         }
         setApiData(data);
         setLastProcessedSubmission(data.submission);
