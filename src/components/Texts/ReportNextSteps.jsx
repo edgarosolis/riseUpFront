@@ -9,8 +9,13 @@ const ReportNextSteps = ({ answers, submissionId, refreshData, saveFn }) => {
     const [saveStatus, setSaveStatus] = useState(null);
     const debounceRef = useRef(null);
     const answersRef = useRef();
+    const skipSyncRef = useRef(false);
 
     useEffect(() => {
+        if (skipSyncRef.current) {
+            skipSyncRef.current = false;
+            return;
+        }
         setCurrentAnswers(answers);
         answersRef.current = answers;
     }, [answers]);
@@ -23,13 +28,17 @@ const ReportNextSteps = ({ answers, submissionId, refreshData, saveFn }) => {
         return "";
     }
 
-    const myIds = new Set(["ntq1", "ntq2"]);
-    const doSave = async (allAnswers) => {
+    const doSave = async (answersToSave) => {
         setIsSaving(true);
         const save = saveFn || saveProgress;
-        const myAnswers = allAnswers.filter(a => myIds.has(a.customId));
-        const res = await save(submissionId, { answers: myAnswers });
-        setSaveStatus(res ? "success" : "error");
+        const res = await save(submissionId, { answers: answersToSave });
+        if (res) {
+            setSaveStatus("success");
+            skipSyncRef.current = true;
+            if (refreshData) await refreshData();
+        } else {
+            setSaveStatus("error");
+        }
         setIsSaving(false);
         setTimeout(() => setSaveStatus(null), 2500);
     };

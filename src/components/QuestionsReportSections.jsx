@@ -9,20 +9,28 @@ const QuestionsReportSections = ({ questions, answers, submissionId, callUserSub
     const [saveStatus, setSaveStatus] = useState(null);
     const debounceRef = useRef(null);
     const answersRef = useRef();
+    const skipSyncRef = useRef(false);
 
     useEffect(() => {
+        if (skipSyncRef.current) {
+            skipSyncRef.current = false;
+            return;
+        }
         setCurrentAnswers(answers);
         answersRef.current = answers;
     }, [answers]);
 
-    const doSave = async (allAnswers) => {
+    const doSave = async (answersToSave) => {
         setIsSaving(true);
         const save = saveFn || saveProgress;
-        // Only send this component's questions' answers to avoid overwriting other sections
-        const myIds = new Set(questions.map(q => q.customId));
-        const myAnswers = allAnswers.filter(a => myIds.has(a.customId));
-        const res = await save(submissionId, { answers: myAnswers });
-        setSaveStatus(res ? "success" : "error");
+        const res = await save(submissionId, { answers: answersToSave });
+        if (res) {
+            setSaveStatus("success");
+            skipSyncRef.current = true;
+            if (callUserSubmission) await callUserSubmission();
+        } else {
+            setSaveStatus("error");
+        }
         setIsSaving(false);
         setTimeout(() => setSaveStatus(null), 2500);
     };
