@@ -58,7 +58,7 @@ const AssessmentMenu = () => {
         }
     };
 
-    if (isLoading) return <Box sx={{ p: 4, display: "flex", justifyContent: "center" }}><CircularProgress /></Box>;
+    if (isLoading || loadingGroups) return <Box sx={{ p: 4, display: "flex", justifyContent: "center" }}><CircularProgress /></Box>;
 
     return (
         <Container maxWidth="lg" sx={{ py: { xs: 3, md: 5 } }}>
