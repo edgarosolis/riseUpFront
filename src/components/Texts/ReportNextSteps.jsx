@@ -27,13 +27,7 @@ const ReportNextSteps = ({ answers, submissionId, refreshData, saveFn }) => {
         setIsSaving(true);
         const save = saveFn || saveProgress;
         const res = await save(submissionId, { answers: answersToSave });
-        if (res) {
-            if (res.submission?.answers) setCurrentAnswers(res.submission.answers);
-            setSaveStatus("success");
-            await refreshData();
-        } else {
-            setSaveStatus("error");
-        }
+        setSaveStatus(res ? "success" : "error");
         setIsSaving(false);
         setTimeout(() => setSaveStatus(null), 2500);
     };

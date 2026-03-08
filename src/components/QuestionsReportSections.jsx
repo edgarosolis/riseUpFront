@@ -19,12 +19,7 @@ const QuestionsReportSections = ({ questions, answers, submissionId, callUserSub
         setIsSaving(true);
         const save = saveFn || saveProgress;
         const res = await save(submissionId, { answers: answersToSave });
-        if (res) {
-            setSaveStatus("success");
-            await callUserSubmission();
-        } else {
-            setSaveStatus("error");
-        }
+        setSaveStatus(res ? "success" : "error");
         setIsSaving(false);
         setTimeout(() => setSaveStatus(null), 2500);
     };
