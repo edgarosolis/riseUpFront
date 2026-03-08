@@ -242,23 +242,34 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             ) : (
                                 <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
                             )}
-                            {(() => {
-                                const allQs = [
-                                    { text: "What resonates most when you review how you see yourself and how others see you?", id: `${s.customId}-reflect-1` },
-                                    { text: "If others see you differently, what insights can you gain?", id: `${s.customId}-reflect-2` },
-                                    ...(s.customId === 's1' ? [{ text: "What dreams or nudges keep coming up when you pray about where God wants to use you?", id: `${s.customId}-reflect-3` }] : []),
-                                    ...filteredQuestions.map(q => ({ text: q.text, id: q.customId })),
-                                ];
-                                return allQs.map((q, qi) => (
+                            <PageFooter />
+                        </Page>
+                    )}
+                    {/* Reflection questions on their own page(s) */}
+                    {(() => {
+                        const allQs = [
+                            { text: "What resonates most when you review how you see yourself and how others see you?", id: `${s.customId}-reflect-1` },
+                            { text: "If others see you differently, what insights can you gain?", id: `${s.customId}-reflect-2` },
+                            ...(s.customId === 's1' ? [{ text: "What dreams or nudges keep coming up when you pray about where God wants to use you?", id: `${s.customId}-reflect-3` }] : []),
+                            ...filteredQuestions.map(q => ({ text: q.text, id: q.customId })),
+                        ];
+                        if (allQs.length === 0) return null;
+                        return (
+                            <Page style={{ paddingBottom: 110 }}>
+                                <BgLogo />
+                                <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color }]}>
+                                    <Text style={[stylesPDF.bannerTitle2, { fontSize: 20 }]}>{getReflectionTitle()} — Questions</Text>
+                                </View>
+                                {allQs.map((q, qi) => (
                                     <View key={qi} style={{ paddingHorizontal: 45, paddingTop: 10 }}>
                                         <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25, marginBottom: 4 }}>{q.text}</Text>
                                         <Text style={{ fontSize: 11.5, lineHeight: 1.25 }}>{(data.submission.answers.find(a=>a.customId === q.id))?.value || ""}</Text>
                                     </View>
-                                ));
-                            })()}
-                            <PageFooter />
-                        </Page>
-                    )}
+                                ))}
+                                <PageFooter />
+                            </Page>
+                        );
+                    })()}
                 </Fragment>
                 );
             })
