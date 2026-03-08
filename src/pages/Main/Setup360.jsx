@@ -13,6 +13,7 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { UserContext } from "../../context/user";
 import { AssessmentContext } from "../../context/assessment";
 import {
@@ -374,6 +375,21 @@ const Setup360 = () => {
                                         </Box>
                                     </Box>
                                     <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1, gap: 0.5 }}>
+                                        <Tooltip title="Copy Review Link">
+                                            <span>
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={() => {
+                                                        const link = `${window.location.origin}/review/${reviewer.reviewToken}`;
+                                                        navigator.clipboard.writeText(link);
+                                                        showAlert("Review link copied to clipboard");
+                                                    }}
+                                                    disabled={!reviewer.reviewToken}
+                                                >
+                                                    <ContentCopyIcon fontSize="small" />
+                                                </IconButton>
+                                            </span>
+                                        </Tooltip>
                                         <Tooltip title="Send Invitation">
                                             <span>
                                                 <IconButton

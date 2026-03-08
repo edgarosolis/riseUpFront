@@ -23,7 +23,7 @@ function App() {
   return (
     <>
       <Routes>
-      {/* Public review route — no auth required */}
+      {/* Public review route — always accessible regardless of auth state */}
       <Route path="/review/:token" element={<ReviewAssessment/>}/>
       {
         !currentUser &&
@@ -47,8 +47,8 @@ function App() {
             <Route path="/group/:groupId/setup" element={<Setup360/>}/>
             <Route path="/group/:groupId/complete" element={<Complete360/>}/>
             <Route path="/group/:groupId/report" element={<Report360/>}/>
-            <Route path='*' element={<Navigate to="/"/>}/>
           </Route>
+          <Route path='*' element={<Navigate to="/"/>}/>
         </>
       }
       {
