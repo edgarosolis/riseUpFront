@@ -108,7 +108,9 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
                     </Grid>
                 </Container>
             }
-            <QuestionsReportSections questions={getFilteredQuestions()} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
+            {getFilteredQuestions().length > 0 && (
+                <QuestionsReportSections questions={getFilteredQuestions()} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
+            )}
         </>
     )
 }

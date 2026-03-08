@@ -1,71 +1,66 @@
-import { Alert, Box, Button, Container, TextField, Typography } from "@mui/material"
-import { useEffect, useState } from "react";
+import { Alert, Box, Container, TextField, Typography } from "@mui/material"
+import { useEffect, useRef, useState } from "react";
 import { saveProgress } from "../axios/axiosFunctions";
 
 const QuestionsReportSections = ({ questions, answers, submissionId, callUserSubmission, saveFn }) => {
 
     const [currentAnswers, setCurrentAnswers] = useState();
     const [isSaving, setIsSaving] = useState(false);
-    const [showError, setShowError] = useState(false); 
-    const [error, setError] = useState("");
-    const [alertSeverity, setAlertSeverity] = useState("error"); 
+    const [saveStatus, setSaveStatus] = useState(null);
+    const debounceRef = useRef(null);
+    const answersRef = useRef();
 
     useEffect(() => {
         setCurrentAnswers(answers);
+        answersRef.current = answers;
     }, [answers]);
 
-    const handleChange = (e,i)=>{
-        const {value} = e.target;
-        const customId = questions[i].customId;
-
-        const existsAnswer = currentAnswers.findIndex(a=>a.customId === customId); 
-        if(existsAnswer !== -1){
-            const newAnswers = [...currentAnswers];
-            newAnswers[existsAnswer].value = value;
-            setCurrentAnswers(newAnswers);
-        }
-        else{
-            const newAnswers = [...currentAnswers];
-            newAnswers.push({
-                customId,
-                value
-            });
-            setCurrentAnswers(newAnswers);
-        }
-    }
-    
-    const handleSave = async() => {
-        setIsSaving(true)
-        const data = {
-            answers:currentAnswers
-        }
+    const doSave = async (answersToSave) => {
+        setIsSaving(true);
         const save = saveFn || saveProgress;
-        const res = await save(submissionId, data);
-        
-        if(res){
-            setAlertSeverity("success");
-            setError("Saved correctly");            
-            await callUserSubmission(); 
+        const res = await save(submissionId, { answers: answersToSave });
+        if (res) {
+            setSaveStatus("success");
+            await callUserSubmission();
         } else {
-            setAlertSeverity("error");
-            setError("Error while saving");
+            setSaveStatus("error");
         }
-        
-        setShowError(true);
         setIsSaving(false);
-        setTimeout(() => setShowError(false), 2000);
+        setTimeout(() => setSaveStatus(null), 2500);
     };
 
-    const findValue = (customId)=>{
-        if(currentAnswers){
-            const a = currentAnswers.find(a=>a.customId === customId);
-            return  a?.value || "";
+    const handleChange = (e, i) => {
+        const { value } = e.target;
+        const customId = questions[i].customId;
+        const existsAnswer = currentAnswers.findIndex(a => a.customId === customId);
+        let newAnswers;
+        if (existsAnswer !== -1) {
+            newAnswers = [...currentAnswers];
+            newAnswers[existsAnswer] = { ...newAnswers[existsAnswer], value };
+        } else {
+            newAnswers = [...currentAnswers, { customId, value }];
+        }
+        setCurrentAnswers(newAnswers);
+        answersRef.current = newAnswers;
+
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => doSave(answersRef.current), 2000);
+    };
+
+    useEffect(() => {
+        return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+    }, []);
+
+    const findValue = (customId) => {
+        if (currentAnswers) {
+            const a = currentAnswers.find(a => a.customId === customId);
+            return a?.value || "";
         }
         return "";
     }
 
     return (
-    <Container maxWidth="xl" sx={{padding:"40px 0px"}}> 
+    <Container maxWidth="xl" sx={{padding:"40px 0px"}}>
         {
             questions.map((q,i)=>(
                 <Box key={i} sx={{marginBottom:"20px"}}>
@@ -74,9 +69,10 @@ const QuestionsReportSections = ({ questions, answers, submissionId, callUserSub
                 </Box>
             ))
         }
-        <Box display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
-            {showError && <Alert severity={alertSeverity}>{error}</Alert>}
-            <Button onClick={handleSave} disabled={isSaving} color="secondary" variant="contained">{isSaving ? "Saving..." : "Save"}</Button>
+        <Box display={"flex"} justifyContent={"flex-end"} alignItems={"center"} sx={{ minHeight: 36 }}>
+            {isSaving && <Typography variant="caption" color="text.secondary">Saving...</Typography>}
+            {saveStatus === "success" && <Alert severity="success" sx={{ py: 0 }}>Saved</Alert>}
+            {saveStatus === "error" && <Alert severity="error" sx={{ py: 0 }}>Error saving</Alert>}
         </Box>
     </Container>
     )
