@@ -1,9 +1,8 @@
 import { Text, View } from "@react-pdf/renderer"
-import { stylesPDF } from "../PDF/Styles"
-import { Html } from "react-pdf-html"
 
 const ResultsPDF = ({sectionColor,title,currentSection,noMargin}) => {
-    const formattedContent = currentSection?.content?.content?.replace(/\n/g, '<br>') || '';
+    const rawContent = currentSection?.content?.content || '';
+    const paragraphs = rawContent.split(/\n+/).filter(p => p.trim());
     return (
         <View wrap={false} style={[
           { borderRadius: 8, overflow: 'hidden' },
@@ -14,9 +13,9 @@ const ResultsPDF = ({sectionColor,title,currentSection,noMargin}) => {
             <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold', marginTop: 2 }}>{currentSection?.content.title}</Text>
           </View>
           <View style={{ backgroundColor: '#FFF8E1', paddingHorizontal: 16, paddingVertical: 10 }}>
-            <Html style={[stylesPDF.normalText, { color: '#333', marginTop: 0 }]}>
-                {formattedContent}
-            </Html>
+            {paragraphs.map((p, i) => (
+              <Text key={i} style={{ fontSize: 11.5, lineHeight: 1.25, color: '#333', marginTop: i > 0 ? 8 : 0 }}>{p.trim()}</Text>
+            ))}
           </View>
         </View>
     )
