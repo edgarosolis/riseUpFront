@@ -42,7 +42,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
     return (
     <Document>
         {/* PAGE: Intro */}
-        <Page style={{ paddingBottom: 110 }}>
+        <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
             <BgLogo />
             <BannerPDF title={"Kingdom Calling Assessment"} subtitle={is360 ? "360-DEGREE REPORT" : "SELF-ASSESSMENT REPORT"} userName={userName} completedAt={data.submission?.completedAt || data.submission?.updatedAt}/>
             <MiniBannerPDF title={"Embracing the Wonder of You"} color={"#F4C542"} center={true} titleSize="2.0"/>
@@ -63,7 +63,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         </Page>
 
         {/* PAGE: Results */}
-        <Page style={{ paddingBottom: 110 }}>
+        <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
             <BgLogo />
             <MiniBannerPDF title={is360 ? "Your Results" : "Your Result"} color={"#383838"}/>
             {is360 && reviewerReport && reviewerReport.length > 0 ? (
@@ -87,7 +87,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         </Page>
 
         {/* PAGE: Understanding + How to Use */}
-        <Page style={{ paddingBottom: 110 }}>
+        <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
             <BgLogo />
             <MiniBannerPDF title={"Understanding the Report"} color={"#383838"}/>
             <TextPDF text={`The Kingdom Calling Assessment explores three layers of your God-designed leadership:`}/>
@@ -150,7 +150,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 if (!is360) {
                     return (
                     <Fragment key={i}>
-                        <Page style={{ paddingBottom: 110 }}>
+                        <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
                             <BgLogo />
                             <MiniBannerPDF title={""} color={s.color}/>
                             <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={displayTitle} intro={s.report.intro} image={s.image}/>
@@ -162,7 +162,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             <PageFooter />
                         </Page>
                         {s.report.questions.length > 0 && (
-                            <Page style={{ paddingBottom: 110 }}>
+                            <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
                                 <BgLogo />
                                 <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                                     <View style={{ flex: 1 }}>
@@ -176,7 +176,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     )}
                                 </View>
                                 {s.report.questions.map((q,qi)=>(
-                                    <View key={qi}>
+                                    <View key={qi} wrap={false}>
                                         <TextPDF text={`<b>${q.text}</b>
                                         <br>
                                         ${(data.submission.answers.find(a=>a.customId === q.customId))?.value || "" }
@@ -209,7 +209,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 return (
                 <Fragment key={i}>
                     {/* Section intro page - always has white space */}
-                    <Page style={{ paddingBottom: 110 }}>
+                    <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
                         <BgLogo />
                         <MiniBannerPDF title={""} color={s.color}/>
                         <SectionReportBannerPDF id={s.customId} sectionColor={s.color} index={i} title={displayTitle} intro={s.report.intro} image={s.image}/>
@@ -220,7 +220,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                         <PageFooter />
                     </Page>
                     {(filteredQuestions.length > 0 || reviewerResult) && (
-                        <Page style={{ paddingBottom: 110 }}>
+                        <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
                             <BgLogo />
                             <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                                 <View style={{ flex: 1 }}>
@@ -251,11 +251,16 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     ...(s.customId === 's1' ? [{ text: "What dreams or nudges keep coming up when you pray about where God wants to use you?", id: `${s.customId}-reflect-3` }] : []),
                                     ...filteredQuestions.map(q => ({ text: q.text, id: q.customId })),
                                 ];
-                                return (
-                                    <TextPDF text={allQs.map(q =>
-                                        `<b>${q.text}</b><br>${(data.submission.answers.find(a=>a.customId === q.id))?.value || ""}`
-                                    ).join('<br><br>')} />
-                                );
+                                return allQs.map((q, qi) => (
+                                    <View key={qi} wrap={false}>
+                                        <View style={{ paddingTop: qi > 0 ? 5 : 10, paddingBottom: 5, paddingHorizontal: 45 }}>
+                                            <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25 }}>{q.text}</Text>
+                                            <Text style={{ fontSize: 11.5, lineHeight: 1.25, marginTop: 4 }}>
+                                                {(data.submission.answers.find(a => a.customId === q.id))?.value || ""}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                ));
                             })()}
                             <PageFooter />
                         </Page>
@@ -266,7 +271,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         }
 
         {/* PAGE: Wonder of You */}
-        <Page style={{ paddingBottom: 110 }}>
+        <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
             <BgLogo />
             <MiniBannerPDF title={""} color={"#6E5600"}/>
             <SectionReportBannerPDF sectionColor={"#6E5600"} index={3} title={"The Wonder of You"} subtitle={"(FIVE-FOLD PERSONALITY + BIBLICAL DNA)"}
@@ -293,7 +298,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         </Page>
 
         {/* PAGE: Next Steps */}
-        <Page style={{ paddingBottom: 110 }}>
+        <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
             <BgLogo />
             <MiniBannerPDF title={"Next Steps: A Spiritual Response"} color={"#383838"}/>
             <TextPDF text={`The Kingdom Calling Assessment is the beginning of a conversation with God, not the end of one. Set aside time in the coming days to do the following:
@@ -356,7 +361,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         </Page>
 
         {/* PAGE: Resources */}
-        <Page style={{ paddingBottom: 110 }}>
+        <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
             <BgLogo />
             <MiniBannerPDF title={"You Are A Leader"} subtitle={"Now Step into It"} color={"#383838"}/>
             <TextPDF text={`<b>Your Kingdom Calling Report is not an endpoint. It is an invitation.</b><br><br>You now have language for the wonder of how God uniquely designed you. The next step is learning how to live it out with confidence, clarity, and purpose within the Body of Christ.<br><br><b>Choose the next step that fits where you are right now:</b>`}/>
@@ -368,7 +373,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         </Page>
 
         {/* PAGE: Closing */}
-        <Page style={{ paddingBottom: 110 }}>
+        <Page style={{ paddingTop: 30, paddingBottom: 110 }}>
             <BgLogo />
             <TextPDF text={`You do not have to do everything at once. Take one faithful step at www.theriseupculture.com`}/>
             <LeaderReportPDF title="YOUR NEXT STEP" info={'Take our "Calling Course" or request a Coaching session to go over your results'} cardColor="#000000" titleColor="#F4C542" infoColor="white" button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/course/your-kingdom-calling" buttonColor="primary"/>
