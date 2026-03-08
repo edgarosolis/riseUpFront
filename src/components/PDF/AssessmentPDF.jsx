@@ -176,7 +176,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     )}
                                 </View>
                                 {s.report.questions.map((q,qi)=>(
-                                    <View key={qi} wrap={false}>
+                                    <View key={qi}>
                                         <TextPDF text={`<b>${q.text}</b>
                                         <br>
                                         ${(data.submission.answers.find(a=>a.customId === q.customId))?.value || "" }
@@ -252,7 +252,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     ...filteredQuestions.map(q => ({ text: q.text, id: q.customId })),
                                 ];
                                 return allQs.map((q, qi) => (
-                                    <View key={qi} wrap={false}>
+                                    <View key={qi}>
                                         <TextPDF text={`<b>${q.text}</b><br>${(data.submission.answers.find(a=>a.customId === q.id))?.value || ""}`}/>
                                     </View>
                                 ));
