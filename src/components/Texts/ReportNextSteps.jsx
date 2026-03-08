@@ -1,68 +1,69 @@
-import { Alert, Box, Container, TextField, Typography } from "@mui/material"
-import { useEffect, useRef, useState } from "react";
+import { Alert, Box, Button, Container, TextField, Typography } from "@mui/material"
+import { useEffect, useState } from "react";
 import { saveProgress } from "../../axios/axiosFunctions";
 
 const ReportNextSteps = ({ answers, submissionId, refreshData, saveFn }) => {
 
     const [currentAnswers, setCurrentAnswers] = useState();
     const [isSaving, setIsSaving] = useState(false);
-    const [saveStatus, setSaveStatus] = useState(null);
-    const debounceRef = useRef(null);
-    const answersRef = useRef();
-    const skipSyncRef = useRef(false);
+    const [showError, setShowError] = useState(false);
+    const [error, setError] = useState("");
+    const [alertSeverity, setAlertSeverity] = useState("error");
 
     useEffect(() => {
-        if (skipSyncRef.current) {
-            skipSyncRef.current = false;
-            return;
-        }
         setCurrentAnswers(answers);
-        answersRef.current = answers;
     }, [answers]);
 
-    const findValue = (customId) => {
-        if (currentAnswers) {
-            const a = currentAnswers.find(a => a.customId === customId);
-            return a?.value || "";
+    const findValue = (customId)=>{
+        if(currentAnswers){
+            const a = currentAnswers.find(a=>a.customId === customId);
+            return  a?.value || "";
         }
         return "";
     }
 
-    const doSave = async (answersToSave) => {
+    const handleChange = (e,customId)=>{
+        const {value} = e.target;
+
+        const existsAnswer = currentAnswers.findIndex(a=>a.customId === customId);
+        if(existsAnswer !== -1){
+            const newAnswers = [...currentAnswers];
+            newAnswers[existsAnswer].value = value;
+            setCurrentAnswers(newAnswers);
+        }
+        else{
+            const newAnswers = [...currentAnswers];
+            newAnswers.push({
+                customId,
+                value
+            });
+            setCurrentAnswers(newAnswers);
+        }
+    }
+
+    const handleSave = async() => {
         setIsSaving(true);
+        const data = {
+            answers:currentAnswers
+        }
         const save = saveFn || saveProgress;
-        const res = await save(submissionId, { answers: answersToSave });
-        if (res) {
-            setSaveStatus("success");
-            skipSyncRef.current = true;
-            if (refreshData) await refreshData();
+        const res = await save(submissionId,data);
+
+        if(res){
+            setCurrentAnswers(res.submission.answers);
+            setAlertSeverity("success");
+            setError("Saved correctly");
+            await refreshData();
         } else {
-            setSaveStatus("error");
+            setAlertSeverity("error");
+            setError("Error while saving");
         }
+
+        setShowError(true);
         setIsSaving(false);
-        setTimeout(() => setSaveStatus(null), 2500);
+        setTimeout(() => setShowError(false), 2000);
+
     };
-
-    const handleChange = (e, customId) => {
-        const { value } = e.target;
-        const existsAnswer = currentAnswers.findIndex(a => a.customId === customId);
-        let newAnswers;
-        if (existsAnswer !== -1) {
-            newAnswers = [...currentAnswers];
-            newAnswers[existsAnswer] = { ...newAnswers[existsAnswer], value };
-        } else {
-            newAnswers = [...currentAnswers, { customId, value }];
-        }
-        setCurrentAnswers(newAnswers);
-        answersRef.current = newAnswers;
-
-        if (debounceRef.current) clearTimeout(debounceRef.current);
-        debounceRef.current = setTimeout(() => doSave(answersRef.current), 2000);
-    };
-
-    useEffect(() => {
-        return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
-    }, []);
 
     return (
     <Container maxWidth="xl">
@@ -70,26 +71,25 @@ const ReportNextSteps = ({ answers, submissionId, refreshData, saveFn }) => {
         <Typography variant='h6' fontWeight={600} sx={{margin:"20px 0px"}}>ASK. LISTEN. DISCERN.</Typography>
         <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>Spend time with the Lord and ask Him to speak into your calling and to embrace the wonder of you.</Typography>
         <Typography variant='h6' fontWeight={600} sx={{margin:"20px 0px"}}>PRAY FOR CONFIRMATION</Typography>
-        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>“Lord, confirm what’s true. I surrender what doesn’t reflect You. Align me with heaven’s assignment.”</Typography>
+        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>"Lord, confirm what's true. I surrender what doesn't reflect You. Align me with heaven's assignment."</Typography>
         <Typography variant='h6' fontWeight={600} sx={{margin:"20px 0px"}}>JOURNAL WITH THE HOLY SPIRIT</Typography>
-        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>· “Jesus, how do You see me showing up in this season?”</Typography>
-        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>· “What are You developing in me right now?”</Typography>
-        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>· “What scares or excites me about what I’m seeing?”</Typography>
-        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>· “Who should I invite into my journey to help me grow?”</Typography>
+        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>· "Jesus, how do You see me showing up in this season?"</Typography>
+        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>· "What are You developing in me right now?"</Typography>
+        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>· "What scares or excites me about what I'm seeing?"</Typography>
+        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>· "Who should I invite into my journey to help me grow?"</Typography>
         <Typography variant='h6' fontWeight={600} sx={{margin:"20px 0px"}}>INVITE WISE COUNSEL</Typography>
-        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>“Plans fail for lack of counsel, but with many advisers they succeed.” — Proverbs 15:22
-        Bring this report to someone who knows you well and is grounded in God’s Word. Let them speak life, caution, and direction over what they see.</Typography>
+        <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>"Plans fail for lack of counsel, but with many advisers they succeed." — Proverbs 15:22
+        Bring this report to someone who knows you well and is grounded in God's Word. Let them speak life, caution, and direction over what they see.</Typography>
         <Typography variant='h6' fontWeight={600} sx={{margin:"20px 0px"}}>YOUR ACTIVATION CHALLENGE</Typography>
         <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>Before you move forward:</Typography>
         <Typography variant='subtitle1' sx={{marginTop:"20px", paddingLeft:"20px"}}><span style={{fontWeight:"600"}}>Circle</span> 2–3 key phrases in your report that stand out to you.</Typography>
         <Typography variant='subtitle1' sx={{marginTop:"20px", paddingLeft:"20px"}}><span style={{fontWeight:"600"}}>Write </span> a 3-sentence summary of how you believe God is calling you to lead in this season.</Typography>
         <TextField value={findValue("ntq1")} onChange={(e)=>handleChange(e,"ntq1")} fullWidth multiline rows={5}/>
-        <Typography variant='subtitle1' sx={{marginTop:"20px", paddingLeft:"20px"}}><span style={{fontWeight:"600"}}>Document</span> one action you can take this week that aligns with what you’re discovering.</Typography>
+        <Typography variant='subtitle1' sx={{marginTop:"20px", paddingLeft:"20px"}}><span style={{fontWeight:"600"}}>Document</span> one action you can take this week that aligns with what you're discovering.</Typography>
         <TextField value={findValue("ntq2")} onChange={(e)=>handleChange(e,"ntq2")} fullWidth multiline rows={5} sx={{marginBottom:"20px"}}/>
-        <Box display={"flex"} justifyContent={"flex-end"} alignItems={"center"} sx={{ marginBottom: "50px", minHeight: 36 }}>
-            {isSaving && <Typography variant="caption" color="text.secondary">Saving...</Typography>}
-            {saveStatus === "success" && <Alert severity="success" sx={{ py: 0 }}>Saved</Alert>}
-            {saveStatus === "error" && <Alert severity="error" sx={{ py: 0 }}>Error saving</Alert>}
+        <Box display={"flex"} justifyContent={"flex-end"} sx={{marginBottom:"50px"}}>
+            {showError && <Alert severity={alertSeverity}>{error}</Alert>}
+            <Button color="secondary" disabled={isSaving} onClick={handleSave} variant="contained">{isSaving ? "Saving..." : "Save"}</Button>
         </Box>
     </Container>
     )
