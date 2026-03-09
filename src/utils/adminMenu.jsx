@@ -4,6 +4,7 @@ import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import QuizIcon from '@mui/icons-material/Quiz';
 import EmailIcon from '@mui/icons-material/Email';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 export const navItems = [
     {
       title: "Home",
@@ -40,5 +41,11 @@ export const navItems = [
       icon: <EmailIcon sx={{color:"white"}}/>,
       locationRef : "emailNotifications",
       href: "/email-notifications",
+    },
+    {
+      title: "Platform Guide",
+      locationRef : "guide",
+      icon: <MenuBookIcon sx={{color:"white"}}/>,
+      href: "/guide",
     },
 ];
