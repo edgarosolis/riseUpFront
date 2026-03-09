@@ -3,6 +3,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import QuizIcon from '@mui/icons-material/Quiz';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 export const navItems = [
     {
@@ -34,5 +35,11 @@ export const navItems = [
       icon: <AutoAwesomeIcon sx={{color:"white"}}/>,
       locationRef : "wonderOfYou",
       href: "/wonder-of-you",
+    },
+    {
+      title: "Platform Guide",
+      locationRef : "guide",
+      icon: <MenuBookIcon sx={{color:"white"}}/>,
+      href: "/guide",
     },
 ];

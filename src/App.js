@@ -18,7 +18,7 @@ function App() {
     <>
       <Routes>
       {
-        !currentUser && 
+        !currentUser &&
         <>
           <Route path="/" element={<NavBar/>}>
             <Route index element={<LogInUser/>}/>
@@ -45,6 +45,7 @@ function App() {
             <Route path="/questions" element={<Dashboard active={"questions"}/>}/>
             <Route path="/section-texts" element={<Dashboard active={"sectionTexts"}/>}/>
             <Route path="/wonder-of-you" element={<Dashboard active={"wonderOfYou"}/>}/>
+            <Route path="/guide" element={<Dashboard active={"guide"}/>}/>
           </Route>
           <Route path='*' element={<Navigate to="/"/>}/>
         </>

@@ -5,6 +5,7 @@ import Questions from "./Questions";
 import SectionTexts from "./SectionTexts";
 import WonderOfYou from "./WonderOfYou";
 import Sidebar from "../../components/Sidebar";
+import PlatformGuide from "./PlatformGuide";
 
 const Dashboard = ({active = "home"}) => {
 
@@ -21,6 +22,7 @@ const Dashboard = ({active = "home"}) => {
                     {active === "questions" && <Questions/>}
                     {active === "sectionTexts" && <SectionTexts/>}
                     {active === "wonderOfYou" && <WonderOfYou/>}
+                    {active === "guide" && <PlatformGuide/>}
                 </Container>
             </Grid>
         </Grid>
