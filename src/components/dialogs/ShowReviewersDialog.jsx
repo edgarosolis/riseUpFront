@@ -184,7 +184,7 @@ const ShowReviewersDialog = ({ open, onClose, userId, onUpdate }) => {
                                                             )}
                                                             <IconButton
                                                                 size="small"
-                                                                onClick={() => handleSendInvite(reviewer._id)}
+                                                                onClick={() => handleSendInvite(reviewer.user._id)}
                                                                 title="Send invitation"
                                                                 color="primary"
                                                             >
@@ -192,25 +192,25 @@ const ShowReviewersDialog = ({ open, onClose, userId, onUpdate }) => {
                                                             </IconButton>
                                                             <IconButton
                                                                 size="small"
-                                                                onClick={() => handleSendReminder(reviewer._id)}
+                                                                onClick={() => handleSendReminder(reviewer.user._id)}
                                                                 title="Send reminder"
                                                                 color="warning"
                                                             >
                                                                 <NotificationsActiveIcon fontSize="small" />
                                                             </IconButton>
-                                                            {confirmDelete === reviewer._id ? (
+                                                            {confirmDelete === reviewer.user._id ? (
                                                                 <Button
                                                                     size="small"
                                                                     color="error"
                                                                     variant="contained"
-                                                                    onClick={() => handleDeleteReviewer(reviewer._id)}
+                                                                    onClick={() => handleDeleteReviewer(reviewer.user._id)}
                                                                 >
                                                                     Confirm
                                                                 </Button>
                                                             ) : (
                                                                 <IconButton
                                                                     size="small"
-                                                                    onClick={() => setConfirmDelete(reviewer._id)}
+                                                                    onClick={() => setConfirmDelete(reviewer.user._id)}
                                                                     title="Remove reviewer"
                                                                     color="error"
                                                                 >
