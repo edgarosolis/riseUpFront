@@ -48,6 +48,18 @@ export const requestOTP = async (email) => {
   }
 };
 
+export const resetAdminPassword = async (email) => {
+  try {
+    const resp = await axios.post(BASE_URL + "auth/reset-admin-password", { email });
+    return resp.data;
+  } catch (error) {
+    return {
+      success: false,
+      msg: error.response?.data?.msg || "Failed to reset password"
+    };
+  }
+};
+
 export const verifyOTP = async (email, code) => {
   try {
     const resp = await axios.post(BASE_URL + "auth/verify-otp", { email, code });
