@@ -60,6 +60,7 @@ function App() {
             <Route path="/section-texts" element={<Dashboard active={"sectionTexts"}/>}/>
             <Route path="/wonder-of-you" element={<Dashboard active={"wonderOfYou"}/>}/>
             <Route path="/email-notifications" element={<Dashboard active={"emailNotifications"}/>}/>
+            <Route path="/guide" element={<Dashboard active={"guide"}/>}/>
           </Route>
           <Route path='*' element={<Navigate to="/"/>}/>
         </>
