@@ -32,7 +32,7 @@ jobs:
       - name: Build
         run: CI=false npm run build
 
-      - name: Prepare testing directory
+      - name: Setup testing directory and nginx
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -41,22 +41,53 @@ jobs:
           script: |
             mkdir -p /home/ubuntu/riseup-frontend-testing
             sudo chown -R ubuntu:ubuntu /home/ubuntu/riseup-frontend-testing
+            # Open port 8090 for testing previews
+            if ! grep -q "listen 8090" /etc/nginx/conf.d/testing-previews.conf 2>/dev/null; then
+              sudo tee /etc/nginx/conf.d/testing-previews.conf > /dev/null << 'NGINX'
+            server {
+                listen 8090;
+                server_name _;
+                location /riseup/ {
+                    alias /home/ubuntu/riseup-frontend-testing/;
+                    index index.html;
+                    try_files \$uri \$uri/ /riseup/index.html;
+                }
+            }
+            NGINX
+              sudo nginx -t && sudo systemctl reload nginx || true
+            elif ! grep -q "/riseup/" /etc/nginx/conf.d/testing-previews.conf 2>/dev/null; then
+              # Add location block to existing testing config
+              sudo sed -i '/^}/i\    location /riseup/ {\n        alias /home/ubuntu/riseup-frontend-testing/;\n        index index.html;\n        try_files \$uri \$uri/ /riseup/index.html;\n    }' /etc/nginx/conf.d/testing-previews.conf
+              sudo nginx -t && sudo systemctl reload nginx || true
+            fi
 
       - name: Deploy to testing
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -avzr --delete --exclude="node_modules/" --exclude=".env"
+          switches: -avzr --delete --exclude="node_modules/" --exclude=".env" --exclude=".git"
           path: build/*
           remote_path: /home/ubuntu/riseup-frontend-testing
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ubuntu
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Comment on PR
+      - name: Post-deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/riseup-frontend-testing
+            if [ -f ./scripts/deploy.sh ]; then chmod +x ./scripts/deploy.sh && ./scripts/deploy.sh; fi
+
+      - name: Comment preview URL on PR
         uses: actions/github-script@v7
         with:
           script: |
-            const body = `## Preview Deployed\n\nFrontend changes deployed to testing server for review.\n\n_Updated: ${new Date().toISOString()}_`;
+            const host = '${{ secrets.SSH_HOST }}';
+            const previewUrl = `http://${host}:8090/riseup/`;
+            const body = `## Preview Deployed\n\nPreview is live: **${previewUrl}**\n\nThis is a copy of the site with your PR changes.\n\n_Updated: ${new Date().toISOString()}_`;
             const { data: comments } = await github.rest.issues.listComments({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number });
             const existing = comments.find(c => c.body?.includes('## Preview Deployed'));
             if (existing) {
