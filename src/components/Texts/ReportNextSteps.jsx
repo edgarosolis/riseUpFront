@@ -1,4 +1,5 @@
 import { Alert, Box, Button, Container, TextField, Typography } from "@mui/material"
+import SaveIcon from '@mui/icons-material/Save';
 import { useEffect, useState } from "react";
 import { saveProgress } from "../../axios/axiosFunctions";
 
@@ -87,10 +88,13 @@ const ReportNextSteps = ({ answers, submissionId, refreshData, saveFn }) => {
         <TextField value={findValue("ntq1")} onChange={(e)=>handleChange(e,"ntq1")} fullWidth multiline rows={5}/>
         <Typography variant='subtitle1' sx={{marginTop:"20px", paddingLeft:"20px"}}><span style={{fontWeight:"600"}}>Document</span> one action you can take this week that aligns with what you're discovering.</Typography>
         <TextField value={findValue("ntq2")} onChange={(e)=>handleChange(e,"ntq2")} fullWidth multiline rows={5} sx={{marginBottom:"20px"}}/>
-        <Box display={"flex"} justifyContent={"flex-end"} sx={{marginBottom:"50px"}}>
+        <Box display={"flex"} justifyContent={"flex-end"} alignItems={"center"} gap={1} sx={{marginBottom:"10px"}}>
             {showError && <Alert severity={alertSeverity}>{error}</Alert>}
-            <Button color="secondary" disabled={isSaving} onClick={handleSave} variant="contained">{isSaving ? "Saving..." : "Save"}</Button>
+            <Button color="secondary" disabled={isSaving} onClick={handleSave} variant="contained" size="large" startIcon={<SaveIcon />} sx={{ fontWeight: 600, px: 4, py: 1.2, fontSize: "1rem", boxShadow: 3 }}>{isSaving ? "Saving..." : "Save Answers"}</Button>
         </Box>
+        <Typography variant="caption" color="text.secondary" sx={{ display: "block", textAlign: "right", mb: 4 }}>
+            Remember to save your answers before leaving this page or generating a report.
+        </Typography>
     </Container>
     )
 }

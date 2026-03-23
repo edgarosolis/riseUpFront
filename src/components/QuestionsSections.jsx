@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Box, Button, Container, Dialog, DialogContent, FormControlLabel, MobileStepper, Radio, RadioGroup, Typography } from "@mui/material";
+import { Box, Button, Container, Dialog, DialogContent, DialogActions, FormControlLabel, MobileStepper, Radio, RadioGroup, Typography } from "@mui/material";
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import ArrowCircleLeftRoundedIcon from '@mui/icons-material/ArrowCircleLeftRounded';
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
@@ -14,6 +14,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
     const [currentAnswers, setCurrentAnswers] = useState();
     const [options, setOptions] = useState([]);
     const [showProcessingDialog, setShowProcessingDialog] = useState(false);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
     useEffect(() => {
         window.scrollTo({
@@ -83,21 +84,27 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
                 }
                 setActiveStep(1);
             }else{
-                window.scrollTo(0, 0);
-                const data = {
-                    finished : true
-                }
-                if(groupId){
-                    await updateSubmission360(submissionId, data);
-                    setShowProcessingDialog(true);
-                    setTimeout(() => navigate('/'), 3000);
-                } else {
-                    await saveProgress(submissionId,data);
-                    navigate('/report');
-                }
+                // Last section, last question — show confirmation before submitting
+                setShowConfirmDialog(true);
             }
         }else{
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+    };
+
+    const handleFinalSubmit = async () => {
+        setShowConfirmDialog(false);
+        window.scrollTo(0, 0);
+        const data = {
+            finished : true
+        }
+        if(groupId){
+            await updateSubmission360(submissionId, data);
+            setShowProcessingDialog(true);
+            setTimeout(() => navigate('/'), 3000);
+        } else {
+            await saveProgress(submissionId,data);
+            navigate('/report');
         }
     };
 
@@ -160,7 +167,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
                 <Button endIcon={<ArrowCircleRightRoundedIcon/>} variant="contained" disabled={findValue(questions[activeStep-1].customId) === ""} color="secondary" onClick={handleNext} sx={{fontSize:{xs:"0.75rem", sm:"0.875rem"}, px:{xs:2, sm:3}}}>
                     {
                         activeStep===noQuestions ?
-                        "Complete"
+                        "Complete this Section"
                         :
                         "Next"
                     }
@@ -168,6 +175,25 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
             </Box>
         </Box>
     </Container>
+
+    <Dialog open={showConfirmDialog} onClose={() => setShowConfirmDialog(false)}>
+        <DialogContent sx={{ textAlign: "center", py: 4, px: 4 }}>
+            <Typography variant="h6" fontWeight={600} gutterBottom>
+                Are you sure you're ready to submit?
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+                You won't be able to change your answers.
+            </Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", pb: 3 }}>
+            <Button variant="outlined" onClick={() => setShowConfirmDialog(false)}>
+                Go Back
+            </Button>
+            <Button variant="contained" color="secondary" onClick={handleFinalSubmit}>
+                Submit
+            </Button>
+        </DialogActions>
+    </Dialog>
 
     <Dialog open={showProcessingDialog}>
         <DialogContent sx={{ textAlign: "center", py: 5, px: 4 }}>

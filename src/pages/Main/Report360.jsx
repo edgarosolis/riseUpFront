@@ -17,12 +17,14 @@ import Separator from "../../components/Banners/Separator"
 import SectionReportBanner from "../../components/Banners/SectionReportBanner"
 import Results from "../../components/Cards/Results"
 import QuestionsReportSections from "../../components/QuestionsReportSections"
-import { Container } from "@mui/material"
-import { useParams } from "react-router"
+import { Container, Button } from "@mui/material"
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useParams, useNavigate } from "react-router"
 
 const Report360 = () => {
 
   const { groupId } = useParams();
+  const navigate = useNavigate();
   const { currentAssessment } = useContext(AssessmentContext);
   const { currentUser } = useContext(UserContext);
   const [reportInfo, setReportInfo] = useState();
@@ -96,6 +98,11 @@ const Report360 = () => {
           </Box>
           :
           <Box sx={{ paddingBottom: "50px" }}>
+            <Box sx={{ px: { xs: 2, md: 4 }, pt: 2 }}>
+              <Button startIcon={<ArrowBackIcon />} onClick={() => navigate("/")} sx={{ mb: 1 }}>
+                Back to Assessments
+              </Button>
+            </Box>
             <WaveBannerReport title={currentAssessment?.title} subtitle="360-DEGREE REPORT" completedAt={userSubmission?.completedAt || userSubmission?.updatedAt} />
             <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"} />
             <ReportIntro is360={true} />

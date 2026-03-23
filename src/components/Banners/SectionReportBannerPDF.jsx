@@ -40,7 +40,7 @@ const SectionReportBannerPDF = ({ sectionColor, index, title, subtitle, intro, i
     </View> 
     <View style={{ marginTop: 5, width: '100%' }}>
         <Html style={stylesPDF.normalText}>
-            {intro}
+            {intro?.replace(/[®Ò]/g, '<sup style="font-size:8px">®</sup>') || ''}
         </Html>
     </View>
   </View>

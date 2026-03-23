@@ -125,7 +125,7 @@ const QuestionsSections360 = ({ token, questions = [], noQuestions, nextSection,
                         Back
                     </Button>
                     <Button endIcon={<ArrowCircleRightRoundedIcon />} variant="contained" disabled={findValue(questions[activeStep - 1]?.customId) === ""} color="secondary" onClick={handleNext} sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" }, px: { xs: 2, sm: 3 } }}>
-                        {activeStep === noQuestions ? "Complete" : "Next"}
+                        {activeStep === noQuestions ? "Complete this Section" : "Next"}
                     </Button>
                 </Box>
             </Box>

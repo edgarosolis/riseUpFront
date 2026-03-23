@@ -1,4 +1,5 @@
 import { Alert, Box, Button, Container, TextField, Typography } from "@mui/material"
+import SaveIcon from '@mui/icons-material/Save';
 import { useEffect, useState } from "react";
 import { saveProgress } from "../axios/axiosFunctions";
 
@@ -76,10 +77,13 @@ const QuestionsReportSections = ({ questions, answers, submissionId, callUserSub
                 </Box>
             ))
         }
-        <Box display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
+        <Box display={"flex"} justifyContent={"flex-end"} alignItems={"center"} gap={1}>
             {showError && <Alert severity={alertSeverity}>{error}</Alert>}
-            <Button onClick={handleSave} disabled={isSaving} color="secondary" variant="contained">{isSaving ? "Saving..." : "Save"}</Button>
+            <Button onClick={handleSave} disabled={isSaving} color="secondary" variant="contained" size="large" startIcon={<SaveIcon />} sx={{ fontWeight: 600, px: 4, py: 1.2, fontSize: "1rem", boxShadow: 3 }}>{isSaving ? "Saving..." : "Save Answers"}</Button>
         </Box>
+        <Typography variant="caption" color="text.secondary" sx={{ display: "block", textAlign: "right", mt: 0.5 }}>
+            Remember to save your answers before leaving this page or generating a report.
+        </Typography>
     </Container>
     )
 }

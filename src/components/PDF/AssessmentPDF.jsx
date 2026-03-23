@@ -215,6 +215,17 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             s.report.hasTable &&
                             <SectionTablePDF tableInfo={s.report.tableInfo}/>
                         }
+                        {i === 0 && is360 && (
+                            <View style={{ paddingHorizontal: 45, marginTop: 20 }}>
+                                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1a3a5c', marginBottom: 8 }}>Response Rate</Text>
+                                <Text style={{ fontSize: 11.5, lineHeight: 1.5, color: '#333' }}>
+                                    You invited {data.totalInvited || 0} people to complete the survey. {reviewerCount} people responded.
+                                </Text>
+                                <Text style={{ fontSize: 11.5, lineHeight: 1.5, color: '#333', marginTop: 10 }}>
+                                    In the pages that follow, you can review your scores, question by question, to help you plan your development priorities.
+                                </Text>
+                            </View>
+                        )}
                         <PageFooter />
                     </Page>
                     {(filteredQuestions.length > 0 || reviewerResult) && (

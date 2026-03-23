@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { AssessmentContext } from "../../context/assessment";
-import { updateQuestionReviewerText } from "../../axios/axiosFunctions";
+import { updateQuestion } from "../../axios/axiosFunctions";
 import {
   Typography, Box, Tabs, Tab, Chip, Paper, Accordion, AccordionSummary,
   AccordionDetails, Alert, IconButton, Dialog, DialogTitle, DialogContent,
-  DialogActions, Button, TextField, Tooltip
+  DialogActions, Button, TextField, Tooltip, Divider
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoIcon from '@mui/icons-material/Info';
@@ -31,8 +31,11 @@ const Questions = () => {
   // Edit dialog state
   const [editOpen, setEditOpen] = useState(false);
   const [editQuestion, setEditQuestion] = useState(null);
+  const [editText, setEditText] = useState("");
   const [editReviewerText, setEditReviewerText] = useState("");
+  const [editOptions, setEditOptions] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [saveMsg, setSaveMsg] = useState("");
 
   const sections = currentAssessment?.sections || [];
 
@@ -53,24 +56,53 @@ const Questions = () => {
 
   const handleOpenEdit = (question) => {
     setEditQuestion(question);
+    setEditText(question.text || "");
     setEditReviewerText(question.reviewerText || "");
+    setEditOptions(question.options?.map(opt => ({ text: opt.text, category: opt.category })) || []);
+    setSaveMsg("");
     setEditOpen(true);
   };
 
   const handleCloseEdit = () => {
     setEditOpen(false);
     setEditQuestion(null);
+    setEditText("");
     setEditReviewerText("");
+    setEditOptions([]);
+    setSaveMsg("");
   };
 
-  const handleSaveReviewerText = async () => {
+  const handleOptionChange = (index, field, value) => {
+    const updated = [...editOptions];
+    updated[index] = { ...updated[index], [field]: value };
+    setEditOptions(updated);
+  };
+
+  const handleSaveQuestion = async () => {
     if (!editQuestion || !currentAssessment) return;
     setSaving(true);
-    const res = await updateQuestionReviewerText(currentAssessment._id, editQuestion.customId, editReviewerText);
+    setSaveMsg("");
+
+    const data = {
+      customId: editQuestion.customId,
+      text: editText,
+      reviewerText: editReviewerText,
+      options: editOptions.map((opt, i) => ({
+        index: i,
+        text: opt.text,
+        category: opt.category,
+      })),
+    };
+
+    const res = await updateQuestion(currentAssessment._id, data);
     setSaving(false);
+
     if (!res.error) {
       await refetchAssessments();
-      handleCloseEdit();
+      setSaveMsg("Question updated successfully");
+      setTimeout(() => handleCloseEdit(), 1500);
+    } else {
+      setSaveMsg(res.msg || "Error saving question");
     }
   };
 
@@ -174,7 +206,7 @@ const Questions = () => {
                   <Typography variant="subtitle1" fontWeight={500} sx={{ flex: 1 }}>
                     {q.text}
                   </Typography>
-                  <Tooltip title="Edit reviewer text">
+                  <Tooltip title="Edit question">
                     <IconButton
                       size="small"
                       onClick={(e) => { e.stopPropagation(); handleOpenEdit(q); }}
@@ -242,33 +274,80 @@ const Questions = () => {
         </Typography>
       )}
 
-      {/* Edit Reviewer Text Dialog */}
-      <Dialog open={editOpen} onClose={handleCloseEdit} maxWidth="sm" fullWidth>
-        <DialogTitle>Edit Reviewer Text</DialogTitle>
+      {/* Edit Question Dialog */}
+      <Dialog open={editOpen} onClose={handleCloseEdit} maxWidth="md" fullWidth>
+        <DialogTitle>
+          Edit Question
+          {editQuestion && (
+            <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+              ({editQuestion.customId})
+            </Typography>
+          )}
+        </DialogTitle>
         <DialogContent>
-          <Box sx={{ mb: 3, mt: 1 }}>
-            <Typography variant="caption" color="text.secondary" fontWeight={600}>
-              Original question:
+          <Box sx={{ mt: 1 }}>
+            {/* Question Text */}
+            <TextField
+              label="Question Text (Self-Assessment)"
+              multiline
+              rows={3}
+              fullWidth
+              value={editText}
+              onChange={(e) => setEditText(e.target.value)}
+              sx={{ mb: 3 }}
+            />
+
+            {/* Reviewer Text */}
+            <TextField
+              label="Reviewer Version (360 Assessment)"
+              placeholder="e.g. How would you describe {name}'s leadership style? Leave empty to use the original question."
+              multiline
+              rows={2}
+              fullWidth
+              value={editReviewerText}
+              onChange={(e) => setEditReviewerText(e.target.value)}
+              helperText="Use {name} as a placeholder for the reviewee's name. Leave empty to show the original question to reviewers."
+              sx={{ mb: 3 }}
+            />
+
+            {/* Options */}
+            <Divider sx={{ mb: 2 }} />
+            <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>
+              Answer Options
             </Typography>
-            <Typography variant="body1" sx={{ mt: 0.5 }}>
-              {editQuestion?.text}
-            </Typography>
+            {editOptions.map((opt, i) => (
+              <Box key={i} sx={{ display: "flex", gap: 2, mb: 2, alignItems: "center" }}>
+                <Chip label={`${i + 1}`} size="small" sx={{ minWidth: 30 }} />
+                <TextField
+                  label="Option Text"
+                  value={opt.text}
+                  onChange={(e) => handleOptionChange(i, "text", e.target.value)}
+                  fullWidth
+                  size="small"
+                />
+                <TextField
+                  label="Category"
+                  value={opt.category}
+                  onChange={(e) => handleOptionChange(i, "category", e.target.value)}
+                  size="small"
+                  sx={{ minWidth: 150 }}
+                  disabled
+                  helperText="Fixed"
+                />
+              </Box>
+            ))}
+
+            {saveMsg && (
+              <Alert severity={saveMsg.includes("Error") ? "error" : "success"} sx={{ mt: 2 }}>
+                {saveMsg}
+              </Alert>
+            )}
           </Box>
-          <TextField
-            label="Reviewer version"
-            placeholder="e.g. How would you describe {name}'s leadership style?"
-            multiline
-            rows={3}
-            fullWidth
-            value={editReviewerText}
-            onChange={(e) => setEditReviewerText(e.target.value)}
-            helperText="Use {name} as a placeholder for the reviewee's name. Leave empty to show the original question to reviewers."
-          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseEdit} color="secondary">Cancel</Button>
-          <Button onClick={handleSaveReviewerText} variant="contained" color="primary" disabled={saving}>
-            {saving ? "Saving..." : "Save"}
+          <Button onClick={handleSaveQuestion} variant="contained" color="primary" disabled={saving}>
+            {saving ? "Saving..." : "Save Changes"}
           </Button>
         </DialogActions>
       </Dialog>

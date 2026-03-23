@@ -72,6 +72,16 @@ export const verifyOTP = async (email, code) => {
   }
 };
 
+//USERS
+export const getUserById = async(userId)=>{
+  try {
+    const resp = await axios.get(BASE_URL + `user/${userId}`);
+    return resp.data;
+  } catch (error) {
+    return null;
+  }
+};
+
 //ASSESSMENTS
 
 export const getAllAssessments = async()=>{
@@ -92,6 +102,18 @@ export const updateQuestionReviewerText = async(assessmentId, customId, reviewer
   } catch (error) {
     return {
       msg: error.response?.data?.msg || "Error updating reviewer text",
+      error: true,
+    };
+  }
+}
+
+export const updateQuestion = async(assessmentId, data)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `assessment/${assessmentId}/question`, data);
+    return resp.data;
+  } catch (error) {
+    return {
+      msg: error.response?.data?.msg || "Error updating question",
       error: true,
     };
   }

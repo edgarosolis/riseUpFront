@@ -81,9 +81,9 @@ const Setup360 = () => {
         if (currentUser) fetchGroup360();
     }, [currentUser, groupId, currentAssessment]);
 
-    const showAlert = (msg, severity = "success") => {
+    const showAlert = (msg, severity = "success", duration = 4000) => {
         setAlert({ show: true, msg, severity });
-        setTimeout(() => setAlert({ show: false, msg: "", severity: "success" }), 4000);
+        setTimeout(() => setAlert({ show: false, msg: "", severity: "success" }), duration);
     };
 
     const updateFromResponse = (res) => {
@@ -208,7 +208,7 @@ const Setup360 = () => {
         const res = await generateReport360(group360._id);
         if (res.group360) {
             updateFromResponse(res);
-            showAlert("Report generated!");
+            showAlert("Report has been generated! You can review it using the View Report button.", "success", 8000);
         } else {
             showAlert(res.msg, "error");
         }
