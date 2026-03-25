@@ -2,7 +2,7 @@ import { Text, View } from '@react-pdf/renderer'
 import { stylesPDF } from '../PDF/Styles'
 import { renderRegistered } from '../../utils/renderRegistered'
 
-const BannerPDF = ({ title,subtitle, color, userName, completedAt }) => {
+const BannerPDF = ({ title,subtitle, color, userName, completedAt, reviewerCount }) => {
     const dateStr = completedAt ? new Date(completedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
     return (
     <View style={stylesPDF.heroBanner}>
@@ -11,6 +11,7 @@ const BannerPDF = ({ title,subtitle, color, userName, completedAt }) => {
             <Text style={stylesPDF.bannerSubtitle}>{subtitle}</Text>
             <Text style={stylesPDF.bannerText}>Prepared for: {userName}</Text>
             <Text style={stylesPDF.bannerText}>Date: {dateStr}</Text>
+            {reviewerCount > 0 && <Text style={stylesPDF.bannerText}># Reviewers: {reviewerCount}</Text>}
         </View>
     </View>
     )

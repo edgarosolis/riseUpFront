@@ -103,7 +103,7 @@ const Report360 = () => {
                 Back to Assessments
               </Button>
             </Box>
-            <WaveBannerReport title={currentAssessment?.title} subtitle="360-DEGREE REPORT" completedAt={userSubmission?.completedAt || userSubmission?.updatedAt} />
+            <WaveBannerReport title={currentAssessment?.title} subtitle="360-DEGREE REPORT" completedAt={userSubmission?.completedAt || userSubmission?.updatedAt} reviewerCount={reviewerCount} />
             <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"} />
             <ReportIntro is360={true} />
             <MiniBanner title={"Your Results"} />

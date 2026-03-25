@@ -4,7 +4,7 @@ import { BannerContainerReport } from "./BannerContainerReport"
 import { useContext } from "react"
 import { UserContext } from "../../context/user"
 
-const WaveBannerReport = ({title, subtitle, completedAt}) => {
+const WaveBannerReport = ({title, subtitle, completedAt, reviewerCount, userName}) => {
 
     const {currentUser} = useContext(UserContext);
     const yourDate = completedAt ? new Date(completedAt) : new Date();
@@ -38,11 +38,16 @@ const WaveBannerReport = ({title, subtitle, completedAt}) => {
                 </Typography>
                 <Box sx={{mt:5,mb:8}}>
                     <Typography variant="h6">
-                        Prepared for: {currentUser?.firstName} {currentUser?.lastName}
+                        Prepared for: {userName || `${currentUser?.firstName} ${currentUser?.lastName}`}
                     </Typography>
                     <Typography variant="h6">
                         Date: {yourDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                     </Typography>
+                    {reviewerCount > 0 && (
+                        <Typography variant="h6">
+                            # Reviewers: {reviewerCount}
+                        </Typography>
+                    )}
                 </Box>
               </Box>
             </Grid>

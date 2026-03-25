@@ -213,7 +213,9 @@ const Reports360 = () => {
             <Box sx={{ paddingBottom: "50px" }}>
               <WaveBannerReport
                 title={currentAssessment?.title}
-                subtitle={`360-DEGREE REPORT — ${selectedUser?.firstName} ${selectedUser?.lastName}`}
+                subtitle="360-DEGREE REPORT"
+                userName={`${selectedUser?.firstName} ${selectedUser?.lastName}`}
+                reviewerCount={reviewerCount}
               />
               <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"} />
               <ReportIntro is360={true} />
