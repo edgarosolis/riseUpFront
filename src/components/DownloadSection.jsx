@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer"
-import { Box, Button, CircularProgress, Container, Typography } from "@mui/material"
+import { Alert, Box, Button, CircularProgress, Container, Typography } from "@mui/material"
 import AssessmentPDF from "./PDF/AssessmentPDF"
 import PrintIcon from '@mui/icons-material/Print';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
-const DownloadSection = ({ fetchData, sections, userSubmission,userName }) => {
+const DownloadSection = ({ fetchData, sections, userSubmission, userName, is360 }) => {
 
   const [apiData, setApiData] = useState(null);
   const [isFetchingAPI, setIsFetchingAPI] = useState(false);
@@ -46,13 +46,13 @@ const DownloadSection = ({ fetchData, sections, userSubmission,userName }) => {
           >
             {isFetchingAPI ? "LOADING..." : "PREPARE PDF REPORT"}
           </Button>
-          <Typography variant="caption" display="block" sx={{ mt: 1, color: 'text.secondary' }}>
-            Download report - Your report will be generated with your latest answers.
-          </Typography>
+          <Alert severity="warning" sx={{ mt: 2, maxWidth: 600 }}>
+            Make sure you have saved all your reflection answers above before preparing the PDF. Unsaved answers will not appear in the report.
+          </Alert>
         </Box>
       ) : (
         <PDFDownloadLink 
-          document={<AssessmentPDF data={apiData} sections={sections} userName={userName}/>} 
+          document={<AssessmentPDF data={apiData} sections={sections} userName={userName} is360={is360}/>}
           fileName={`Report.pdf`}
         >
           {({ loading }) => (

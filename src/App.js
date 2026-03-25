@@ -9,6 +9,12 @@ import Section from './pages/Main/Section';
 import Report from './pages/Main/Report';
 import LoginAdmin from './pages/Auth/LoginAdmin';
 import Dashboard from './pages/Admin/Dashboard';
+import AssessmentMenu from './pages/Main/AssessmentMenu';
+import Welcome360 from './pages/Main/Welcome360';
+import Complete360 from './pages/Main/Complete360';
+import ReviewAssessment from './pages/Public/ReviewAssessment';
+import Report360 from './pages/Main/Report360';
+import Setup360 from './pages/Main/Setup360';
 
 function App() {
 
@@ -17,6 +23,8 @@ function App() {
   return (
     <>
       <Routes>
+      {/* Public review route — always accessible regardless of auth state */}
+      <Route path="/review/:token" element={<ReviewAssessment/>}/>
       {
         !currentUser &&
         <>
@@ -30,11 +38,17 @@ function App() {
       {
         currentUser && currentUser.rol === "user" && <>
           <Route path="/" element={<NavBar/>}>
-            <Route index element={<Welcome/>}/>
+            <Route index element={<AssessmentMenu/>}/>
+            <Route path="/welcome" element={<Welcome/>}/>
             <Route path="/section/:id" element={<Section/>}/>
             <Route path="/report" element={<Report/>}/>
-            <Route path='*' element={<Navigate to="/"/>}/>
+            <Route path="/group/:groupId/welcome" element={<Welcome360/>}/>
+            <Route path="/group/:groupId/section/:id" element={<Section/>}/>
+            <Route path="/group/:groupId/setup" element={<Setup360/>}/>
+            <Route path="/group/:groupId/complete" element={<Complete360/>}/>
+            <Route path="/group/:groupId/report" element={<Report360/>}/>
           </Route>
+          <Route path='*' element={<Navigate to="/"/>}/>
         </>
       }
       {
@@ -45,6 +59,8 @@ function App() {
             <Route path="/questions" element={<Dashboard active={"questions"}/>}/>
             <Route path="/section-texts" element={<Dashboard active={"sectionTexts"}/>}/>
             <Route path="/wonder-of-you" element={<Dashboard active={"wonderOfYou"}/>}/>
+            <Route path="/reports-360" element={<Dashboard active={"reports360"}/>}/>
+            <Route path="/email-notifications" element={<Dashboard active={"emailNotifications"}/>}/>
             <Route path="/guide" element={<Dashboard active={"guide"}/>}/>
           </Route>
           <Route path='*' element={<Navigate to="/"/>}/>

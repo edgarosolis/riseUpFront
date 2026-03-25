@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Alert, Box, Button, Dialog, DialogContent, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Dialog, DialogContent, Grid, IconButton, TextField, Typography, FormControlLabel, Switch } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteUser, updateUser } from "../../axios/axiosFunctions";
+import { deleteUser, updateUser, toggle360, getUserGroup360 } from "../../axios/axiosFunctions";
 
 const defaultUser = {
     firstName: "",
     lastName:"",
     email: "",
+    has360: false,
 }
 
 const ActionsUsers = ({row,api}) => {
@@ -18,7 +19,10 @@ const ActionsUsers = ({row,api}) => {
     const [alertMsg, setAlertMsg] = useState("");
     const [alertOpen, setAlertOpen] = useState(false);
     const [userForm, setUserForm] = useState(defaultUser);
-    const { firstName, lastName, email } = userForm;
+    const { firstName, lastName, email, has360 } = userForm;
+    const [toggling360, setToggling360] = useState(false);
+    const [openConfirm360, setOpenConfirm360] = useState(false);
+    const [reviewerCount, setReviewerCount] = useState(0);
 
     useEffect(() => {
         initUser();
@@ -29,6 +33,7 @@ const ActionsUsers = ({row,api}) => {
             firstName: row.firstName || "",
             lastName: row.lastName || "",
             email: row.email || "",
+            has360: row.has360 || false,
         });
     }
 
@@ -53,6 +58,37 @@ const ActionsUsers = ({row,api}) => {
         const {name,value} = e.target;
         setUserForm({...userForm,[name]:value});
     }
+
+    const handleToggle360 = async(e) => {
+        // If turning OFF, check for reviewers first
+        if (has360) {
+            const res = await getUserGroup360(row.id);
+            const count = res.group360?.reviewers?.length || 0;
+            if (count > 0) {
+                setReviewerCount(count);
+                setOpenConfirm360(true);
+                return;
+            }
+        }
+        await executeToggle360();
+    };
+
+    const executeToggle360 = async() => {
+        setOpenConfirm360(false);
+        setToggling360(true);
+        const res = await toggle360(row.id);
+        setToggling360(false);
+        if (!res.error) {
+            const newVal = !has360;
+            setUserForm({...userForm, has360: newVal});
+            api.updateRows([{id: row.id, has360: newVal}]);
+        } else {
+            setAlertMsg(res.msg);
+            setAlertSeverity("error");
+            setAlertOpen(true);
+            setTimeout(() => setAlertOpen(false), 2000);
+        }
+    };
 
     const handleCancelEdit = ()=>{
         initUser();
@@ -119,7 +155,19 @@ const ActionsUsers = ({row,api}) => {
                     <Grid size={6}>
                         <Typography variant="subtitle1">Email</Typography>
                         <TextField onChange={handleChange} onKeyDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} value={email} name="email" fullWidth/>
-                    </Grid> 
+                    </Grid>
+                    <Grid size={6} sx={{display:"flex", alignItems:"center"}}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={has360}
+                                    onChange={handleToggle360}
+                                    disabled={toggling360}
+                                />
+                            }
+                            label={toggling360 ? "Toggling..." : "Enable 360 Review"}
+                        />
+                    </Grid>
                     {
                         alertOpen &&
                         <Grid size={12}>
@@ -133,6 +181,18 @@ const ActionsUsers = ({row,api}) => {
                         <Button variant="contained" onClick={handleCancelEdit} sx={{marginLeft:"20px"}}>CANCEL</Button>
                     </Grid>
                 </Grid>
+            </DialogContent>
+        </Dialog>
+        <Dialog open={openConfirm360} onClose={() => setOpenConfirm360(false)}>
+            <DialogContent>
+                <Typography>
+                    This user has <strong>{reviewerCount}</strong> reviewer{reviewerCount !== 1 ? 's' : ''}. Disabling 360 will permanently delete all reviewers and their submissions.
+                </Typography>
+                <Typography sx={{marginTop:"10px", fontWeight:"bold"}}>Are you sure?</Typography>
+                <Box sx={{display:"flex",justifyContent:"center",marginTop:"20px"}}>
+                    <Button onClick={executeToggle360} variant="contained" color="error">YES, DISABLE</Button>
+                    <Button variant="contained" onClick={() => setOpenConfirm360(false)} sx={{marginLeft:"20px"}}>CANCEL</Button>
+                </Box>
             </DialogContent>
         </Dialog>
         <Dialog open={openDialogDelete} onClose={handleCloseDialogDelete}>

@@ -4,8 +4,11 @@ import Admins from "./Admins";
 import Questions from "./Questions";
 import SectionTexts from "./SectionTexts";
 import WonderOfYou from "./WonderOfYou";
-import Sidebar from "../../components/Sidebar";
+import Groups from "./Groups";
+import EmailNotifications from "./EmailNotifications";
 import PlatformGuide from "./PlatformGuide";
+import Reports360 from "./Reports360";
+import Sidebar from "../../components/Sidebar";
 
 const Dashboard = ({active = "home"}) => {
 
@@ -22,6 +25,9 @@ const Dashboard = ({active = "home"}) => {
                     {active === "questions" && <Questions/>}
                     {active === "sectionTexts" && <SectionTexts/>}
                     {active === "wonderOfYou" && <WonderOfYou/>}
+                    {active === "reports360" && <Reports360/>}
+                    {active === "groups" && <Groups/>}
+                    {active === "emailNotifications" && <EmailNotifications/>}
                     {active === "guide" && <PlatformGuide/>}
                 </Container>
             </Grid>

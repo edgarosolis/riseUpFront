@@ -1,23 +1,26 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Box, Button, Container, FormControlLabel, MobileStepper, Radio, RadioGroup, Typography } from "@mui/material";
+import { Box, Button, Container, Dialog, DialogContent, DialogActions, FormControlLabel, MobileStepper, Radio, RadioGroup, Typography } from "@mui/material";
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import ArrowCircleLeftRoundedIcon from '@mui/icons-material/ArrowCircleLeftRounded';
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
-import { saveProgress } from "../axios/axiosFunctions";
+import { saveProgress, updateSubmission360 } from "../axios/axiosFunctions";
 
-const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextSection }) => {
+const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextSection,groupId }) => {
 
     const {id}=useParams();
     const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(1);
     const [currentAnswers, setCurrentAnswers] = useState();
     const [options, setOptions] = useState([]);
+    const [showProcessingDialog, setShowProcessingDialog] = useState(false);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
     useEffect(() => {
         window.scrollTo({
             top: 0,
             left: 0,
-            behavior: 'smooth' // O 'instant' si prefieres que no haya animación
+            behavior: 'smooth'
         });
     }, [id]);
 
@@ -29,35 +32,44 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
        const shuffledOpt = shuffleArray(questions[activeStep-1].options);
        setOptions(shuffledOpt);
     }, [questions,activeStep])
-    
+
     const shuffleArray = (array) => {
         const newArray = [...array]; // Create a copy of the array
         let currentIndex = newArray.length;
         let randomIndex;
-      
+
         // While there remain elements to shuffle.
         while (currentIndex !== 0) {
           // Pick a remaining element.
           randomIndex = Math.floor(Math.random() * currentIndex);
           currentIndex--;
-      
+
           // Swap it with the current element.
           [newArray[currentIndex], newArray[randomIndex]] = [
             newArray[randomIndex],
             newArray[currentIndex],
           ];
         }
-      
+
         return newArray; // Return the new, shuffled array
     };
-    
+
 
     const handleNext = async() => {
-        
+
         const data = {
             answers:currentAnswers
         }
-        const res = await saveProgress(submissionId,data);
+
+        let res;
+        if(groupId){
+            // 360 group context: use Submission360 API
+            res = await updateSubmission360(submissionId, data);
+        } else {
+            // Normal assessment
+            res = await saveProgress(submissionId, data);
+        }
+
         if(res){
             setCurrentAnswers(res.submission.answers);
         }
@@ -65,21 +77,37 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
         if(activeStep===noQuestions){
             if(nextSection){
                 window.scrollTo(0, 0);
-                navigate(`/section/${nextSection._id}`);
+                if(groupId){
+                    navigate(`/group/${groupId}/section/${nextSection._id}`);
+                } else {
+                    navigate(`/section/${nextSection._id}`);
+                }
                 setActiveStep(1);
             }else{
-                window.scrollTo(0, 0);
-                const data = {
-                    finished : true
-                }
-                await saveProgress(submissionId,data);
-                navigate('/report');
+                // Last section, last question — show confirmation before submitting
+                setShowConfirmDialog(true);
             }
         }else{
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
     };
-    
+
+    const handleFinalSubmit = async () => {
+        setShowConfirmDialog(false);
+        window.scrollTo(0, 0);
+        const data = {
+            finished : true
+        }
+        if(groupId){
+            await updateSubmission360(submissionId, data);
+            setShowProcessingDialog(true);
+            setTimeout(() => navigate('/'), 3000);
+        } else {
+            await saveProgress(submissionId,data);
+            navigate('/report');
+        }
+    };
+
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
@@ -95,7 +123,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
     const handleChange = (e)=>{
         const {value} = e.target;
         const customId = questions[activeStep-1].customId;
-        const existsAnswer = currentAnswers.findIndex(a=>a.customId === customId); 
+        const existsAnswer = currentAnswers.findIndex(a=>a.customId === customId);
         if(existsAnswer !== -1){
             const newAnswers = [...currentAnswers];
             newAnswers[existsAnswer].value = value;
@@ -112,6 +140,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
     }
 
     return (
+    <>
     <Container maxWidth="lg" sx={{padding:{xs:"20px 16px", sm:"30px", md:"50px"}}}>
         <MobileStepper
             variant="progress"
@@ -138,7 +167,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
                 <Button endIcon={<ArrowCircleRightRoundedIcon/>} variant="contained" disabled={findValue(questions[activeStep-1].customId) === ""} color="secondary" onClick={handleNext} sx={{fontSize:{xs:"0.75rem", sm:"0.875rem"}, px:{xs:2, sm:3}}}>
                     {
                         activeStep===noQuestions ?
-                        "Complete"
+                        "Complete this Section"
                         :
                         "Next"
                     }
@@ -146,6 +175,38 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
             </Box>
         </Box>
     </Container>
+
+    <Dialog open={showConfirmDialog} onClose={() => setShowConfirmDialog(false)}>
+        <DialogContent sx={{ textAlign: "center", py: 4, px: 4 }}>
+            <Typography variant="h6" fontWeight={600} gutterBottom>
+                Are you sure you're ready to submit?
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+                You won't be able to change your answers.
+            </Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", pb: 3 }}>
+            <Button variant="outlined" onClick={() => setShowConfirmDialog(false)}>
+                Go Back
+            </Button>
+            <Button variant="contained" color="secondary" onClick={handleFinalSubmit}>
+                Submit
+            </Button>
+        </DialogActions>
+    </Dialog>
+
+    <Dialog open={showProcessingDialog}>
+        <DialogContent sx={{ textAlign: "center", py: 5, px: 4 }}>
+            <HourglassTopIcon sx={{ fontSize: 60, color: "#F4C542", mb: 2 }} />
+            <Typography variant="h5" fontWeight={600} gutterBottom>
+                Thank you!
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+                Your results are being processed. You will be notified when your report is ready.
+            </Typography>
+        </DialogContent>
+    </Dialog>
+    </>
     )
 }
 

@@ -1,17 +1,23 @@
 import { Text, View } from "@react-pdf/renderer"
-import { stylesPDF } from "../PDF/Styles"
-import { Html } from "react-pdf-html"
+import { renderRegistered } from "../../utils/renderRegistered"
 
-const ResultsPDF = ({sectionColor,title,currentSection}) => {
+const ResultsPDF = ({sectionColor,title,currentSection,noMargin}) => {
+    const rawContent = currentSection?.content?.content || '';
+    const paragraphs = rawContent.split(/\n+/).filter(p => p.trim());
     return (
-        <View style={[stylesPDF.cardContainer,{backgroundColor:sectionColor}]} wrap={false}>
-          <View style={stylesPDF.textColumn}>
-            <Text style={[stylesPDF.titleText,{color:"white"}]}>{title}</Text>
-            <Text style={[stylesPDF.titleText,{color:currentSection?.section==="s3"?"#F4C542":"black"}]}>{currentSection?.content.title}</Text>
-            <Html style={[stylesPDF.normalText,{color:currentSection?.section==="s1"?"black":"white"}]}>
-                {currentSection?.content?.content}
-            </Html>
-          </View>          
+        <View wrap={false} style={[
+          { borderRadius: 8, overflow: 'hidden' },
+          noMargin ? {} : { marginHorizontal: 30, marginVertical: 8 }
+        ]}>
+          <View style={{ backgroundColor: sectionColor, paddingHorizontal: 16, paddingVertical: 10 }}>
+            <Text style={{ fontSize: 10, color: 'rgba(255,255,255,0.8)', fontWeight: 'bold' }}>{title}</Text>
+            <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold', marginTop: 2 }}>{renderRegistered(currentSection?.content.title)}</Text>
+          </View>
+          <View style={{ backgroundColor: '#FFF8E1', paddingHorizontal: 16, paddingVertical: 10 }}>
+            {paragraphs.map((p, i) => (
+              <Text key={i} style={{ fontSize: 11.5, lineHeight: 1.25, color: '#333', marginTop: i > 0 ? 8 : 0 }}>{renderRegistered(p.trim())}</Text>
+            ))}
+          </View>
         </View>
     )
 }

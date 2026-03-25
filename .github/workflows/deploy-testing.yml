@@ -1,0 +1,67 @@
+name: Deploy Frontend (Testing)
+
+on:
+  push:
+    branches: [testing]
+
+jobs:
+  build-and-deploy:
+    name: Deploy Testing Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create .env file
+        run: |
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> .env
+          echo "REACT_APP_FRONT_URL=${{ secrets.REACT_APP_FRONT_URL }}" >> .env
+
+      - name: Build the app
+        run: CI=false npm run build
+
+      - name: Deploy build to testing server
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete --exclude="node_modules/" --exclude=".env"
+          path: build/*
+          remote_path: /home/ubuntu/riseup-frontend-testing
+          remote_host: "${{ secrets.SSH_HOST }}"
+          remote_user: ubuntu
+          remote_key: "${{ secrets.SSH_PRIVATE_KEY }}"
+
+      - name: Restore video files from production (LFS workaround)
+        uses: appleboy/ssh-action@master
+        with:
+          host: "${{ secrets.SSH_HOST }}"
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Copying video files from production build..."
+            if [ -d /home/ubuntu/riseup-frontend/assets/videos ]; then
+              mkdir -p /home/ubuntu/riseup-frontend-testing/assets/videos
+              cp /home/ubuntu/riseup-frontend/assets/videos/*.mp4 /home/ubuntu/riseup-frontend-testing/assets/videos/ 2>/dev/null || true
+              cp /home/ubuntu/riseup-frontend/assets/videos/*.mov /home/ubuntu/riseup-frontend-testing/assets/videos/ 2>/dev/null || true
+              echo "Video files restored:"
+              ls -la /home/ubuntu/riseup-frontend-testing/assets/videos/
+            else
+              echo "No production video directory found, skipping"
+            fi
+
+      - name: Verify deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: "${{ secrets.SSH_HOST }}"
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Testing frontend deployed at $(date)"
+            ls -la /home/ubuntu/riseup-frontend-testing/index.html

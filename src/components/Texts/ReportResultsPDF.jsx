@@ -1,40 +1,84 @@
 import { Text, View } from "@react-pdf/renderer";
 import { stylesPDF } from "../PDF/Styles";
 
-const ReportResultsPDF = ({ reportInfo }) => {
-  if (!reportInfo || reportInfo.length < 3) return null;
+const cardColors = {
+  sphere: "#FFC700",
+  fiveFold: "#CDA310",
+  dna: "#907000",
+};
+
+const ResultsColumn = ({ reportInfo, title, bgColor }) => {
+  if (!reportInfo || !Array.isArray(reportInfo) || reportInfo.length === 0) return null;
+
+  const sphere = reportInfo.find(r => r.section === "s1");
+  const fiveFold = reportInfo.find(r => r.section === "s2");
+  const biblicalDna = reportInfo.find(r => r.section === "s3");
+
+  const cards = [
+    { data: sphere, label: "Sphere:", color: cardColors.sphere },
+    { data: fiveFold, label: "5-Fold Leaning:", color: cardColors.fiveFold },
+    { data: biblicalDna, label: "Biblical DNA:", color: cardColors.dna },
+  ].filter(c => c.data);
 
   return (
-    <View style={stylesPDF.resultsRow} wrap={false}>
-      {/* Bloque 1: Sphere */}
-      <View style={stylesPDF.resultBlock}>
-        <Text style={[stylesPDF.resultLabel, { color: "#D4AF37" }]}>
-          Sphere:
-        </Text>
-        <Text style={stylesPDF.resultValue}>
-          {reportInfo[0].content.title || "N/A"}
-        </Text>
-      </View>
+    <View style={[stylesPDF.resultsColumn, bgColor ? { backgroundColor: bgColor } : {}]}>
+      {title && (
+        <Text style={stylesPDF.resultsTitle}>{title}</Text>
+      )}
+      {cards.map((card, i) => (
+        <View key={i} style={stylesPDF.resultCardStacked}>
+          <View style={[stylesPDF.resultPill, { backgroundColor: card.color }]}>
+            <Text style={stylesPDF.resultPillText}>{card.label}</Text>
+          </View>
+          <Text style={stylesPDF.resultValueStacked}>
+            {card.data.content?.title || "N/A"}
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+};
 
-      {/* Bloque 2: 5-Fold Leaning */}
-      <View style={stylesPDF.resultBlock}>
-        <Text style={[stylesPDF.resultLabel, { color: "#F4C542" }]}>
-          5-Fold Leaning:
-        </Text>
-        <Text style={stylesPDF.resultValue}>
-          {reportInfo[1].content.title || "N/A"}
-        </Text>
-      </View>
+const ReportResultsPDF = ({ reportInfo, title }) => {
+  if (!reportInfo || !Array.isArray(reportInfo) || reportInfo.length === 0) return null;
 
-      {/* Bloque 3: Biblical DNA */}
-      <View style={stylesPDF.resultBlock}>
-        <Text style={[stylesPDF.resultLabel, { color: "#FFC700" }]}>
-          Biblical DNA:
-        </Text>
-        <Text style={stylesPDF.resultValue}>
-          {reportInfo[2].content.title || "N/A"}
-        </Text>
+  const sphere = reportInfo.find(r => r.section === "s1");
+  const fiveFold = reportInfo.find(r => r.section === "s2");
+  const biblicalDna = reportInfo.find(r => r.section === "s3");
+
+  const cards = [
+    { data: sphere, label: "Sphere:", color: cardColors.sphere },
+    { data: fiveFold, label: "5-Fold Leaning:", color: cardColors.fiveFold },
+    { data: biblicalDna, label: "Biblical DNA:", color: cardColors.dna },
+  ].filter(c => c.data);
+
+  return (
+    <View style={stylesPDF.resultsContainer} wrap={false}>
+      {title && (
+        <Text style={stylesPDF.resultsTitle}>{title}</Text>
+      )}
+      <View style={stylesPDF.resultsRow}>
+        {cards.map((card, i) => (
+          <View key={i} style={stylesPDF.resultCard}>
+            <View style={[stylesPDF.resultPill, { backgroundColor: card.color }]}>
+              <Text style={stylesPDF.resultPillText}>{card.label}</Text>
+            </View>
+            <Text style={stylesPDF.resultValue}>
+              {card.data.content?.title || "N/A"}
+            </Text>
+          </View>
+        ))}
       </View>
+    </View>
+  );
+};
+
+export const ReportResultsSideBySidePDF = ({ selfReport, reviewerReport }) => {
+  return (
+    <View style={stylesPDF.resultsSideBySide} wrap={false}>
+      <ResultsColumn reportInfo={selfReport} title="How you see yourself:" bgColor="#FFF8E1" />
+      <View style={stylesPDF.resultsDivider} />
+      <ResultsColumn reportInfo={reviewerReport} title="How others see you:" bgColor="#F5F0E1" />
     </View>
   );
 };

@@ -75,7 +75,7 @@ export const stylesPDF = StyleSheet.create({
       paddingHorizontal: 20,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center', 
+      alignItems: 'flex-start',
       borderRadius: 5
   },
   textColumn: {
@@ -185,30 +185,91 @@ export const stylesPDF = StyleSheet.create({
     fontSize: 11,
     marginTop: 5,
   },
+  resultsContainer: {
+    backgroundColor: "#FFF8E1",
+    paddingVertical: 16,
+    paddingHorizontal: 40,
+    marginVertical: 4,
+  },
+  resultsTitle: {
+    fontSize: 15,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 12,
+    color: "#333",
+  },
   resultsRow: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "flex-start",
-    paddingVertical: 30,
-    paddingHorizontal: 40,
-    marginVertical: 10,
+    gap: 10,
+  },
+  resultCard: {
+    flexDirection: "column",
+    width: "31%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+  },
+  resultsSideBySide: {
+    flexDirection: "row",
+    marginHorizontal: 30,
+    marginTop: 20,
+  },
+  resultsColumn: {
+    flex: 1,
+    borderRadius: 10,
+    paddingVertical: 18,
+    paddingHorizontal: 16,
+    gap: 10,
+  },
+  resultsDivider: {
+    width: 2,
+    backgroundColor: "#D4AF37",
+    marginHorizontal: 8,
+    borderRadius: 1,
+  },
+  resultCardStacked: {
+    flexDirection: "column",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  resultValueStacked: {
+    fontSize: 13,
+    fontWeight: "bold",
+    color: "#383838",
+    marginTop: 2,
+  },
+  resultPill: {
+    alignSelf: "flex-start",
+    borderRadius: 12,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    marginBottom: 8,
+  },
+  resultPillText: {
+    fontSize: 10,
+    fontWeight: "bold",
+    color: "#FFFFFF",
   },
   resultBlock: {
     flexDirection: "column",
-    alignItems: "center", // Centra el texto dentro de cada bloque
-    width: "30%", // Reparte el espacio equitativamente
+    alignItems: "center",
+    width: "30%",
   },
   resultLabel: {
-    fontSize: 14, // Equivalente a un h4 pequeño en PDF
-    fontWeight: "bold",
-    marginBottom: 5,
-    textAlign: "center",
-  },
-  resultValue: {
     fontSize: 12,
     fontWeight: "bold",
+    marginBottom: 4,
+    minHeight: 16,
+  },
+  resultValue: {
+    fontSize: 11,
+    fontWeight: "bold",
     color: "#383838",
-    textAlign: "center",
   },
   imageContainer: {
     display: 'flex',
@@ -219,8 +280,17 @@ export const stylesPDF = StyleSheet.create({
     marginHorizontal: 'auto',
   },
   outroImage: {
-    width: 300,              // Adjust as needed
+    width: 300,
     height: 'auto',
     borderRadius: 10,
-  }
+  },
+  pageNumber: {
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    fontSize: 9,
+    color: '#888888',
+  },
 })

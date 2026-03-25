@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { getAllAdmins, createAdmin } from "../../axios/axiosFunctions";
 import { DataGrid } from '@mui/x-data-grid';
-import { Typography, Button, Dialog, DialogTitle, DialogContent, Box, Grid, TextField, Alert } from "@mui/material";
-import { PersonAdd } from "@mui/icons-material";
+import { Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, Box, Grid, TextField, Alert } from "@mui/material";
+import { PersonAdd, ContentCopy } from "@mui/icons-material";
 import { adminColumns } from "../../utils/adminCols";
 
 const Admins = () => {
@@ -13,6 +13,11 @@ const Admins = () => {
   const [msg, setMsg] = useState("");
   const [showMsg, setShowMsg] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("error");
+
+  // Credentials dialog (shown after creating admin)
+  const [credsOpen, setCredsOpen] = useState(false);
+  const [credsData, setCredsData] = useState({ email: "", password: "", emailSent: false });
+  const [copiedCreds, setCopiedCreds] = useState(false);
 
   const fetchAdmins = async()=>{
     const admins = await getAllAdmins();
@@ -55,15 +60,24 @@ const Admins = () => {
       return;
     }
 
-    setMsg(res.msg);
-    setAlertSeverity("success");
-    setShowMsg(true);
     fetchAdmins();
-    setTimeout(() => {
-      setForm({firstName:"",lastName:"",email:""});
-      setShowMsg(false);
-      setOpenCreateDialog(false);
-    }, 2000);
+    setOpenCreateDialog(false);
+    setForm({firstName:"",lastName:"",email:""});
+
+    // Show credentials dialog
+    setCredsData({
+      email: form.email,
+      password: res.tempPassword || "",
+      emailSent: res.emailSent || false,
+    });
+    setCredsOpen(true);
+    setCopiedCreds(false);
+  };
+
+  const handleCopyCredentials = () => {
+    const text = `Email: ${credsData.email}\nPassword: ${credsData.password}\nLogin at: ${window.location.origin}/admin`;
+    navigator.clipboard.writeText(text);
+    setCopiedCreds(true);
   };
 
   return (
@@ -112,6 +126,47 @@ const Admins = () => {
             </Grid>
           </Box>
         </DialogContent>
+      </Dialog>
+
+      {/* Credentials Dialog */}
+      <Dialog open={credsOpen} onClose={() => setCredsOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>Admin Account Created</DialogTitle>
+        <DialogContent>
+          {!credsData.emailSent && (
+            <Alert severity="warning" sx={{ mb: 2 }}>
+              The welcome email could not be sent. Please share these credentials manually.
+            </Alert>
+          )}
+          {credsData.emailSent && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              A welcome email with login credentials has been sent.
+            </Alert>
+          )}
+          <Box sx={{ backgroundColor: "#f5f5f5", borderRadius: 2, p: 3, mt: 1 }}>
+            <Typography variant="body1" sx={{ mb: 1 }}>
+              <strong>Email:</strong> {credsData.email}
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 1 }}>
+              <strong>Password:</strong> {credsData.password}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Login URL: {window.location.origin}/admin
+            </Typography>
+          </Box>
+          <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 2 }}>
+            Save these credentials — the password cannot be retrieved later. The admin can reset it from the login page.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            startIcon={<ContentCopy />}
+            onClick={handleCopyCredentials}
+            color={copiedCreds ? "success" : "primary"}
+          >
+            {copiedCreds ? "Copied!" : "Copy Credentials"}
+          </Button>
+          <Button variant="contained" onClick={() => setCredsOpen(false)}>Done</Button>
+        </DialogActions>
       </Dialog>
     </>
   )

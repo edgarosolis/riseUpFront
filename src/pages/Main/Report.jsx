@@ -12,14 +12,18 @@ import SectionsReport from "../../components/SectionsReport"
 import ReportNextSteps from "../../components/Texts/ReportNextSteps"
 import ReportLeader from "../../components/Texts/ReportLeader"
 import { UserContext } from "../../context/user"
+import { useNavigate } from "react-router"
 import { getActiveUserSubmission, getReportInfo } from "../../axios/axiosFunctions"
 import DownloadSection from "../../components/DownloadSection"
 import Separator from "../../components/Banners/Separator"
 import SectionReportBanner from "../../components/Banners/SectionReportBanner"
 import Results from "../../components/Cards/Results"
+import { Button } from "@mui/material"
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 const Report = () => {
 
+  const navigate = useNavigate();
   const {currentAssessment} = useContext(AssessmentContext);
   const {currentUser} = useContext(UserContext);
   const [reportInfo, setReportInfo] = useState();
@@ -63,6 +67,11 @@ const Report = () => {
       </Box>
       :
       <Box sx={{paddingBottom:"50px"}}>
+        <Box sx={{ px: { xs: 2, md: 4 }, pt: 2 }}>
+          <Button startIcon={<ArrowBackIcon />} onClick={() => navigate("/")} sx={{ mb: 1 }}>
+            Back to Assessments
+          </Button>
+        </Box>
         <WaveBannerReport title={currentAssessment?.title} completedAt={userSubmission?.completedAt || userSubmission?.updatedAt}/>
         <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"}/>
         <ReportIntro/>
@@ -79,7 +88,7 @@ const Report = () => {
           ))
         }
         <Separator sectionColor={"#6E5600"}/>
-        <SectionReportBanner sectionColor={"#6E5600"} title={"The Wonder of You (FIVE-FOLD + BIBLICAL DNA)"} index={3} intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`}/>
+        <SectionReportBanner sectionColor={"#6E5600"} title={"The Wonder of You (FIVE-FOLD PERSONALITY + BIBLICAL DNA)"} index={3} intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`}/>
         <Results sectionColor={"#6E5600"} title={"The Wonder of You"} currentSection={finalSection()}/>
         <MiniBanner title={"Next Steps: A Spiritual Response."}/>
         <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={()=>callReportData(true)}/>
