@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { getAllGroup360sWithReports, getReport360Info } from "../../axios/axiosFunctions";
+import { getAllGroup360sWithReports, getReport360Info, getActiveUserSubmission } from "../../axios/axiosFunctions";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   Typography,
@@ -28,6 +28,7 @@ import ReportLeader from "../../components/Texts/ReportLeader";
 import Separator from "../../components/Banners/Separator";
 import SectionReportBanner from "../../components/Banners/SectionReportBanner";
 import Results from "../../components/Cards/Results";
+import DownloadSection from "../../components/DownloadSection";
 import { Container } from "@mui/material";
 
 const Reports360 = () => {
@@ -42,6 +43,7 @@ const Reports360 = () => {
   const [reportInfo, setReportInfo] = useState(null);
   const [reviewerReport, setReviewerReport] = useState(null);
   const [reviewerCount, setReviewerCount] = useState(0);
+  const [userSubmission, setUserSubmission] = useState(null);
 
   const fetchReports = async () => {
     setLoading(true);
@@ -57,6 +59,7 @@ const Reports360 = () => {
         completedReviewers: g.reviewers?.filter((r) => r.status === "completed").length || 0,
         updatedAt: g.updatedAt,
         group360Id: g._id,
+        revieweeId: g.reviewee?._id,
       }));
       setRows(tempRows);
     }
@@ -73,14 +76,41 @@ const Reports360 = () => {
     setReportLoading(true);
     setReportInfo(null);
     setReviewerReport(null);
+    setUserSubmission(null);
 
-    const res = await getReport360Info(row.group360Id);
+    const [res, subRes] = await Promise.all([
+      getReport360Info(row.group360Id),
+      currentAssessment?._id && row.revieweeId
+        ? getActiveUserSubmission(currentAssessment._id, row.revieweeId)
+        : Promise.resolve(null),
+    ]);
+
     if (res) {
       setReportInfo(res.report || res.selfReport);
       setReviewerReport(res.reviewerReport || null);
       setReviewerCount(res.reviewerCount || 0);
     }
+    if (subRes?.submission) {
+      setUserSubmission(subRes.submission);
+    }
     setReportLoading(false);
+  };
+
+  const fetchReportDataForPDF = async () => {
+    const [res, subRes] = await Promise.all([
+      getReport360Info(selectedUser?.group360Id),
+      currentAssessment?._id && selectedUser?.revieweeId
+        ? getActiveUserSubmission(currentAssessment._id, selectedUser.revieweeId)
+        : Promise.resolve(null),
+    ]);
+    const report = res?.report || res?.selfReport || null;
+    const submission = subRes?.submission || userSubmission || null;
+    return {
+      report,
+      submission,
+      reviewerReport: res?.reviewerReport || null,
+      reviewerCount: res?.reviewerCount || 0,
+    };
   };
 
   const handleCloseReport = () => {
@@ -88,6 +118,7 @@ const Reports360 = () => {
     setSelectedUser(null);
     setReportInfo(null);
     setReviewerReport(null);
+    setUserSubmission(null);
   };
 
   const finalSection = () => {
@@ -260,6 +291,13 @@ const Reports360 = () => {
               )}
               <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
               <ReportLeader />
+              <DownloadSection
+                sections={currentAssessment?.sections}
+                fetchData={fetchReportDataForPDF}
+                userSubmission={userSubmission}
+                userName={`${selectedUser?.firstName || ""} ${selectedUser?.lastName || ""}`}
+                is360={true}
+              />
             </Box>
           )}
         </DialogContent>
