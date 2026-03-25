@@ -89,6 +89,15 @@ const EmailNotifications = () => {
                 </div>
                 ${expiryText ? `<p style="color:#999;font-size:14px;margin-top:30px;">${expiryText}</p>` : ""}
                 ${footerText ? `<p style="color:#999;font-size:12px;margin-top:20px;">${footerText}</p>` : ""}`;
+        } else if (slug === "admin-welcome") {
+            inner = `
+                ${greeting ? `<p style="color:#666;font-size:16px;margin-bottom:10px;">${greeting.replace("{{firstName}}", "John")}</p>` : ""}
+                ${processedBody.replace(/\{\{firstName\}\}/g, "John")}
+                <div style="background-color:#fff;border:2px solid #007bff;border-radius:8px;padding:20px;margin:20px 0;text-align:left;">
+                    <p style="margin:5px 0;"><strong>Email:</strong> john@example.com</p>
+                    <p style="margin:5px 0;"><strong>Password:</strong> abc12345</p>
+                </div>
+                ${footerText ? `<p style="color:#999;font-size:12px;margin-top:20px;">${footerText}</p>` : ""}`;
         } else {
             inner = `
                 ${greeting ? `<p style="color:#666;font-size:16px;margin-bottom:10px;">${greeting.replace("{{reviewerName}}", "John")}</p>` : ""}
@@ -147,7 +156,9 @@ const EmailNotifications = () => {
         }, 2000);
     };
 
-    const is360 = selectedTemplate?.slug !== "otp-login";
+    const is360 = selectedTemplate?.slug?.startsWith("360-");
+    const isAdminWelcome = selectedTemplate?.slug === "admin-welcome";
+    const isOtp = selectedTemplate?.slug === "otp-login";
 
     return (
         <>
@@ -294,8 +305,8 @@ const EmailNotifications = () => {
                                     </Typography>
                                 </Grid>
 
-                                {/* Greeting - only for 360 templates */}
-                                {is360 && (
+                                {/* Greeting - for 360 and admin-welcome templates */}
+                                {(is360 || isAdminWelcome) && (
                                     <Grid size={12}>
                                         <Typography variant="subtitle2" fontWeight={600} gutterBottom>
                                             Greeting
@@ -333,7 +344,7 @@ const EmailNotifications = () => {
                                 </Grid>
 
                                 {/* Button Text - only for 360 templates */}
-                                {is360 && (
+                                {is360 && !isAdminWelcome && (
                                     <Grid size={12}>
                                         <Typography variant="subtitle2" fontWeight={600} gutterBottom>
                                             Button Text
@@ -352,7 +363,7 @@ const EmailNotifications = () => {
                                 )}
 
                                 {/* Expiry Text - only for OTP */}
-                                {!is360 && (
+                                {isOtp && (
                                     <Grid size={12}>
                                         <Typography variant="subtitle2" fontWeight={600} gutterBottom>
                                             Expiry Message
