@@ -204,9 +204,24 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 const excludeList = questionsToExclude360[s.customId] || [];
                 const filteredQuestions = s.report.questions.filter(q => !excludeList.some(ex => q.text?.includes(ex)));
 
+                const allQs = [
+                    { text: "What resonates most when you review how you see yourself and how others see you?", id: `${s.customId}-reflect-1` },
+                    { text: "If others see you differently, what insights can you gain?", id: `${s.customId}-reflect-2` },
+                    ...(s.customId === 's1' ? [{ text: "What dreams or nudges keep coming up when you pray about where God wants to use you?", id: `${s.customId}-reflect-3` }] : []),
+                    ...filteredQuestions.map(q => ({ text: q.text, id: q.customId })),
+                ];
+
+                const BlankLines = () => (
+                    <View style={{ marginTop: 4 }}>
+                        {[...Array(3)].map((_, li) => (
+                            <View key={li} style={{ borderBottomWidth: 0.5, borderBottomColor: '#999', marginBottom: 14, width: '100%' }} />
+                        ))}
+                    </View>
+                );
+
                 return (
                 <Fragment key={i}>
-                    {/* Section intro page - always has white space */}
+                    {/* Section intro page */}
                     <Page style={{ paddingBottom: 110 }}>
                         <BgLogo />
                         <MiniBannerPDF title={""} color={s.color}/>
@@ -228,7 +243,8 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                         )}
                         <PageFooter />
                     </Page>
-                    {(filteredQuestions.length > 0 || reviewerResult) && (
+                    {/* Reflection page: boxes + questions flow together */}
+                    {(allQs.length > 0 || reviewerResult) && (
                         <Page style={{ paddingBottom: 110 }}>
                             <BgLogo />
                             <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
@@ -242,7 +258,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                 )}
                             </View>
                             {reviewerResult ? (
-                                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }}>
+                                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }} wrap={false}>
                                     <View style={{ flex: 1 }}>
                                         <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult} noMargin />
                                     </View>
@@ -253,34 +269,23 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                             ) : (
                                 <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
                             )}
+                            {/* Questions start right below the boxes */}
+                            {allQs.map((q, qi) => {
+                                const answer = data.submission?.answers?.find(a => a.customId === q.id)?.value || "";
+                                return (
+                                    <View key={qi} style={{ paddingHorizontal: 45, paddingTop: qi === 0 ? 15 : 10 }} wrap={false}>
+                                        <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25, marginBottom: 4 }}>{q.text}</Text>
+                                        {answer ? (
+                                            <Text style={{ fontSize: 11.5, lineHeight: 1.25 }}>{answer}</Text>
+                                        ) : (
+                                            <BlankLines />
+                                        )}
+                                    </View>
+                                );
+                            })}
                             <PageFooter />
                         </Page>
                     )}
-                    {/* Reflection questions on their own page(s) */}
-                    {(() => {
-                        const allQs = [
-                            { text: "What resonates most when you review how you see yourself and how others see you?", id: `${s.customId}-reflect-1` },
-                            { text: "If others see you differently, what insights can you gain?", id: `${s.customId}-reflect-2` },
-                            ...(s.customId === 's1' ? [{ text: "What dreams or nudges keep coming up when you pray about where God wants to use you?", id: `${s.customId}-reflect-3` }] : []),
-                            ...filteredQuestions.map(q => ({ text: q.text, id: q.customId })),
-                        ];
-                        if (allQs.length === 0) return null;
-                        return (
-                            <Page style={{ paddingBottom: 110 }}>
-                                <BgLogo />
-                                <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color }]}>
-                                    <Text style={[stylesPDF.bannerTitle2, { fontSize: 20 }]}>{getReflectionTitle()} — Questions</Text>
-                                </View>
-                                {allQs.map((q, qi) => (
-                                    <View key={qi} style={{ paddingHorizontal: 45, paddingTop: 10 }}>
-                                        <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25, marginBottom: 4 }}>{q.text}</Text>
-                                        <Text style={{ fontSize: 11.5, lineHeight: 1.25 }}>{(data.submission.answers.find(a=>a.customId === q.id))?.value || ""}</Text>
-                                    </View>
-                                ))}
-                                <PageFooter />
-                            </Page>
-                        );
-                    })()}
                 </Fragment>
                 );
             })
