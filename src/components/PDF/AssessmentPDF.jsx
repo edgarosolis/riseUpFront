@@ -250,12 +250,6 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                     {(allQs.length > 0 || reviewerResult) && (
                         <Page style={{ paddingBottom: 110 }}>
                             <BgLogo />
-                            {/* Fixed header — only visible on overflow pages (subPageNumber > 0) */}
-                            <View fixed render={({ subPageNumber }) => subPageNumber > 0 ? (
-                                <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color }]}>
-                                    <Text style={[stylesPDF.bannerTitle2, { fontSize: 20 }]}>{getReflectionTitle()} — Questions</Text>
-                                </View>
-                            ) : null} />
                             <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                                 <View style={{ flex: 1 }}>
                                     <Text style={[stylesPDF.bannerTitle2, { fontSize: 23.8 }]}>{getReflectionTitle()}</Text>
