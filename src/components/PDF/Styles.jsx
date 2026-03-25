@@ -116,10 +116,10 @@ export const stylesPDF = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTextColumn: {
-    width: '60%', 
+    width: '65%',
   },
   sectionImageColumn: {
-    width: '40%',
+    width: '35%',
     alignItems: 'flex-end', 
   },
   sectionNumber: {
