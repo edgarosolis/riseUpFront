@@ -47,6 +47,9 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
             "How do people experience transformation",
             "Is there a part of your leadership style",
         ],
+        s3: [
+            "What aspect of your leadership feels uniquely anointed",
+        ],
     };
 
     const getFilteredQuestions = () => {

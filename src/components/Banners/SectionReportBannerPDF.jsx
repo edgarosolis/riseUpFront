@@ -23,7 +23,7 @@ const SectionReportBannerPDF = ({ sectionColor, index, title, subtitle, intro, i
                 {title}
             </Text>
             {subtitle && (
-                <Text style={[stylesPDF.title, { fontSize: 18, color: '#555555', marginTop: 2 }]}>
+                <Text style={[stylesPDF.title, { fontSize: 15, color: '#555555', marginTop: 2 }]}>
                     {subtitle}
                 </Text>
             )}

@@ -291,7 +291,7 @@ const Reports360 = () => {
               ) : (
                 finalSection() && <Results sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={finalSection()} />
               )}
-              <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
+              <MiniBanner title={"Now Rise and walk in His purpose."} />
               <ReportLeader />
               <DownloadSection
                 sections={currentAssessment?.sections}

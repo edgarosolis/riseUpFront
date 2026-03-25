@@ -158,7 +158,10 @@ const Report360 = () => {
               finalSection() && <Results sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={finalSection()} />
             )}
             <QuestionsReportSections
-              questions={[{ customId: "r1-reflect-1", text: "Wonder of You Reflection: As you read the descriptions above, highlight what resonates most for you and summarize it here." }]}
+              questions={[
+                { customId: "r1-reflect-1", text: "What resonated the most for you in the Wonder of You section?" },
+                { customId: "r1-reflect-2", text: "What do you still want to explore for yourself?" },
+              ]}
               answers={userSubmission?.answers}
               submissionId={userSubmission?._id}
               callUserSubmission={() => callReportData(true)}
@@ -166,7 +169,7 @@ const Report360 = () => {
             />
             <MiniBanner title={"Next Steps: A Spiritual Response."} />
             <ReportNextSteps answers={userSubmission?.answers} submissionId={userSubmission?._id} refreshData={() => callReportData(true)} saveFn={saveProgress} />
-            <MiniBanner title={"You Are A Leader"} subtitle={"Now Step into It"} />
+            <MiniBanner title={"Now Rise and walk in His purpose."} />
             <ReportLeader/>
             <DownloadSection sections={currentAssessment?.sections} fetchData={callReportData} userSubmission={userSubmission} userName={`${currentUser?.firstName || ""} ${currentUser?.lastName || ""}`} is360={true} />
           </Box>

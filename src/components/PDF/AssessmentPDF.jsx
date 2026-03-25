@@ -211,6 +211,9 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                         "How do people experience transformation",
                         "Is there a part of your leadership style",
                     ],
+                    s3: [
+                        "What aspect of your leadership feels uniquely anointed",
+                    ],
                 };
                 const excludeList = questionsToExclude360[s.customId] || [];
                 const filteredQuestions = s.report.questions.filter(q => !excludeList.some(ex => q.text?.includes(ex)));
@@ -248,7 +251,11 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                         <Page style={{ paddingBottom: 110 }}>
                             <BgLogo />
                             {/* Fixed header — only visible on overflow pages (subPageNumber > 0) */}
-                            <Text style={[stylesPDF.bannerTitle2, { fontSize: 20, backgroundColor: s.color, paddingVertical: 12, paddingHorizontal: 20 }]} fixed render={({ subPageNumber }) => subPageNumber > 0 ? `${getReflectionTitle()} — Questions` : ''} />
+                            <View fixed render={({ subPageNumber }) => subPageNumber > 0 ? (
+                                <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color }]}>
+                                    <Text style={[stylesPDF.bannerTitle2, { fontSize: 20 }]}>{getReflectionTitle()} — Questions</Text>
+                                </View>
+                            ) : null} />
                             <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: s.color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                                 <View style={{ flex: 1 }}>
                                     <Text style={[stylesPDF.bannerTitle2, { fontSize: 23.8 }]}>{getReflectionTitle()}</Text>
@@ -312,13 +319,41 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                 <ResultsPDF sectionColor={"#6E5600"} title={is360 ? "How do you see yourself:" : "The Wonder of You"} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
             )}
             {is360 && (
-                <TextPDF text={`<b>Wonder of You Reflection: As you read the descriptions above, highlight what resonates most for you and summarize it here.</b>
-                <br>
-                ${(data.submission.answers.find(a=>a.customId === "r1-reflect-1"))?.value || "" }
-                `}/>
+                <TextPDF text={`<b>Wonder of You Reflection: As you read the descriptions above, highlight what resonates most for you and summarize it on the next page.</b>`}/>
             )}
             <PageFooter />
         </Page>
+
+        {/* PAGE: Wonder of You Reflection Questions (360 only) */}
+        {is360 && (
+            <Page style={{ paddingBottom: 110 }}>
+                <BgLogo />
+                <View style={[stylesPDF.bannerMiniContainer, { backgroundColor: '#6E5600' }]}>
+                    <Text style={[stylesPDF.bannerTitle2, { fontSize: 20 }]}>The Wonder of You Reflection</Text>
+                </View>
+                {[
+                    { text: "What resonated the most for you in the Wonder of You section?", id: "r1-reflect-1" },
+                    { text: "What do you still want to explore for yourself?", id: "r1-reflect-2" },
+                ].map((q, qi) => {
+                    const answer = data.submission?.answers?.find(a => a.customId === q.id)?.value || "";
+                    return (
+                        <View key={qi} style={{ paddingHorizontal: 45, paddingTop: qi === 0 ? 15 : 10 }}>
+                            <Text style={{ fontSize: 11.5, fontWeight: 'bold', lineHeight: 1.25, marginBottom: 4 }}>{q.text}</Text>
+                            {answer ? (
+                                <Text style={{ fontSize: 11.5, lineHeight: 1.25 }}>{answer}</Text>
+                            ) : (
+                                <View style={{ marginTop: 4 }}>
+                                    {[...Array(3)].map((_, li) => (
+                                        <View key={li} style={{ borderBottomWidth: 0.5, borderBottomColor: '#999', marginBottom: 14, width: '100%' }} />
+                                    ))}
+                                </View>
+                            )}
+                        </View>
+                    );
+                })}
+                <PageFooter />
+            </Page>
+        )}
 
         {/* PAGE: Next Steps */}
         <Page style={{ paddingBottom: 110 }}>
@@ -386,7 +421,7 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
         {/* PAGE: Resources */}
         <Page style={{ paddingBottom: 110 }}>
             <BgLogo />
-            <MiniBannerPDF title={"You Are A Leader"} subtitle={"Now Step into It"} color={"#383838"}/>
+            <MiniBannerPDF title={"Now Rise and walk in His purpose."} color={"#383838"}/>
             <TextPDF text={`<b>Your Kingdom Calling Report is not an endpoint. It is an invitation.</b><br><br>You now have language for the wonder of how God uniquely designed you. The next step is learning how to live it out with confidence, clarity, and purpose within the Body of Christ.<br><br><b>Choose the next step that fits where you are right now:</b>`}/>
             <LeaderReportPDF title="Deepen Your Understanding" info="Read our eBook, Understanding Your Kingdom Calling Report, to learn how your Sphere of Influence, Biblical DNA, and 5-Fold Personality work together and how God may be inviting you to serve and lead within your local church." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"E-Book"} buttonLink="https://www.theriseupculture.com/course/understanding-your-kingdom-calling-pdf" buttonColor="secondary"/>
             <LeaderReportPDF title="Go Deeper in Activation" info="Take the Kingdom Calling Course to explore your calling in a more personal and practical way, with teaching, reflection, and activation steps designed to help you move from insight to action." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/course/your-kingdom-calling" buttonColor="secondary"/>
