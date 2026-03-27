@@ -114,6 +114,20 @@ const ReviewAssessment = () => {
     const currentSection = assessment?.sections?.[currentSectionIndex];
     const nextSection = assessment?.sections?.[currentSectionIndex + 1] || null;
 
+    // Adapt section text for reviewer perspective
+    const adaptText = (text) => {
+        if (!text) return text;
+        const firstName = revieweeName.split(" ")[0];
+        return text
+            .replace(/\bYour\b/g, `${firstName}'s`)
+            .replace(/\byour\b/g, `${firstName}'s`)
+            .replace(/\byou're\b/gi, `${firstName} is`)
+            .replace(/\byou are\b/gi, `${firstName} is`)
+            .replace(/\byou\b/gi, firstName)
+            .replace(/\s{2,}/g, " ")
+            .trim();
+    };
+
     return (
         <Box sx={{ minHeight: "100vh" }}>
             {/* Header */}
@@ -127,15 +141,15 @@ const ReviewAssessment = () => {
             {currentSection && (
                 <>
                     <SectionBanner
-                        title={currentSection.title}
-                        description={currentSection.description}
+                        title={adaptText(currentSection.title)}
+                        description={adaptText(currentSection.description)}
                         noQuestions={currentSection.questions?.length}
                         image={currentSection.image}
                         index={currentSectionIndex}
                     />
                     <SectionBar
-                        title={currentSection.title}
-                        subtitle={currentSection.subtitle}
+                        title={adaptText(currentSection.title)}
+                        subtitle={adaptText(currentSection.subtitle)}
                         noQuestions={currentSection.questions?.length}
                     />
                 </>
