@@ -158,7 +158,7 @@ const ShowReviewersDialog = ({ open, onClose, userId, onUpdate }) => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {group360.reviewers.map((reviewer) => (
+                                            {group360.reviewers.filter(r => r.user).map((reviewer) => (
                                                 <TableRow key={reviewer._id}>
                                                     <TableCell>
                                                         {reviewer.user?.firstName} {reviewer.user?.lastName}
