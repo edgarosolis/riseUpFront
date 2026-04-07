@@ -130,7 +130,7 @@ const ShowReviewersDialog = ({ open, onClose, userId, onUpdate }) => {
         }
     };
 
-    const completedCount = group360?.reviewers?.filter(r => r.status === 'completed').length || 0;
+    const completedCount = group360?.reviewers?.filter(r => r.user && r.status === 'completed').length || 0;
 
     return (
         <>

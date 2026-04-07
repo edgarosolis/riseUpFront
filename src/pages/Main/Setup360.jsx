@@ -93,7 +93,9 @@ const Setup360 = () => {
     };
 
     // Computed
-    const reviewers = group360?.reviewers || [];
+    // Filter out orphaned reviewer subdocs (User was deleted) — otherwise we
+    // render empty cards and counts disagree with the admin view.
+    const reviewers = (group360?.reviewers || []).filter(r => r.user);
     const completedCount = reviewers.filter(r => r.status === "completed").length;
     const totalReviewers = reviewers.length;
     const canGenerateReport = completedCount >= 3 && personalComplete;
