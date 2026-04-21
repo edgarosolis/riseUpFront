@@ -4,6 +4,8 @@ import ArrowCircleLeftRoundedIcon from '@mui/icons-material/ArrowCircleLeftRound
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
 import { saveReviewProgress, completeReview } from "../axios/axiosFunctions";
 
+const UNABLE_TO_RESPOND = "Unable to respond";
+
 const QuestionsSections360 = ({ token, questions = [], noQuestions, nextSection, answers, allSections, onComplete }) => {
     const [activeStep, setActiveStep] = useState(1);
     const [currentAnswers, setCurrentAnswers] = useState([]);
@@ -119,6 +121,12 @@ const QuestionsSections360 = ({ token, questions = [], noQuestions, nextSection,
                     {options.map((q, i) => (
                         <FormControlLabel key={i} value={q.text} control={<Radio />} label={q.text} sx={{ '& .MuiFormControlLabel-label': { fontSize: { xs: '0.9rem', sm: '1rem' } } }} />
                     ))}
+                    <FormControlLabel
+                        value={UNABLE_TO_RESPOND}
+                        control={<Radio />}
+                        label={UNABLE_TO_RESPOND}
+                        sx={{ mt: 1, '& .MuiFormControlLabel-label': { fontSize: { xs: '0.9rem', sm: '1rem' }, fontStyle: 'italic', color: 'text.secondary' } }}
+                    />
                 </RadioGroup>
                 <Box display={"flex"} justifyContent={"space-between"} gap={2} sx={{ width: { xs: "100%", sm: "80%", md: "60%" }, marginTop: { xs: "40px", md: "100px" } }}>
                     <Button startIcon={<ArrowCircleLeftRoundedIcon />} variant="contained" color="secondary" disabled={activeStep === 1} onClick={handleBack} sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" }, px: { xs: 2, sm: 3 } }}>

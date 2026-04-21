@@ -119,6 +119,35 @@ export const updateQuestion = async(assessmentId, data)=>{
   }
 }
 
+const adminHeaders = () => {
+  const stored = JSON.parse(localStorage.getItem('userRiseUp') || 'null');
+  return stored?._id ? { headers: { 'x-admin-id': stored._id } } : {};
+};
+
+export const updateSection = async(assessmentId, sectionCustomId, data)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `assessment/${assessmentId}/section/${sectionCustomId}`, data, adminHeaders());
+    return resp.data;
+  } catch (error) {
+    return {
+      msg: error.response?.data?.msg || "Error updating section",
+      error: true,
+    };
+  }
+}
+
+export const updateWelcomeIntro = async(assessmentId, welcomeIntro)=>{
+  try {
+    const resp = await axios.put(BASE_URL + `assessment/${assessmentId}/welcome-intro`, { welcomeIntro }, adminHeaders());
+    return resp.data;
+  } catch (error) {
+    return {
+      msg: error.response?.data?.msg || "Error updating welcome intro",
+      error: true,
+    };
+  }
+}
+
 //SUBMISSION
 
 export const getActiveUserSubmission = async(assessmentId,userId)=>{

@@ -2,6 +2,7 @@ import { Container, Grid } from "@mui/material"
 import Home from "./Home";
 import Admins from "./Admins";
 import Questions from "./Questions";
+import Sections from "./Sections";
 import SectionTexts from "./SectionTexts";
 import WonderOfYou from "./WonderOfYou";
 import Groups from "./Groups";
@@ -23,6 +24,7 @@ const Dashboard = ({active = "home"}) => {
                     {active === "home" && <Home/>}
                     {active === "admins" && <Admins/>}
                     {active === "questions" && <Questions/>}
+                    {active === "sections" && <Sections/>}
                     {active === "sectionTexts" && <SectionTexts/>}
                     {active === "wonderOfYou" && <WonderOfYou/>}
                     {active === "reports360" && <Reports360/>}

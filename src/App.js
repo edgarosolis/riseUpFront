@@ -57,6 +57,7 @@ function App() {
             <Route index element={<Dashboard active={"home"}/>}/>
             <Route path="/admins" element={<Dashboard active={"admins"}/>}/>
             <Route path="/questions" element={<Dashboard active={"questions"}/>}/>
+            <Route path="/sections" element={<Dashboard active={"sections"}/>}/>
             <Route path="/section-texts" element={<Dashboard active={"sectionTexts"}/>}/>
             <Route path="/wonder-of-you" element={<Dashboard active={"wonderOfYou"}/>}/>
             <Route path="/reports-360" element={<Dashboard active={"reports360"}/>}/>

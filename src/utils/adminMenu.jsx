@@ -3,6 +3,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import QuizIcon from '@mui/icons-material/Quiz';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import EmailIcon from '@mui/icons-material/Email';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AssessmentIcon from '@mui/icons-material/Assessment';
@@ -24,6 +25,12 @@ export const navItems = [
       icon: <QuizIcon sx={{color:"white"}}/>,
       locationRef : "questions",
       href: "/questions",
+    },
+    {
+      title: "Sections",
+      icon: <ViewListIcon sx={{color:"white"}}/>,
+      locationRef : "sections",
+      href: "/sections",
     },
     {
       title: "Section Texts",
