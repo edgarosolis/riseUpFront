@@ -12,8 +12,10 @@ import {
     getUserGroup360, addReviewerByEmail, sendInvitation, sendReminder,
     removeReviewerFromGroup360, generateReport360, FRONT_URL
 } from "../../axios/axiosFunctions";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const ShowReviewersDialog = ({ open, onClose, userId, onUpdate }) => {
+    const isMobile = useIsMobile();
     const [group360, setGroup360] = useState(null);
     const [loading, setLoading] = useState(true);
     const [addForm, setAddForm] = useState({ firstName: "", lastName: "", email: "" });
@@ -134,7 +136,7 @@ const ShowReviewersDialog = ({ open, onClose, userId, onUpdate }) => {
 
     return (
         <>
-            <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+            <Dialog fullScreen={isMobile} open={open} onClose={onClose} maxWidth="md" fullWidth>
                 <DialogTitle>360 Reviewers</DialogTitle>
                 <DialogContent>
                     {loading ? (
@@ -291,7 +293,9 @@ const ShowReviewersDialog = ({ open, onClose, userId, onUpdate }) => {
                         onClick={handleGenerateReport}
                         disabled={!group360 || completedCount < 3}
                     >
-                        Generate Report ({completedCount}/3+ completed)
+                        {completedCount < 3
+                            ? `Generate Report (${completedCount} of 3 completed)`
+                            : "Generate Report"}
                     </Button>
                     <Button onClick={onClose}>Close</Button>
                 </DialogActions>

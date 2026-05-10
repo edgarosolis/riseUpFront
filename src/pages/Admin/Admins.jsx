@@ -4,8 +4,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, Box, Grid, TextField, Alert } from "@mui/material";
 import { PersonAdd, ContentCopy } from "@mui/icons-material";
 import { adminColumns } from "../../utils/adminCols";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const Admins = () => {
+
+  const isMobile = useIsMobile();
 
   const [rows, setRows] = useState([]);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
@@ -82,8 +85,8 @@ const Admins = () => {
 
   return (
     <>
-      <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"50px"}}>
-        <Typography variant="h3" fontWeight={500} color="secondary">Admins</Typography>
+      <Box sx={{display:"flex", flexDirection: { xs: "column", sm: "row" }, justifyContent:"space-between", alignItems: { xs: "stretch", sm: "center" }, gap: { xs: 2, sm: 0 }, marginBottom:{ xs: "30px", md: "50px" }}}>
+        <Typography variant="h3" fontWeight={500} color="secondary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>Admins</Typography>
         <Button
           variant="contained"
           startIcon={<PersonAdd/>}
@@ -92,18 +95,20 @@ const Admins = () => {
           Create Admin
         </Button>
       </Box>
-      <DataGrid columns={adminColumns} rows={rows} showToolbar/>
+      <Box sx={{ overflowX: "auto" }}>
+        <DataGrid columns={adminColumns} rows={rows} showToolbar/>
+      </Box>
 
-      <Dialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} maxWidth="sm" fullWidth>
+      <Dialog fullScreen={isMobile} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Create Admin</DialogTitle>
         <DialogContent>
           <Box sx={{marginTop:"20px"}}>
             <Grid container spacing={2}>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="h6" color="secondary">First Name</Typography>
                 <TextField value={form.firstName} required fullWidth onChange={handleForm} name='firstName'/>
               </Grid>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="h6" color="secondary">Last Name</Typography>
                 <TextField value={form.lastName} required fullWidth onChange={handleForm} name='lastName'/>
               </Grid>
@@ -129,7 +134,7 @@ const Admins = () => {
       </Dialog>
 
       {/* Credentials Dialog */}
-      <Dialog open={credsOpen} onClose={() => setCredsOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog fullScreen={isMobile} open={credsOpen} onClose={() => setCredsOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Admin Account Created</DialogTitle>
         <DialogContent>
           {!credsData.emailSent && (

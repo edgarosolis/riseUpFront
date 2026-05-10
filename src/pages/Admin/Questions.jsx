@@ -9,10 +9,11 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoIcon from '@mui/icons-material/Info';
 import EditIcon from '@mui/icons-material/Edit';
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const SECTION_LABELS = {
   s1: "Sphere of Influence",
-  s2: "5-Fold Leaning",
+  s2: "Five-Fold Leaning",
   s3: "Biblical DNA",
 };
 
@@ -24,6 +25,7 @@ const SECTION_COLORS = {
 
 const Questions = () => {
 
+  const isMobile = useIsMobile();
   const { currentAssessment, refetchAssessments } = useContext(AssessmentContext);
   const [activeTab, setActiveTab] = useState(0);
   const [showGuide, setShowGuide] = useState(true);
@@ -108,7 +110,7 @@ const Questions = () => {
 
   return (
     <>
-      <Typography variant="h3" fontWeight={500} color="secondary" sx={{ marginBottom: "20px" }}>
+      <Typography variant="h3" fontWeight={500} color="secondary" sx={{ marginBottom: "20px", fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>
         Questions
       </Typography>
 
@@ -124,7 +126,7 @@ const Questions = () => {
             How the Assessment System Works
           </Typography>
           <Typography variant="body2" sx={{ mb: 1 }}>
-            The assessment has <b>3 sections</b>: Sphere of Influence, 5-Fold Leaning, and Biblical DNA. Each section contains multiple-choice questions.
+            The assessment has <b>3 sections</b>: Sphere of Influence, Five-Fold Leaning, and Biblical DNA. Each section contains multiple-choice questions.
           </Typography>
           <Typography variant="body2" sx={{ mb: 1 }}>
             Every answer option is <b>tagged with a category</b> (shown as colored chips below). When a user picks an answer, that category gets +1 point. After all questions are answered, the system tallies the scores and picks the top category (or a combination if scores are close).
@@ -133,7 +135,7 @@ const Questions = () => {
             The winning category is then matched to a <b>Result text</b> in the "Section Texts" page. That text is what appears in the user's report. If no matching Result exists, the report shows "NOT FOUND."
           </Typography>
           <Typography variant="body2" sx={{ mb: 1 }}>
-            <b>"Wonder of You"</b> is a special combined result — it takes the winner from 5-Fold Leaning + the winner from Biblical DNA (e.g. "Apostolic + King David") and looks up a combined text.
+            <b>"Wonder of You"</b> is a special combined result — it takes the winner from Five-Fold Leaning + the winner from Biblical DNA (e.g. "Apostolic + King David") and looks up a combined text.
           </Typography>
           <Typography variant="body2" color="text.secondary">
             <b>Summary:</b> Questions → Options (tagged with categories) → Scores tallied → Top category matched → Result text shown in report.
@@ -275,7 +277,7 @@ const Questions = () => {
       )}
 
       {/* Edit Question Dialog */}
-      <Dialog open={editOpen} onClose={handleCloseEdit} maxWidth="md" fullWidth>
+      <Dialog fullScreen={isMobile} open={editOpen} onClose={handleCloseEdit} maxWidth="md" fullWidth>
         <DialogTitle>
           Edit Question
           {editQuestion && (

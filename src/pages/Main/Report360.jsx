@@ -143,20 +143,34 @@ const Report360 = () => {
             }
             <Separator sectionColor={"#6E5600"} />
             <SectionReportBanner sectionColor={"#6E5600"} title={"The Wonder of You (FIVE-FOLD PERSONALITY + BIBLICAL DNA)"} index={3} intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`} />
-            {finalSection() && getReviewerSection("r1") ? (
-              <Container maxWidth="xl">
-                <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, mx: { xs: 1, sm: 3, md: 5 }, my: 3 }}>
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Results sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={finalSection()} noWrapper />
-                  </Box>
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Results sectionColor={"#6E5600"} title={"How others see you:"} currentSection={getReviewerSection("r1")} noWrapper />
-                  </Box>
-                </Box>
-              </Container>
-            ) : (
-              finalSection() && <Results sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={finalSection()} />
-            )}
+            {(() => {
+              const selfFinal = finalSection();
+              const reviewerFinal = getReviewerSection("r1");
+              if (!selfFinal) return null;
+
+              const isDuplicate =
+                reviewerFinal &&
+                selfFinal.content?.title &&
+                selfFinal.content.title === reviewerFinal.content?.title;
+
+              if (reviewerFinal && !isDuplicate) {
+                return (
+                  <Container maxWidth="xl">
+                    <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, mx: { xs: 1, sm: 3, md: 5 }, my: 3 }}>
+                      <Box sx={{ flex: 1, minWidth: 0 }}>
+                        <Results sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={selfFinal} noWrapper />
+                      </Box>
+                      <Box sx={{ flex: 1, minWidth: 0 }}>
+                        <Results sectionColor={"#6E5600"} title={"How others see you:"} currentSection={reviewerFinal} noWrapper />
+                      </Box>
+                    </Box>
+                  </Container>
+                );
+              }
+
+              const singleTitle = isDuplicate ? "How you and others see you:" : "How do you see yourself:";
+              return <Results sectionColor={"#6E5600"} title={singleTitle} currentSection={selfFinal} />;
+            })()}
             <QuestionsReportSections
               questions={[
                 { customId: "r1-reflect-1", text: "What resonated the most for you in the Wonder of You section?" },

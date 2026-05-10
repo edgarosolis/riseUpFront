@@ -5,10 +5,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Typography, Button, Dialog, DialogTitle, DialogContent, Box, Grid, TextField, Alert, Tabs, Tab, MenuItem, Select } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { resultColumns } from "../../utils/resultCols";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const SECTION_MAP = {
   s1: "Sphere",
-  s2: "5-Fold Leaning",
+  s2: "Five-Fold Leaning",
   s3: "Biblical DNA",
 };
 
@@ -16,6 +17,7 @@ const SECTION_KEYS = ["s1", "s2", "s3"];
 
 const SectionTexts = () => {
 
+  const isMobile = useIsMobile();
   const { currentAssessment } = useContext(AssessmentContext);
   const [allResults, setAllResults] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
@@ -99,8 +101,8 @@ const SectionTexts = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
-        <Typography variant="h3" fontWeight={500} color="secondary">Section Texts</Typography>
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, justifyContent: "space-between", alignItems: { xs: "stretch", sm: "center" }, gap: { xs: 2, sm: 0 }, marginBottom: "30px" }}>
+        <Typography variant="h3" fontWeight={500} color="secondary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>Section Texts</Typography>
         <Button
           variant="contained"
           startIcon={<Add />}
@@ -120,16 +122,18 @@ const SectionTexts = () => {
         ))}
       </Tabs>
 
-      <DataGrid
-        columns={resultColumns}
-        rows={getRowsForSection(currentSectionKey)}
-        showToolbar
-        autoHeight
-        pageSizeOptions={[10, 25, 50]}
-        initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
-      />
+      <Box sx={{ overflowX: "auto" }}>
+        <DataGrid
+          columns={resultColumns}
+          rows={getRowsForSection(currentSectionKey)}
+          showToolbar
+          autoHeight
+          pageSizeOptions={[10, 25, 50]}
+          initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+        />
+      </Box>
 
-      <Dialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} maxWidth="md" fullWidth>
+      <Dialog fullScreen={isMobile} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} maxWidth="md" fullWidth>
         <DialogTitle>Create Result</DialogTitle>
         <DialogContent>
           <Box sx={{ marginTop: "20px" }}>
@@ -147,11 +151,11 @@ const SectionTexts = () => {
                   ))}
                 </Select>
               </Grid>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="h6" color="secondary">Category</Typography>
                 <TextField value={form.category} required fullWidth onChange={handleForm} name="category" />
               </Grid>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="h6" color="secondary">Title</Typography>
                 <TextField value={form.title} fullWidth onChange={handleForm} name="title" />
               </Grid>

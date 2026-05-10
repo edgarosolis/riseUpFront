@@ -1,10 +1,10 @@
 import { Fragment, useState } from "react"
 import { Link } from "react-router-dom"
-import { Grid, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
+import { Box, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import { navItems } from "../utils/adminMenu";
 
-const Sidebar = ({location}) => {
-    
+const Sidebar = ({location, onNavigate}) => {
+
     const [menuItems,] = useState(navItems);
     const [applicationMenuOpen, setApplicationMenuOpen] = useState(true);
 
@@ -12,24 +12,28 @@ const Sidebar = ({location}) => {
         setApplicationMenuOpen(!applicationMenuOpen);
     }
 
+    const handleLinkClick = (hasSubpages) => {
+        if (!hasSubpages && onNavigate) onNavigate();
+    }
+
     return (
-    <Grid sx={{backgroundColor:"#000000",height:"100%",color:"#F4C542"}}>
+    <Box sx={{backgroundColor:"#000000",height:"100%",color:"#F4C542",minWidth:{xs:240, md:"auto"}}}>
         <List>
             {
             menuItems.map((item,i)=>(
             <Fragment key={i}>
                 <Link to={item.href} style={{textDecoration:"none"}}>
-                    <ListItemButton sx={{color:"#F4C542", backgroundColor:location === item.locationRef ? "#000000" : "#000000"}} onClick={item.pages?handleMenuOpen:null}>
+                    <ListItemButton sx={{color:"#F4C542", backgroundColor:location === item.locationRef ? "#000000" : "#000000"}} onClick={item.pages?handleMenuOpen:() => handleLinkClick(false)}>
                         <ListItemIcon>
                         {item.icon}
                         </ListItemIcon>
                         <ListItemText primary={item.title} slotProps={{primary:{variant:"subtitle2"}}}/>
                         {item.pages && applicationMenuOpen ? item.openIcon : item.closeIcon}
-                    </ListItemButton>          
+                    </ListItemButton>
                 </Link>
                 {
                     item.pages && applicationMenuOpen && item.pages.map((subpages,j)=>(
-                    <Link key={j} to={subpages.href} style={{textDecoration:"none"}}>
+                    <Link key={j} to={subpages.href} style={{textDecoration:"none"}} onClick={() => handleLinkClick(false)}>
                         <ListItemButton sx={{marginLeft:"20px",color:"white",backgroundColor:"#1A3B6B"}}>
                         <ListItemText primary={subpages.title} slotProps={{primary:{variant:"subtitle2"}}}/>
                         </ListItemButton>
@@ -40,7 +44,7 @@ const Sidebar = ({location}) => {
             ))
             }
         </List>
-    </Grid>
+    </Box>
     )
 }
 

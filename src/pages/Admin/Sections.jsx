@@ -116,7 +116,7 @@ const Sections = () => {
 
   return (
     <>
-      <Typography variant="h3" fontWeight={500} color="secondary" sx={{ mb: 2 }}>
+      <Typography variant="h3" fontWeight={500} color="secondary" sx={{ mb: 2, fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>
         Sections
       </Typography>
       <Alert severity="info" sx={{ mb: 3 }}>
@@ -233,8 +233,8 @@ const Sections = () => {
 
               <Typography variant="subtitle2" sx={{ mb: 1 }}>Bullets</Typography>
               {welcomeForm.bullets.map((b, i) => (
-                <Box key={i} sx={{ display: "flex", gap: 1, mb: 1, alignItems: "flex-start" }}>
-                  <TextField label="Bold" size="small" value={b.bold} onChange={(e) => updateBullet(i, "bold", e.target.value)} sx={{ minWidth: 220 }} />
+                <Box key={i} sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, mb: 1, alignItems: { xs: "stretch", md: "flex-start" }, flexWrap: "wrap" }}>
+                  <TextField label="Bold" size="small" value={b.bold} onChange={(e) => updateBullet(i, "bold", e.target.value)} sx={{ minWidth: { xs: "100%", md: 220 } }} />
                   <TextField label="Rest of text" size="small" fullWidth value={b.text} onChange={(e) => updateBullet(i, "text", e.target.value)} />
                   <Tooltip title="Remove"><IconButton onClick={() => removeListItem("bullets", i)}><DeleteIcon /></IconButton></Tooltip>
                 </Box>

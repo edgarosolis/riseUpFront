@@ -9,8 +9,9 @@ const VideoWelcome = ({sections, groupId}) => {
       sx={{
         position: 'relative',
         paddingTop: '56.25%',
-        margin: "30px 0px",
-        borderRadius: "16px",
+        my: { xs: 2, sm: 3, md: 4 },
+        mx: { xs: 1, sm: 0 },
+        borderRadius: { xs: "10px", md: "16px" },
         overflow: "hidden",
         backgroundColor: "#000",
         boxShadow: "0px 4px 20px rgba(0,0,0,0.2)"

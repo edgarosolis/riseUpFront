@@ -6,9 +6,11 @@ import { PersonAdd } from "@mui/icons-material";
 import { getHomeColumns } from "../../utils/homeCols";
 import CreateUser from "../../components/forms/CreateUser";
 import ShowReviewersDialog from "../../components/dialogs/ShowReviewersDialog";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const Home = () => {
 
+  const isMobile = useIsMobile();
   const [rows, setRows] = useState([{id:1}]);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -48,8 +50,8 @@ const Home = () => {
 
   return (
     <>
-      <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"50px"}}>
-        <Typography variant="h3" fontWeight={500} color="secondary">Home</Typography>
+      <Box sx={{display:"flex", flexDirection: { xs: "column", sm: "row" }, justifyContent:"space-between", alignItems: { xs: "stretch", sm: "center" }, gap: { xs: 2, sm: 0 }, marginBottom:{ xs: "30px", md: "50px" }}}>
+        <Typography variant="h3" fontWeight={500} color="secondary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>Home</Typography>
         <Button
           variant="contained"
           startIcon={<PersonAdd/>}
@@ -58,9 +60,11 @@ const Home = () => {
           Create User
         </Button>
       </Box>
-      <DataGrid columns={homeColumns} rows={rows} showToolbar/>
+      <Box sx={{ overflowX: "auto" }}>
+        <DataGrid columns={homeColumns} rows={rows} showToolbar/>
+      </Box>
 
-      <Dialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} maxWidth="md" fullWidth>
+      <Dialog fullScreen={isMobile} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} maxWidth="md" fullWidth>
         <DialogTitle>Create User</DialogTitle>
         <DialogContent>
           <CreateUser onUserCreated={handleUserCreated}/>

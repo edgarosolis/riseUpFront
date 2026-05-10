@@ -32,7 +32,7 @@ const Welcome360 = () => {
     if (isLoading || checking) return <Box sx={{ p: 4 }}><CircularProgress /></Box>;
 
     return (
-        <Box sx={{ paddingBottom: "50px" }}>
+        <Box sx={{ paddingBottom: { xs: "30px", md: "50px" } }}>
             <WaveBanner
                 title={"WELCOME"}
                 subtitle={"TO YOUR 360 ASSESSMENT"}

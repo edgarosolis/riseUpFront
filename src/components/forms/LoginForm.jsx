@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/user";
 import { getAllAssessments, loginAdmin, loginUser, resetAdminPassword } from "../../axios/axiosFunctions";
 import { AssessmentContext } from "../../context/assessment";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const defaultLoginForm = {
     email : "",
@@ -13,6 +14,7 @@ const defaultLoginForm = {
 
 const LoginForm = () => {
 
+    const isMobile = useIsMobile();
     const navigate = useNavigate();
     const location = useLocation();
     const {setCurrentUser}  = useContext(UserContext);
@@ -166,7 +168,7 @@ const LoginForm = () => {
                     </FormControl>
                 </Grid>
             </Grid>
-            <Button type='submit' sx={{marginTop:{xs:"20px",sm:"50px"}, marginBottom:"10px"}} size="large" fullWidth variant="contained" color="secondary">LOG IN</Button>
+            <Button type='submit' sx={{marginTop:{xs:"20px",sm:"50px"}, marginBottom:"10px", py: {xs: 1.2, md: 1.5}, fontSize: {xs: "0.9rem", md: "1rem"}}} size={isMobile ? "medium" : "large"} fullWidth variant="contained" color="secondary">LOG IN</Button>
             {location.pathname === "/admin" &&
                 <Button
                     onClick={() => setShowForgotPassword(true)}

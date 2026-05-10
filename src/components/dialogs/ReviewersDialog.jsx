@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { addReviewerToGroup360, removeReviewerFromGroup360, createUser, getAllUsers } from "../../axios/axiosFunctions";
 import { FRONT_URL } from "../../axios/axiosFunctions";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const statusColors = {
     pending: "default",
@@ -13,6 +14,7 @@ const statusColors = {
 };
 
 const ReviewersDialog = ({ open, onClose, group360 }) => {
+    const isMobile = useIsMobile();
     const [reviewers, setReviewers] = useState(group360?.reviewers || []);
     const [users, setUsers] = useState([]);
 
@@ -112,7 +114,7 @@ const ReviewersDialog = ({ open, onClose, group360 }) => {
 
     return (
         <>
-            <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+            <Dialog fullScreen={isMobile} open={open} onClose={onClose} maxWidth="md" fullWidth>
                 <DialogTitle>
                     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <Typography variant="h5" fontWeight={600}>
@@ -169,7 +171,7 @@ const ReviewersDialog = ({ open, onClose, group360 }) => {
             </Dialog>
 
             {/* Add Reviewer Dialog */}
-            <Dialog open={openAddDialog} onClose={() => setOpenAddDialog(false)} maxWidth="sm" fullWidth>
+            <Dialog fullScreen={isMobile} open={openAddDialog} onClose={() => setOpenAddDialog(false)} maxWidth="sm" fullWidth>
                 <DialogTitle>Add Reviewer</DialogTitle>
                 <DialogContent>
                     <Box sx={{ mt: 2 }}>
@@ -216,7 +218,7 @@ const ReviewersDialog = ({ open, onClose, group360 }) => {
                             </TextField>
                         ) : (
                             <Grid container spacing={2}>
-                                <Grid size={6}>
+                                <Grid size={{ xs: 12, sm: 6 }}>
                                     <Typography variant="h6" color="secondary">First Name</Typography>
                                     <TextField
                                         value={addForm.firstName}
@@ -225,7 +227,7 @@ const ReviewersDialog = ({ open, onClose, group360 }) => {
                                         required
                                     />
                                 </Grid>
-                                <Grid size={6}>
+                                <Grid size={{ xs: 12, sm: 6 }}>
                                     <Typography variant="h6" color="secondary">Last Name</Typography>
                                     <TextField
                                         value={addForm.lastName}
@@ -254,7 +256,7 @@ const ReviewersDialog = ({ open, onClose, group360 }) => {
             </Dialog>
 
             {/* Delete Confirmation */}
-            <Dialog open={!!deleteDialog} onClose={() => setDeleteDialog(null)}>
+            <Dialog fullScreen={isMobile} open={!!deleteDialog} onClose={() => setDeleteDialog(null)}>
                 <DialogContent>
                     <Typography>
                         Are you sure you want to remove <strong>{deleteDialog?.user?.firstName} {deleteDialog?.user?.lastName}</strong> as a reviewer?

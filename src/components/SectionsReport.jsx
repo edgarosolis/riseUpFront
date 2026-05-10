@@ -63,43 +63,53 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
         <>
             <Separator sectionColor={section?.color}/>
             <SectionReportBanner sectionColor={section?.color} title={displayTitle} index={index} intro={section?.report?.intro} image={section?.image}/>
-            {reviewerSection ? (
-                <Container maxWidth="xl">
-                    <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, mx: { xs: 1, sm: 3, md: 5 }, my: 3 }}>
-                        <Box sx={{ flex: 1, minWidth: 0 }}>
-                            <Results sectionColor={section?.color} title={getUserTitle()} currentSection={currentSection} noWrapper />
-                        </Box>
-                        <Box sx={{ flex: 1, minWidth: 0 }}>
-                            <Results sectionColor={section?.color} title={getReviewerTitle()} currentSection={reviewerSection} noWrapper />
-                        </Box>
-                    </Box>
-                </Container>
-            ) : (
-                <Results sectionColor={section?.color} title={getUserTitle()} currentSection={currentSection}/>
-            )}
+            {(() => {
+                const isDuplicate =
+                    reviewerSection &&
+                    currentSection?.content?.title &&
+                    currentSection.content.title === reviewerSection.content?.title;
+
+                if (reviewerSection && !isDuplicate) {
+                    return (
+                        <Container maxWidth="xl">
+                            <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, mx: { xs: 1, sm: 3, md: 5 }, my: 3 }}>
+                                <Box sx={{ flex: 1, minWidth: 0 }}>
+                                    <Results sectionColor={section?.color} title={getUserTitle()} currentSection={currentSection} noWrapper />
+                                </Box>
+                                <Box sx={{ flex: 1, minWidth: 0 }}>
+                                    <Results sectionColor={section?.color} title={getReviewerTitle()} currentSection={reviewerSection} noWrapper />
+                                </Box>
+                            </Box>
+                        </Container>
+                    );
+                }
+
+                const singleTitle = isDuplicate ? "How you and others see you:" : getUserTitle();
+                return <Results sectionColor={section?.color} title={singleTitle} currentSection={currentSection}/>;
+            })()}
             {
                 section?.report?.hasTable &&
-                <Container maxWidth="xl" sx={{padding:"50px 0px"}}>
-                    <Grid container spacing={2}>
-                        <Grid size={3} sx={{backgroundColor:"#F4C542", display:"flex", justifyContent:"center", padding:"10px 0px"}}>
+                <Container maxWidth="xl" sx={{padding:{ xs: "30px 16px", sm: "50px 0px" }}}>
+                    <Grid container spacing={{ xs: 1, sm: 2 }}>
+                        <Grid size={{ xs: 12, sm: 3 }} sx={{backgroundColor:"#F4C542", display:{ xs: "none", sm: "flex" }, justifyContent:"center", padding:"10px 0px"}}>
                             <Typography fontWeight={600} variant='h6' color='white'>Sphere</Typography>
                         </Grid>
-                        <Grid size={9} sx={{backgroundColor:"#F4C542", display:"flex", justifyContent:"center", padding:"10px 0px"}}>
+                        <Grid size={{ xs: 12, sm: 9 }} sx={{backgroundColor:"#F4C542", display:{ xs: "none", sm: "flex" }, justifyContent:"center", padding:"10px 0px"}}>
                             <Typography fontWeight={600} variant='h6' color='white'>Definition</Typography>
                         </Grid>
                         {
                             section?.report?.tableInfo.map((row,i)=>(
                                 <Fragment key={i}>
-                                    <Grid size={3} sx={{backgroundColor:"backSections.main",padding:"30px 30px", display:"flex", alignItems:"center"}}>
+                                    <Grid size={{ xs: 12, sm: 3 }} sx={{backgroundColor:"backSections.main",padding:{ xs: "16px 20px 4px", sm: "30px 30px" }, display:"flex", alignItems:"center"}}>
                                         <Typography fontWeight={600}>{row.sphere}</Typography>
                                     </Grid>
-                                    <Grid size={9} sx={{backgroundColor:"backSections.main",padding:"30px 30px", display:"flex", alignItems:"center"}}>
+                                    <Grid size={{ xs: 12, sm: 9 }} sx={{backgroundColor:"backSections.main",padding:{ xs: "0 20px 16px", sm: "30px 30px" }, display:"flex", alignItems:"center"}}>
                                         <Typography>{row.definition}</Typography>
                                     </Grid>
                                 </Fragment>
                             ))
                         }
-                        <Grid size={12} sx={{backgroundColor:"backSections.main", display:"flex",flexDirection:"column", justifyContent:"center", padding:"30px 30px"}}>
+                        <Grid size={12} sx={{backgroundColor:"backSections.main", display:"flex",flexDirection:"column", justifyContent:"center", padding:{ xs: "20px 20px", sm: "30px 30px" }}}>
                             <Typography>Your dominant sphere helps answer:</Typography>
                             <br/>
                             <Typography>· Where are you most fruitful in leadership?</Typography>

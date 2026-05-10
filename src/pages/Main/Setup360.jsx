@@ -28,8 +28,10 @@ import {
     sendRemindAll,
     generateReport360,
 } from "../../axios/axiosFunctions";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const Setup360 = () => {
+    const isMobile = useIsMobile();
     const { groupId } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useContext(UserContext);
@@ -444,11 +446,11 @@ const Setup360 = () => {
             </Box>
 
             {/* ─── Add Reviewer Dialog ─── */}
-            <Dialog open={addOpen} onClose={() => setAddOpen(false)} maxWidth="sm" fullWidth>
+            <Dialog fullScreen={isMobile} open={addOpen} onClose={() => setAddOpen(false)} maxWidth="sm" fullWidth>
                 <DialogTitle>Add Reviewer</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={2} sx={{ mt: 1 }}>
-                        <Grid size={6}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
                                 label="First Name"
                                 value={addForm.firstName}
@@ -457,7 +459,7 @@ const Setup360 = () => {
                                 required
                             />
                         </Grid>
-                        <Grid size={6}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
                                 label="Last Name"
                                 value={addForm.lastName}
@@ -487,11 +489,11 @@ const Setup360 = () => {
             </Dialog>
 
             {/* ─── Edit Reviewer Dialog ─── */}
-            <Dialog open={editOpen} onClose={() => setEditOpen(false)} maxWidth="sm" fullWidth>
+            <Dialog fullScreen={isMobile} open={editOpen} onClose={() => setEditOpen(false)} maxWidth="sm" fullWidth>
                 <DialogTitle>Edit Reviewer</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={2} sx={{ mt: 1 }}>
-                        <Grid size={6}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
                                 label="First Name"
                                 value={editForm.firstName}
@@ -500,7 +502,7 @@ const Setup360 = () => {
                                 required
                             />
                         </Grid>
-                        <Grid size={6}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
                                 label="Last Name"
                                 value={editForm.lastName}
@@ -530,7 +532,7 @@ const Setup360 = () => {
             </Dialog>
 
             {/* ─── Delete Confirmation Dialog ─── */}
-            <Dialog open={deleteOpen} onClose={() => { setDeleteOpen(false); setDeleteReviewer(null); }}>
+            <Dialog fullScreen={isMobile} open={deleteOpen} onClose={() => { setDeleteOpen(false); setDeleteReviewer(null); }}>
                 <DialogContent>
                     <Typography>
                         Are you sure you want to remove <strong>{deleteReviewer?.user?.firstName} {deleteReviewer?.user?.lastName}</strong> as a reviewer?
@@ -547,7 +549,7 @@ const Setup360 = () => {
             </Dialog>
 
             {/* ─── Generate Report Info Dialog ─── */}
-            <Dialog open={infoOpen} onClose={() => setInfoOpen(false)} maxWidth="sm" fullWidth>
+            <Dialog fullScreen={isMobile} open={infoOpen} onClose={() => setInfoOpen(false)} maxWidth="sm" fullWidth>
                 <DialogTitle>Unable to Generate Report</DialogTitle>
                 <DialogContent>
                     <Typography variant="body1" sx={{ mb: 2 }}>

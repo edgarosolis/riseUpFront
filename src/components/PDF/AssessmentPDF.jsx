@@ -260,18 +260,28 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
                                     </View>
                                 )}
                             </View>
-                            {reviewerResult ? (
-                                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }} wrap={false}>
-                                    <View style={{ flex: 1 }}>
-                                        <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult} noMargin />
-                                    </View>
-                                    <View style={{ flex: 1 }}>
-                                        <ResultsPDF sectionColor={s?.color} title={getReviewerTitle360()} currentSection={reviewerResult} noMargin />
-                                    </View>
-                                </View>
-                            ) : (
-                                <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult}/>
-                            )}
+                            {(() => {
+                                const isDuplicate =
+                                    reviewerResult &&
+                                    currentResult?.content?.title &&
+                                    currentResult.content.title === reviewerResult.content?.title;
+
+                                if (reviewerResult && !isDuplicate) {
+                                    return (
+                                        <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }} wrap={false}>
+                                            <View style={{ flex: 1 }}>
+                                                <ResultsPDF sectionColor={s?.color} title={getUserTitle360()} currentSection={currentResult} noMargin />
+                                            </View>
+                                            <View style={{ flex: 1 }}>
+                                                <ResultsPDF sectionColor={s?.color} title={getReviewerTitle360()} currentSection={reviewerResult} noMargin />
+                                            </View>
+                                        </View>
+                                    );
+                                }
+
+                                const singleTitle = isDuplicate ? "How you and others see you:" : getUserTitle360();
+                                return <ResultsPDF sectionColor={s?.color} title={singleTitle} currentSection={currentResult}/>;
+                            })()}
                             {/* Questions start right below the boxes */}
                             {allQs.map((q, qi) => {
                                 const answer = data.submission?.answers?.find(a => a.customId === q.id)?.value || "";
@@ -300,18 +310,35 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <MiniBannerPDF title={""} color={"#6E5600"}/>
             <SectionReportBannerPDF sectionColor={"#6E5600"} index={3} title={"The Wonder of You"} subtitle={"(FIVE-FOLD PERSONALITY + BIBLICAL DNA)"}
             intro={`This final layer integrates core Biblical leadership values with your unique wiring.<br><br>The Wonder of You is the fusion point of your <b>Five-Fold Personality</b>, and <b>Biblical DNA</b>. When these two align, they form a prophetic narrative of the type of Kingdom leader you're becoming. This isn't just a snapshot of where you are today — it's a glimpse into the redemptive future God is inviting you to walk into. Your Destiny Line gives you language for your leadership identity, clarifies how you uniquely impact others, and helps you discern how to steward your influence for the glory of God.`}/>
-            {is360 && getReviewerSection("r1") ? (
-                <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }}>
-                    <View style={{ flex: 1 }}>
-                        <ResultsPDF sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={data.report.find(cs=>cs.section === 'r1')} noMargin />
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <ResultsPDF sectionColor={"#6E5600"} title={"How others see you:"} currentSection={getReviewerSection("r1")} noMargin />
-                    </View>
-                </View>
-            ) : (
-                <ResultsPDF sectionColor={"#6E5600"} title={is360 ? "How do you see yourself:" : "The Wonder of You"} currentSection={data.report.find(cs=>cs.section === 'r1')}/>
-            )}
+            {(() => {
+                const selfFinal = data.report.find(cs => cs.section === 'r1');
+                const reviewerFinal = getReviewerSection("r1");
+                if (!selfFinal) return null;
+
+                const isDuplicate =
+                    is360 &&
+                    reviewerFinal &&
+                    selfFinal.content?.title &&
+                    selfFinal.content.title === reviewerFinal.content?.title;
+
+                if (is360 && reviewerFinal && !isDuplicate) {
+                    return (
+                        <View style={{ flexDirection: 'row', marginHorizontal: 25, marginVertical: 8, gap: 10 }}>
+                            <View style={{ flex: 1 }}>
+                                <ResultsPDF sectionColor={"#6E5600"} title={"How do you see yourself:"} currentSection={selfFinal} noMargin />
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <ResultsPDF sectionColor={"#6E5600"} title={"How others see you:"} currentSection={reviewerFinal} noMargin />
+                            </View>
+                        </View>
+                    );
+                }
+
+                const singleTitle = isDuplicate
+                    ? "How you and others see you:"
+                    : (is360 ? "How do you see yourself:" : "The Wonder of You");
+                return <ResultsPDF sectionColor={"#6E5600"} title={singleTitle} currentSection={selfFinal}/>;
+            })()}
             {is360 && (
                 <TextPDF text={`<b>Wonder of You Reflection: As you read the descriptions above, highlight what resonates most for you and summarize it on the next page.</b>`}/>
             )}
@@ -418,8 +445,8 @@ const AssessmentPDF = ({ data, sections, userName, is360 }) => {
             <MiniBannerPDF title={"Now Rise and walk in His purpose."} color={"#383838"}/>
             <TextPDF text={`<b>Your Kingdom Calling Report is not an endpoint. It is an invitation.</b><br><br>You now have language for the wonder of how God uniquely designed you. The next step is learning how to live it out with confidence, clarity, and purpose within the Body of Christ.<br><br><b>Choose the next step that fits where you are right now:</b>`}/>
             <LeaderReportPDF title="Go Deeper in Activation" info="Take the Kingdom Calling Course to explore your calling in a more personal and practical way, with teaching, reflection, and activation steps designed to help you move from insight to action." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"Course"} buttonLink="https://www.theriseupculture.com/course/your-kingdom-calling" buttonColor="secondary"/>
-            <LeaderReportPDF title="Deepen Your Understanding" info="Read our eBook, Understanding Your Kingdom Calling Report, to learn how your Sphere of Influence, Biblical DNA, and 5-Fold Personality work together to shape your impact in the workplace and guide the ways you can serve within your local church." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"E-Book"} buttonLink="https://www.theriseupculture.com/course/understanding-your-kingdom-calling-pdf" buttonColor="secondary"/>
-            <LeaderReportPDF title="Get Personal Support" info="Book a Calling Coach Session with The Rise Up Culture Team if you would like to walk through your results one-on-one and gain clarity on what obedience and faithfulness look like in this season." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"Now"} buttonLink="https://www.theriseupculture.com/course/kingdom-calling-coaching" buttonColor="secondary"/>
+            <LeaderReportPDF title="Deepen Your Understanding" info="Read our eBook, Understanding Your Kingdom Calling Report, to learn how your Sphere of Influence, Biblical DNA, and Five-Fold Personality work together to shape your impact in the workplace and guide the ways you can serve within your local church." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"E-Book"} buttonLink="https://www.theriseupculture.com/course/understanding-your-kingdom-calling-pdf" buttonColor="secondary"/>
+            <LeaderReportPDF title="Get Personal Support" info="Book a Calling Coach Session with The Rise Up Culture Team if you would like to walk through your results one-on-one and gain clarity on what obedience and faithfulness look like in this season." cardColor="#D4AF37" titleColor="white" infoColor="white" button={true} buttonText={"Book Now"} buttonLink="https://www.theriseupculture.com/course/kingdom-calling-coaching" buttonColor="secondary"/>
             <PageFooter />
         </Page>
 

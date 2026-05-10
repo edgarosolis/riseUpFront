@@ -13,7 +13,7 @@ const buildCards = (reportInfo) => {
     const biblicalDna = reportInfo.find(r => r.section === "s3");
     return [
         { data: sphere, label: "Sphere:", color: sectionColors.sphere },
-        { data: fiveFold, label: "5-Fold Leaning:", color: sectionColors.fiveFold },
+        { data: fiveFold, label: "Five-Fold Leaning:", color: sectionColors.fiveFold },
         { data: biblicalDna, label: "Biblical DNA:", color: sectionColors.dna },
     ].filter(c => c.data);
 };
@@ -97,8 +97,27 @@ const ReportResults = ({ reportInfo, title, variant }) => {
     )
 }
 
+const allChipsMatch = (selfReport, reviewerReport) => {
+    if (!selfReport || !reviewerReport) return false;
+    const keys = ["s1", "s2", "s3"];
+    const selfTitles = keys.map(k => selfReport.find(r => r.section === k)?.content?.title);
+    const reviewerTitles = keys.map(k => reviewerReport.find(r => r.section === k)?.content?.title);
+    if (selfTitles.some(t => !t) || reviewerTitles.some(t => !t)) return false;
+    return keys.every((_, i) => selfTitles[i] === reviewerTitles[i]);
+};
+
 export const ReportResultsSideBySide = ({ selfReport, reviewerReport }) => {
     if (!selfReport && !reviewerReport) return null;
+
+    const isDuplicate = allChipsMatch(selfReport, reviewerReport);
+
+    if (isDuplicate) {
+        return (
+            <Box sx={{ backgroundColor: "#FFF8E1" }}>
+                <ResultsColumn reportInfo={selfReport} title="How you and others see you:" bgColor="#FFF8E1" />
+            </Box>
+        );
+    }
 
     return (
         <Box sx={{

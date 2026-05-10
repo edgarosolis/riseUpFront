@@ -5,9 +5,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Typography, Button, Dialog, DialogTitle, DialogContent, Box, Grid, TextField, Alert } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { resultColumns } from "../../utils/resultCols";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const WonderOfYou = () => {
 
+  const isMobile = useIsMobile();
   const { currentAssessment } = useContext(AssessmentContext);
   const [rows, setRows] = useState([]);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
@@ -80,8 +82,8 @@ const WonderOfYou = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
-        <Typography variant="h3" fontWeight={500} color="secondary">Wonder of You</Typography>
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, justifyContent: "space-between", alignItems: { xs: "stretch", sm: "center" }, gap: { xs: 2, sm: 0 }, marginBottom: "30px" }}>
+        <Typography variant="h3" fontWeight={500} color="secondary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>Wonder of You</Typography>
         <Button
           variant="contained"
           startIcon={<Add />}
@@ -92,24 +94,26 @@ const WonderOfYou = () => {
       </Box>
 
       <Typography variant="subtitle1" color="text.secondary" sx={{ marginBottom: "20px" }}>
-        Combined result texts based on 5-Fold Leaning + Biblical DNA combinations.
+        Combined result texts based on Five-Fold Leaning + Biblical DNA combinations.
       </Typography>
 
-      <DataGrid
-        columns={resultColumns}
-        rows={rows}
-        showToolbar
-        autoHeight
-        pageSizeOptions={[10, 25, 50]}
-        initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
-      />
+      <Box sx={{ overflowX: "auto" }}>
+        <DataGrid
+          columns={resultColumns}
+          rows={rows}
+          showToolbar
+          autoHeight
+          pageSizeOptions={[10, 25, 50]}
+          initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+        />
+      </Box>
 
-      <Dialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} maxWidth="md" fullWidth>
+      <Dialog fullScreen={isMobile} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} maxWidth="md" fullWidth>
         <DialogTitle>Create Combination</DialogTitle>
         <DialogContent>
           <Box sx={{ marginTop: "20px" }}>
             <Grid container spacing={2}>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="h6" color="secondary">Category</Typography>
                 <TextField
                   value={form.category}
@@ -120,7 +124,7 @@ const WonderOfYou = () => {
                   placeholder="e.g. Apostolic + King David"
                 />
               </Grid>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="h6" color="secondary">Title</Typography>
                 <TextField value={form.title} fullWidth onChange={handleForm} name="title" />
               </Grid>

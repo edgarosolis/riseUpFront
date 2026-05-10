@@ -6,8 +6,10 @@ import {
     Chip, Divider
 } from "@mui/material";
 import { Edit, Visibility } from "@mui/icons-material";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const EmailNotifications = () => {
+    const isMobile = useIsMobile();
     const [templates, setTemplates] = useState([]);
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -163,7 +165,7 @@ const EmailNotifications = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
-                <Typography variant="h3" fontWeight={500} color="secondary">
+                <Typography variant="h3" fontWeight={500} color="secondary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>
                     Email Notifications
                 </Typography>
             </Box>
@@ -215,6 +217,7 @@ const EmailNotifications = () => {
             </Grid>
 
             <Dialog
+                fullScreen={isMobile}
                 open={openEditDialog}
                 onClose={() => setOpenEditDialog(false)}
                 maxWidth="md"

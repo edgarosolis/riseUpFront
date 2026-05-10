@@ -47,11 +47,11 @@ const PlatformGuide = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 900 }}>
-      <Typography variant="h3" fontWeight={500} color="secondary" sx={{ mb: 1 }}>
+    <Box sx={{ maxWidth: { xs: "100%", md: 900 } }}>
+      <Typography variant="h3" fontWeight={500} color="secondary" sx={{ mb: 1, fontSize: { xs: "1.75rem", sm: "2.25rem", md: "3rem" } }}>
         Platform Guide
       </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+      <Typography variant="body1" color="text.secondary" sx={{ mb: { xs: 3, md: 4 } }}>
         Everything you need to know to manage assessments on the Rise Up Culture platform.
       </Typography>
 
@@ -67,7 +67,7 @@ const PlatformGuide = () => {
         </Typography>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
           <Chip label="Sphere of Influence" variant="outlined" />
-          <Chip label="5-Fold Personality" variant="outlined" />
+          <Chip label="Five-Fold Personality" variant="outlined" />
           <Chip label="Biblical DNA" variant="outlined" />
         </Box>
         <Typography variant="body2" color="text.secondary">
@@ -541,7 +541,7 @@ const PlatformGuide = () => {
               lead and make an impact (e.g., business, education, family, church).
             </Typography>
             <Typography variant="body2" sx={{ mb: 1 }}>
-              <strong>5-Fold Personality</strong> — evaluates your gifts across five
+              <strong>Five-Fold Personality</strong> — evaluates your gifts across five
               biblical leadership roles: apostolic, prophetic, evangelistic, shepherd,
               and teacher.
             </Typography>

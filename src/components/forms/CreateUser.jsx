@@ -2,6 +2,7 @@ import { CloudUpload, Download } from "@mui/icons-material";
 import { Alert, Box, Button, Grid, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, FormControlLabel, Switch } from "@mui/material"
 import { useState } from "react";
 import { createUser, bulkUploadUsers } from "../../axios/axiosFunctions";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const defaultCreateUserForm = {
     firstName:"",
@@ -12,6 +13,7 @@ const defaultCreateUserForm = {
 
 const CreateUser = ({onUserCreated}) => {
 
+    const isMobile = useIsMobile();
     const [createUserForm, setCreateUserForm] = useState(defaultCreateUserForm);
     const {firstName, lastName, email, has360} = createUserForm;
     const [msg, setMsg] = useState("");
@@ -125,19 +127,19 @@ const CreateUser = ({onUserCreated}) => {
     return (
     <Box sx={{marginTop:"40px",marginBottom:"100px"}}>
         <Grid container spacing={2}>
-            <Grid size={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="h6" color="secondary">First Name</Typography>
                 <TextField value={firstName} required fullWidth onChange={handleForm} name='firstName'/>
             </Grid>
-            <Grid size={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="h6" color="secondary">Last Name</Typography>
                 <TextField value={lastName} required fullWidth onChange={handleForm} name='lastName'/>
             </Grid>
-            <Grid size={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="h6" color="secondary">Email</Typography>
                 <TextField value={email} required fullWidth onChange={handleForm} name='email'/>
             </Grid>
-            <Grid size={6} sx={{display:"flex", alignItems:"center"}}>
+            <Grid size={{ xs: 12, sm: 6 }} sx={{display:"flex", alignItems:"center"}}>
                 <FormControlLabel
                     control={
                         <Switch
@@ -170,7 +172,7 @@ const CreateUser = ({onUserCreated}) => {
         </Grid>
 
         {/* Bulk Upload Dialog */}
-        <Dialog open={openBulkDialog} onClose={handleCloseBulkDialog} maxWidth="md" fullWidth>
+        <Dialog fullScreen={isMobile} open={openBulkDialog} onClose={handleCloseBulkDialog} maxWidth="md" fullWidth>
             <DialogTitle>Bulk Upload Users</DialogTitle>
             <DialogContent>
                 <Box sx={{padding:"20px 0"}}>

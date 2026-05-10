@@ -46,7 +46,7 @@ const DownloadSection = ({ fetchData, sections, userSubmission, userName, is360 
           >
             {isFetchingAPI ? "LOADING..." : "PREPARE PDF REPORT"}
           </Button>
-          <Alert severity="warning" sx={{ mt: 2, maxWidth: 600 }}>
+          <Alert severity="warning" sx={{ mt: 2, maxWidth: { xs: "100%", md: 600 } }}>
             Make sure you have saved all your reflection answers above before preparing the PDF. Unsaved answers will not appear in the report.
           </Alert>
         </Box>

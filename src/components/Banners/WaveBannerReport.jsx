@@ -25,18 +25,19 @@ const WaveBannerReport = ({title, subtitle, completedAt, reviewerCount, userName
                 >
                   {title} Assessment
                 </Typography>
-                <Typography 
+                <Typography
                   variant="h3"
-                  color="primary" 
-                  sx={{ 
+                  color="primary"
+                  sx={{
                     fontWeight: 400,
-                    mt:2,
-                    maxWidth:"600px"
+                    mt: 2,
+                    maxWidth: { xs: "100%", md: "600px" },
+                    fontSize: { xs: "1.25rem", sm: "1.75rem", md: "3rem" },
                   }}
                 >
                   {subtitle || "SELF-ASSESSMENT REPORT"}
                 </Typography>
-                <Box sx={{mt:5,mb:8}}>
+                <Box sx={{mt:{ xs: 3, md: 5 }, mb:{ xs: 4, md: 8 }}}>
                     <Typography variant="h6">
                         Prepared for: {userName || `${currentUser?.firstName} ${currentUser?.lastName}`}
                     </Typography>

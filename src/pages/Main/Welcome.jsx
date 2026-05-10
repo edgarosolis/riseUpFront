@@ -33,7 +33,7 @@ const Welcome = () => {
     <>
     {
     !isLoading && 
-    <Box sx={{paddingBottom:"50px"}}>
+    <Box sx={{paddingBottom:{ xs: "30px", md: "50px" }}}>
         <WaveBanner title={"WELCOME"} subtitle={"TO YOUR KINGDOM CALLING ASSESSMENT"} imageUrl={currentAssessment?.image}/>
         <WelcomeIntro/>
         <VideoWelcome sections={currentAssessment?.sections}/>

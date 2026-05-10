@@ -9,8 +9,10 @@ import ChurchIcon from '@mui/icons-material/Church';
 import { getAllChurches, createChurch, updateChurch, deleteChurch, getGroupsByChurchId, createGroup, updateGroup, deleteGroup } from "../../axios/axiosFunctions";
 import { AssessmentContext } from "../../context/assessment";
 import RevieweesDialog from "../../components/dialogs/RevieweesDialog";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const Groups = () => {
+    const isMobile = useIsMobile();
     const { currentAssessment } = useContext(AssessmentContext);
     const [churches, setChurches] = useState([]);
     const [churchGroups, setChurchGroups] = useState({});
@@ -165,8 +167,8 @@ const Groups = () => {
 
     return (
         <>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
-                <Typography variant="h3" fontWeight={500} color="secondary">Groups</Typography>
+            <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, justifyContent: "space-between", alignItems: { xs: "stretch", sm: "center" }, gap: { xs: 2, sm: 0 }, marginBottom: "30px" }}>
+                <Typography variant="h3" fontWeight={500} color="secondary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>Groups</Typography>
                 <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenChurchDialog()}>
                     New Church / Organization
                 </Button>
@@ -240,7 +242,7 @@ const Groups = () => {
             ))}
 
             {/* Church Create/Edit Dialog */}
-            <Dialog open={openChurchDialog} onClose={() => setOpenChurchDialog(false)} maxWidth="sm" fullWidth>
+            <Dialog fullScreen={isMobile} open={openChurchDialog} onClose={() => setOpenChurchDialog(false)} maxWidth="sm" fullWidth>
                 <DialogTitle>{editingChurch ? "Edit Church / Organization" : "New Church / Organization"}</DialogTitle>
                 <DialogContent>
                     <Box sx={{ mt: 2 }}>
@@ -262,7 +264,7 @@ const Groups = () => {
             </Dialog>
 
             {/* Group Create/Edit Dialog */}
-            <Dialog open={openGroupDialog} onClose={() => setOpenGroupDialog(false)} maxWidth="sm" fullWidth>
+            <Dialog fullScreen={isMobile} open={openGroupDialog} onClose={() => setOpenGroupDialog(false)} maxWidth="sm" fullWidth>
                 <DialogTitle>{editingGroup ? "Edit Team" : "New Team"}</DialogTitle>
                 <DialogContent>
                     <Box sx={{ mt: 2 }}>
@@ -284,7 +286,7 @@ const Groups = () => {
             </Dialog>
 
             {/* Delete Church Confirmation */}
-            <Dialog open={!!deleteChurchDialog} onClose={() => setDeleteChurchDialog(null)}>
+            <Dialog fullScreen={isMobile} open={!!deleteChurchDialog} onClose={() => setDeleteChurchDialog(null)}>
                 <DialogContent>
                     <Typography>Are you sure you want to delete <strong>{deleteChurchDialog?.name}</strong>? This will also delete all teams, reviewees, and submissions within it.</Typography>
                     <Box sx={{ display: "flex", justifyContent: "center", mt: 3, gap: 2 }}>
@@ -295,7 +297,7 @@ const Groups = () => {
             </Dialog>
 
             {/* Delete Group Confirmation */}
-            <Dialog open={!!deleteGroupDialog} onClose={() => setDeleteGroupDialog(null)}>
+            <Dialog fullScreen={isMobile} open={!!deleteGroupDialog} onClose={() => setDeleteGroupDialog(null)}>
                 <DialogContent>
                     <Typography>Are you sure you want to delete team <strong>{deleteGroupDialog?.name}</strong>? This will also delete all reviewees and submissions.</Typography>
                     <Box sx={{ display: "flex", justifyContent: "center", mt: 3, gap: 2 }}>

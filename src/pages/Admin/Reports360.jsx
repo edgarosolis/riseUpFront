@@ -30,8 +30,10 @@ import SectionReportBanner from "../../components/Banners/SectionReportBanner";
 import Results from "../../components/Cards/Results";
 import DownloadSection from "../../components/DownloadSection";
 import { Container } from "@mui/material";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const Reports360 = () => {
+  const isMobile = useIsMobile();
   const { currentAssessment } = useContext(AssessmentContext);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -172,10 +174,10 @@ const Reports360 = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, justifyContent: "space-between", alignItems: { xs: "stretch", sm: "center" }, gap: { xs: 2, sm: 0 }, marginBottom: "30px" }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <AssessmentIcon color="primary" sx={{ fontSize: 36 }} />
-          <Typography variant="h3" fontWeight={500} color="secondary">
+          <AssessmentIcon color="primary" sx={{ fontSize: { xs: 28, md: 36 } }} />
+          <Typography variant="h3" fontWeight={500} color="secondary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>
             360 Reports
           </Typography>
         </Box>
@@ -187,11 +189,13 @@ const Reports360 = () => {
           No 360 reports have been generated yet.
         </Typography>
       ) : (
-        <DataGrid columns={columns} rows={rows} showToolbar initialState={{ sorting: { sortModel: [{ field: "lastName", sort: "asc" }] } }} />
+        <Box sx={{ overflowX: "auto" }}>
+          <DataGrid columns={columns} rows={rows} showToolbar initialState={{ sorting: { sortModel: [{ field: "lastName", sort: "asc" }] } }} />
+        </Box>
       )}
 
       {/* Report View Dialog */}
-      <Dialog open={reportDialogOpen} onClose={handleCloseReport} maxWidth="xl" fullWidth PaperProps={{ sx: { minHeight: "90vh" } }}>
+      <Dialog fullScreen={isMobile} open={reportDialogOpen} onClose={handleCloseReport} maxWidth="xl" fullWidth PaperProps={{ sx: { minHeight: "90vh" } }}>
         <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography variant="h6">
             360 Report — {selectedUser?.firstName} {selectedUser?.lastName}

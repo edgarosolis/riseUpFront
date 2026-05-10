@@ -5,9 +5,11 @@ import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import ArrowCircleLeftRoundedIcon from '@mui/icons-material/ArrowCircleLeftRounded';
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
 import { saveProgress, updateSubmission360 } from "../axios/axiosFunctions";
+import { useIsMobile } from "../utils/useIsMobile";
 
 const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextSection,groupId }) => {
 
+    const isMobile = useIsMobile();
     const {id}=useParams();
     const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(1);
@@ -156,7 +158,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
             <RadioGroup value={findValue(questions[activeStep-1]?.customId)} onChange={handleChange} sx={{width: "100%", maxWidth: "500px"}}>
                 {
                     options.map((q,i)=>(
-                        <FormControlLabel key={i} value={q.text} control={<Radio/>} label={q.text} sx={{'& .MuiFormControlLabel-label': {fontSize: {xs: '0.9rem', sm: '1rem'}}}}/>
+                        <FormControlLabel key={i} value={q.text} control={<Radio/>} label={q.text} sx={{'& .MuiFormControlLabel-label': {fontSize: {xs: '0.9rem', sm: '1rem', md: '1.05rem'}, lineHeight: 1.4}}}/>
                     ))
                 }
             </RadioGroup>
@@ -176,7 +178,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
         </Box>
     </Container>
 
-    <Dialog open={showConfirmDialog} onClose={() => setShowConfirmDialog(false)}>
+    <Dialog fullScreen={isMobile} open={showConfirmDialog} onClose={() => setShowConfirmDialog(false)}>
         <DialogContent sx={{ textAlign: "center", py: 4, px: 4 }}>
             <Typography variant="h6" fontWeight={600} gutterBottom>
                 Are you sure you're ready to submit?
@@ -195,7 +197,7 @@ const QuestionsSections = ({ answers,submissionId,questions=[],noQuestions,nextS
         </DialogActions>
     </Dialog>
 
-    <Dialog open={showProcessingDialog}>
+    <Dialog fullScreen={isMobile} open={showProcessingDialog}>
         <DialogContent sx={{ textAlign: "center", py: 5, px: 4 }}>
             <HourglassTopIcon sx={{ fontSize: 60, color: "#F4C542", mb: 2 }} />
             <Typography variant="h5" fontWeight={600} gutterBottom>

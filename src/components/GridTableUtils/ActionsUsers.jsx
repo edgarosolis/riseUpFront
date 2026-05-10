@@ -3,6 +3,7 @@ import { Alert, Box, Button, Dialog, DialogContent, Grid, IconButton, TextField,
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteUser, updateUser, toggle360, getUserGroup360 } from "../../axios/axiosFunctions";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const defaultUser = {
     firstName: "",
@@ -13,6 +14,7 @@ const defaultUser = {
 
 const ActionsUsers = ({row,api}) => {
 
+    const isMobile = useIsMobile();
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
     const [openDialogDelete, setOpenDialogDelete] = useState(false);
     const [alertSeverity, setAlertSeverity] = useState("error");
@@ -140,23 +142,23 @@ const ActionsUsers = ({row,api}) => {
         <IconButton onClick={handleOpenDelete}>
             <DeleteIcon sx={{color:"red"}}/>
         </IconButton>
-        <Dialog open={openDialogEdit} onClose={handleCloseDialogEdit}>
+        <Dialog fullScreen={isMobile} open={openDialogEdit} onClose={handleCloseDialogEdit}>
             <DialogContent>
                 <Typography variant="h5" color="primary">EDIT</Typography>
                 <Grid container spacing={2}>
-                    <Grid size={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Typography variant="subtitle1">First Name</Typography>
                         <TextField onChange={handleChange} onKeyDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} value={firstName} name="firstName" fullWidth/>
                     </Grid>
-                    <Grid size={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Typography variant="subtitle1">Last Name</Typography>
                         <TextField onChange={handleChange} onKeyDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} value={lastName} name="lastName" fullWidth/>
                     </Grid>
-                    <Grid size={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Typography variant="subtitle1">Email</Typography>
                         <TextField onChange={handleChange} onKeyDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} value={email} name="email" fullWidth/>
                     </Grid>
-                    <Grid size={6} sx={{display:"flex", alignItems:"center"}}>
+                    <Grid size={{ xs: 12, sm: 6 }} sx={{display:"flex", alignItems:"center"}}>
                         <FormControlLabel
                             control={
                                 <Switch
@@ -183,7 +185,7 @@ const ActionsUsers = ({row,api}) => {
                 </Grid>
             </DialogContent>
         </Dialog>
-        <Dialog open={openConfirm360} onClose={() => setOpenConfirm360(false)}>
+        <Dialog fullScreen={isMobile} open={openConfirm360} onClose={() => setOpenConfirm360(false)}>
             <DialogContent>
                 <Typography>
                     This user has <strong>{reviewerCount}</strong> reviewer{reviewerCount !== 1 ? 's' : ''}. Disabling 360 will permanently delete all reviewers and their submissions.
@@ -195,7 +197,7 @@ const ActionsUsers = ({row,api}) => {
                 </Box>
             </DialogContent>
         </Dialog>
-        <Dialog open={openDialogDelete} onClose={handleCloseDialogDelete}>
+        <Dialog fullScreen={isMobile} open={openDialogDelete} onClose={handleCloseDialogDelete}>
             <DialogContent>
                 <Typography>Are you sure you want to DELETE this user?</Typography>
                 {

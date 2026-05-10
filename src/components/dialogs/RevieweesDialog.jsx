@@ -5,8 +5,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PeopleIcon from '@mui/icons-material/People';
 import { getGroup360sByGroupId, createGroup360, deleteGroup360, createUser, getAllUsers, generateReport360 } from "../../axios/axiosFunctions";
 import ReviewersDialog from "./ReviewersDialog";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const RevieweesDialog = ({ open, onClose, group, assessmentId }) => {
+    const isMobile = useIsMobile();
     const [group360s, setGroup360s] = useState([]);
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState([]);
@@ -134,7 +136,7 @@ const RevieweesDialog = ({ open, onClose, group, assessmentId }) => {
 
     return (
         <>
-            <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+            <Dialog fullScreen={isMobile} open={open} onClose={onClose} maxWidth="md" fullWidth>
                 <DialogTitle>
                     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <Typography variant="h5" fontWeight={600}>Reviewees - {group?.name}</Typography>
@@ -204,7 +206,7 @@ const RevieweesDialog = ({ open, onClose, group, assessmentId }) => {
             </Dialog>
 
             {/* Add Reviewee Dialog */}
-            <Dialog open={openAddDialog} onClose={() => setOpenAddDialog(false)} maxWidth="sm" fullWidth>
+            <Dialog fullScreen={isMobile} open={openAddDialog} onClose={() => setOpenAddDialog(false)} maxWidth="sm" fullWidth>
                 <DialogTitle>Add Reviewee</DialogTitle>
                 <DialogContent>
                     <Box sx={{ mt: 2 }}>
@@ -243,7 +245,7 @@ const RevieweesDialog = ({ open, onClose, group, assessmentId }) => {
                             </TextField>
                         ) : (
                             <Grid container spacing={2}>
-                                <Grid size={6}>
+                                <Grid size={{ xs: 12, sm: 6 }}>
                                     <Typography variant="h6" color="secondary">First Name</Typography>
                                     <TextField
                                         value={addForm.firstName}
@@ -252,7 +254,7 @@ const RevieweesDialog = ({ open, onClose, group, assessmentId }) => {
                                         required
                                     />
                                 </Grid>
-                                <Grid size={6}>
+                                <Grid size={{ xs: 12, sm: 6 }}>
                                     <Typography variant="h6" color="secondary">Last Name</Typography>
                                     <TextField
                                         value={addForm.lastName}
@@ -281,7 +283,7 @@ const RevieweesDialog = ({ open, onClose, group, assessmentId }) => {
             </Dialog>
 
             {/* Delete Confirmation */}
-            <Dialog open={!!deleteDialog} onClose={() => setDeleteDialog(null)}>
+            <Dialog fullScreen={isMobile} open={!!deleteDialog} onClose={() => setDeleteDialog(null)}>
                 <DialogContent>
                     <Typography>
                         Are you sure you want to remove <strong>{deleteDialog?.reviewee?.firstName} {deleteDialog?.reviewee?.lastName}</strong> as a reviewee? This will delete all associated reviews and submissions.

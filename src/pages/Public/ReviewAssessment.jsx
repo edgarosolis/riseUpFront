@@ -118,11 +118,21 @@ const ReviewAssessment = () => {
     const adaptText = (text) => {
         if (!text) return text;
         const firstName = revieweeName.split(" ")[0];
+        // Match both straight (') and curly (’) apostrophes
+        const APOS = "['’]";
         return text
+            .replace(/\bYourself\b/g, firstName)
+            .replace(/\byourself\b/g, firstName)
             .replace(/\bYour\b/g, `${firstName}'s`)
             .replace(/\byour\b/g, `${firstName}'s`)
-            .replace(/\byou're\b/gi, `${firstName} is`)
+            // Contractions — must come before the bare "you" rule
+            .replace(new RegExp(`\\byou${APOS}re\\b`, "gi"), `${firstName} is`)
+            .replace(new RegExp(`\\byou${APOS}ll\\b`, "gi"), `${firstName} will`)
+            .replace(new RegExp(`\\byou${APOS}ve\\b`, "gi"), `${firstName} has`)
+            .replace(new RegExp(`\\byou${APOS}d\\b`, "gi"), `${firstName} would`)
             .replace(/\byou are\b/gi, `${firstName} is`)
+            .replace(/\byou have\b/gi, `${firstName} has`)
+            .replace(/\byou will\b/gi, `${firstName} will`)
             .replace(/\byou\b/gi, firstName)
             .replace(/\s{2,}/g, " ")
             .trim();

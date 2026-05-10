@@ -3,6 +3,7 @@ import { Alert, Box, Button, Dialog, DialogContent, Grid, IconButton, TextField,
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteResult, updateResult } from "../../axios/axiosFunctions";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 const defaultForm = {
     category: "",
@@ -12,6 +13,7 @@ const defaultForm = {
 
 const ActionsResults = ({row, api}) => {
 
+    const isMobile = useIsMobile();
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
     const [openDialogDelete, setOpenDialogDelete] = useState(false);
     const [alertSeverity, setAlertSeverity] = useState("error");
@@ -99,15 +101,15 @@ const ActionsResults = ({row, api}) => {
         <IconButton onClick={handleOpenDelete}>
             <DeleteIcon sx={{color:"red"}}/>
         </IconButton>
-        <Dialog open={openDialogEdit} onClose={handleCloseDialogEdit} maxWidth="md" fullWidth>
+        <Dialog fullScreen={isMobile} open={openDialogEdit} onClose={handleCloseDialogEdit} maxWidth="md" fullWidth>
             <DialogContent>
                 <Typography variant="h5" color="primary">EDIT RESULT</Typography>
                 <Grid container spacing={2} sx={{marginTop:"10px"}}>
-                    <Grid size={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Typography variant="subtitle1">Category</Typography>
                         <TextField onChange={handleChange} onKeyDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} value={form.category} name="category" fullWidth/>
                     </Grid>
-                    <Grid size={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Typography variant="subtitle1">Title</Typography>
                         <TextField onChange={handleChange} onKeyDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} value={form.title} name="title" fullWidth/>
                     </Grid>
@@ -130,7 +132,7 @@ const ActionsResults = ({row, api}) => {
                 </Grid>
             </DialogContent>
         </Dialog>
-        <Dialog open={openDialogDelete} onClose={handleCloseDialogDelete}>
+        <Dialog fullScreen={isMobile} open={openDialogDelete} onClose={handleCloseDialogDelete}>
             <DialogContent>
                 <Typography>Are you sure you want to DELETE this result?</Typography>
                 <Typography variant="subtitle2" color="text.secondary" sx={{marginTop:"5px"}}>Category: {row.category}</Typography>
