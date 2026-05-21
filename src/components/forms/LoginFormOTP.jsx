@@ -1,19 +1,20 @@
 import { useContext, useState, useEffect } from "react";
 import { Alert, Box, Button, Grid, TextField, Typography, CircularProgress } from "@mui/material";
 import { Email, Lock, ArrowBack } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../../context/user";
 import { getAllAssessments, requestOTP, verifyOTP } from "../../axios/axiosFunctions";
 import { AssessmentContext } from "../../context/assessment";
 
 const LoginFormOTP = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const { setCurrentUser } = useContext(UserContext);
     const { setCurrentAssessment } = useContext(AssessmentContext);
 
     // Form state
     const [step, setStep] = useState(1); // 1 = email, 2 = OTP code
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(searchParams.get("email") || "");
     const [otpCode, setOtpCode] = useState("");
 
     // UI state
