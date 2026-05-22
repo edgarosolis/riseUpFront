@@ -52,7 +52,7 @@ const Home = () => {
   return (
     <>
       <Box sx={{display:"flex", flexDirection: { xs: "column", sm: "row" }, justifyContent:"space-between", alignItems: { xs: "stretch", sm: "center" }, gap: { xs: 2, sm: 0 }, marginBottom:{ xs: "30px", md: "50px" }}}>
-        <Typography variant="h3" fontWeight={500} color="secondary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>Home</Typography>
+        <Typography variant="h3" fontWeight={500} color="secondary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }}>Users</Typography>
         <Button
           variant="contained"
           startIcon={<PersonAdd/>}

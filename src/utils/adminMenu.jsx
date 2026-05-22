@@ -9,7 +9,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 export const navItems = [
     {
-      title: "Home",
+      title: "Users",
       icon: <TuneIcon sx={{color:"white"}}/>,
       locationRef : "home",
       href: "/",
