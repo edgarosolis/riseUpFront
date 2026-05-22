@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Chip, Typography } from "@mui/material";
 import ActionsUsers from "../components/GridTableUtils/ActionsUsers";
 
 const Status360Cell = ({ row, onShowReviewers }) => {
@@ -14,6 +14,18 @@ const Status360Cell = ({ row, onShowReviewers }) => {
         >
             Show Reviewers
         </Button>
+    );
+};
+
+const SourceCell = ({ row }) => {
+    const isLearnWorlds = row.source === 'learnworlds';
+    return (
+        <Chip
+            size="small"
+            label={isLearnWorlds ? 'LW' : 'Manual'}
+            color={isLearnWorlds ? 'primary' : 'default'}
+            variant={isLearnWorlds ? 'filled' : 'outlined'}
+        />
     );
 };
 
@@ -40,6 +52,12 @@ export const getHomeColumns = (onShowReviewers) => [
         renderCell: (params) => (
             <Status360Cell row={params.row} onShowReviewers={onShowReviewers} />
         )
+    },
+    {
+        field: 'source',
+        headerName: 'Source',
+        flex: 0.5,
+        renderCell: (params) => (<SourceCell row={params.row} />)
     },
     {
         field: 'actions',

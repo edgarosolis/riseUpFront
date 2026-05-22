@@ -25,6 +25,7 @@ const Home = () => {
         lastName: u.lastName,
         email: u.email,
         has360: u.has360 || false,
+        source: u.source || 'manual',
       }));
       setRows(tempRows);
     }
