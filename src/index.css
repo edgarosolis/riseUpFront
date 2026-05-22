@@ -73,6 +73,12 @@ html, body {
   background-color: #ffffff;
 }
 
+/* React root paints white explicitly. Inside an iframe some browsers leave the body transparent regardless of background-color rules, so we belt-and-braces this on the React mount point as well. */
+#root {
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
 /* Better touch targets for mobile */
 @media (max-width: 600px) {
   button, a {
