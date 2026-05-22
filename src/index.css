@@ -67,9 +67,10 @@ code {
   }
 }
 
-/* Prevent horizontal scroll on mobile */
+/* Prevent horizontal scroll on mobile + ensure white background when embedded in iframes (e.g. LearnWorlds course player) */
 html, body {
   max-width: 100%;
+  background-color: #ffffff;
 }
 
 /* Better touch targets for mobile */
