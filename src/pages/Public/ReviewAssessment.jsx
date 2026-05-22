@@ -138,6 +138,18 @@ const ReviewAssessment = () => {
             .trim();
     };
 
+    // Prefer the admin-authored reviewer description (which keeps "you" pointing
+    // at the reviewer and uses {name} for the reviewee). Fall back to runtime
+    // adaptation of the reviewee-facing description.
+    const sectionDescription = (section) => {
+        if (!section) return "";
+        const firstName = revieweeName.split(" ")[0];
+        if (section.reviewerDescription) {
+            return section.reviewerDescription.replace(/\{name\}/g, firstName);
+        }
+        return adaptText(section.description);
+    };
+
     return (
         <Box sx={{ minHeight: "100vh" }}>
             {/* Header */}
@@ -152,7 +164,7 @@ const ReviewAssessment = () => {
                 <>
                     <SectionBanner
                         title={adaptText(currentSection.title)}
-                        description={adaptText(currentSection.description)}
+                        description={sectionDescription(currentSection)}
                         noQuestions={currentSection.questions?.length}
                         image={currentSection.image}
                         index={currentSectionIndex}
