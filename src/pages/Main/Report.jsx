@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material"
+import { Alert, Box, CircularProgress } from "@mui/material"
 import WaveBannerReport from "../../components/Banners/WaveBannerReport"
 import { useContext, useEffect, useState } from "react"
 import { AssessmentContext } from "../../context/assessment"
@@ -54,6 +54,7 @@ const Report = () => {
   }, [currentAssessment,currentUser])
 
   const finalSection = ()=>{
+    if (!reportInfo || !Array.isArray(reportInfo) || reportInfo.length === 0) return null;
     const info = [...reportInfo];
     return info[info.length-1];
   }
@@ -64,6 +65,18 @@ const Report = () => {
       loading ? 
       <Box display="flex" justifyContent="center" mt={10}>
         <CircularProgress/>    
+      </Box>
+      :
+      !reportInfo ?
+      <Box sx={{ px: { xs: 2, md: 4 }, pt: 2, maxWidth: 700 }}>
+        <Button startIcon={<ArrowBackIcon />} onClick={() => navigate("/")} sx={{ mb: 2 }}>
+          Back to Assessments
+        </Button>
+        <Alert severity="error" action={
+          <Button color="inherit" size="small" onClick={() => callReportData()}>Try again</Button>
+        }>
+          We could not load your results right now. Please try again in a moment. If this keeps happening, contact The Rise Up Culture team and we will send you your report.
+        </Alert>
       </Box>
       :
       <Box sx={{paddingBottom:"50px"}}>

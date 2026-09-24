@@ -6,6 +6,7 @@ import { PersonAdd } from "@mui/icons-material";
 import { getHomeColumns } from "../../utils/homeCols";
 import CreateUser from "../../components/forms/CreateUser";
 import ShowReviewersDialog from "../../components/dialogs/ShowReviewersDialog";
+import SelfReportDialog from "../../components/dialogs/SelfReportDialog";
 import { useIsMobile } from "../../utils/useIsMobile";
 
 const Home = () => {
@@ -15,6 +16,8 @@ const Home = () => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [openReviewersDialog, setOpenReviewersDialog] = useState(false);
+  const [reportUser, setReportUser] = useState(null);
+  const [openReportDialog, setOpenReportDialog] = useState(false);
 
   const fetchUsers = async()=>{
     const users = await getAllUsers();
@@ -47,7 +50,12 @@ const Home = () => {
     setOpenReviewersDialog(true);
   }, []);
 
-  const homeColumns = getHomeColumns(handleShowReviewers);
+  const handleViewReport = useCallback((row) => {
+    setReportUser(row);
+    setOpenReportDialog(true);
+  }, []);
+
+  const homeColumns = getHomeColumns(handleShowReviewers, handleViewReport);
 
   return (
     <>
@@ -77,6 +85,12 @@ const Home = () => {
         onClose={() => setOpenReviewersDialog(false)}
         userId={selectedUserId}
         onUpdate={fetchUsers}
+      />
+
+      <SelfReportDialog
+        open={openReportDialog}
+        onClose={() => setOpenReportDialog(false)}
+        user={reportUser}
       />
     </>
   )

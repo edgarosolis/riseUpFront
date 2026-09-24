@@ -22,10 +22,8 @@ const Welcome = () => {
 
   const callSubmission = async()=>{
     const res = await getActiveUserSubmission(currentAssessment._id,currentUser._id);
-    if(res){
-      if(res.submission.finished){
-        navigate('/report');
-      }
+    if(res?.submission?.finished){
+      navigate('/report');
     }
   }  
 

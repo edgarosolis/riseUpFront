@@ -1,4 +1,5 @@
-import { Button, Chip, Typography } from "@mui/material";
+import { Button, Chip, IconButton, Typography } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import ActionsUsers from "../components/GridTableUtils/ActionsUsers";
 
 const Status360Cell = ({ row, onShowReviewers }) => {
@@ -29,7 +30,7 @@ const SourceCell = ({ row }) => {
     );
 };
 
-export const getHomeColumns = (onShowReviewers) => [
+export const getHomeColumns = (onShowReviewers, onViewReport) => [
     {
         field: 'firstName',
         headerName: 'First Name',
@@ -58,6 +59,17 @@ export const getHomeColumns = (onShowReviewers) => [
         headerName: 'Source',
         flex: 0.5,
         renderCell: (params) => (<SourceCell row={params.row} />)
+    },
+    {
+        field: 'report',
+        headerName: 'Report',
+        flex: 0.5,
+        sortable: false,
+        renderCell: (params) => (
+            <IconButton color="primary" onClick={() => onViewReport(params.row)} title="View self-assessment report">
+                <VisibilityIcon />
+            </IconButton>
+        )
     },
     {
         field: 'actions',
