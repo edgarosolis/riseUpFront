@@ -84,7 +84,7 @@ const SelfReportDialog = ({ open, onClose, user }) => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers sx={{ p: 0 }}>
+      <DialogContent dividers sx={{ p: 0, overflowX: "hidden" }}>
         {loading ? (
           <Box display="flex" justifyContent="center" mt={10} mb={10}>
             <CircularProgress />

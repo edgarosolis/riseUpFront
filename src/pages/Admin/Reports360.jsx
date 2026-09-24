@@ -204,7 +204,7 @@ const Reports360 = () => {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent dividers sx={{ p: 0 }}>
+        <DialogContent dividers sx={{ p: 0, overflowX: "hidden" }}>
           {reportLoading ? (
             <Box display="flex" justifyContent="center" mt={10} mb={10}>
               <CircularProgress />
