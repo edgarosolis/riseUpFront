@@ -103,7 +103,7 @@ const SelfReportDialog = ({ open, onClose, user }) => {
               completedAt={userSubmission?.completedAt || userSubmission?.updatedAt}
             />
             <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"} />
-            <ReportIntro />
+            <ReportIntro firstName={user?.firstName} />
             <MiniBanner title={"Your Result"} />
             <ReportResults reportInfo={reportInfo} />
             <MiniBanner title={"Understanding the Report"} />
@@ -111,7 +111,7 @@ const SelfReportDialog = ({ open, onClose, user }) => {
             <MiniBanner title={"How to Use This Report"} />
             <ReportHowTo />
             {currentAssessment?.sections.map((s, i) => (
-              <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} />
+              <SectionsReport key={i} section={s} index={i} reportInfo={reportInfo} readOnly={true} />
             ))}
             <Separator sectionColor={"#6E5600"} />
             <SectionReportBanner

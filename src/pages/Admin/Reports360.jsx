@@ -222,7 +222,7 @@ const Reports360 = () => {
                 reviewerCount={reviewerCount}
               />
               <MiniBanner title={"Embracing the Wonder of You"} bgColor="#F4C542" center={true} titleSize={"2.3"} />
-              <ReportIntro is360={true} />
+              <ReportIntro is360={true} firstName={selectedUser?.firstName} />
               <MiniBanner title={"Your Results"} />
               {reportInfo && reviewerReport && reviewerReport.length > 0 ? (
                 <ReportResultsSideBySide selfReport={reportInfo} reviewerReport={reviewerReport} />

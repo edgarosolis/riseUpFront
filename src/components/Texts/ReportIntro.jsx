@@ -2,13 +2,13 @@ import { Box, Button, Container, Typography } from '@mui/material'
 import { useContext } from 'react'
 import { UserContext } from '../../context/user'
 
-const ReportIntro = ({ is360 }) => {
+const ReportIntro = ({ is360, firstName }) => {
 
     const {currentUser} = useContext(UserContext)
 
     return (
     <Container maxWidth="xl" sx={{marginTop:5}}>
-        <Typography variant='subtitle1' fontWeight={600}> Dear {currentUser?.firstName},</Typography>
+        <Typography variant='subtitle1' fontWeight={600}> Dear {firstName || currentUser?.firstName},</Typography>
         <Typography variant='subtitle1' sx={{margin:"20px 0px"}}>
             Welcome to your Kingdom Calling Assessment Report. This is a tool designed not to define you, but to reveal who you are and the leader for the Kingdom you are called to be. This is not just data. <span style={{fontWeight:"600"}}>This is discovery.</span>
         </Typography>

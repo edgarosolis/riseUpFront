@@ -5,7 +5,7 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import Results from './Cards/Results';
 import QuestionsReportSections from './QuestionsReportSections';
 
-const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,saveFn,reviewerSection,is360}) => {
+const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,saveFn,reviewerSection,is360,readOnly}) => {
 
     const [currentSection, setCurrentSection] = useState();
 
@@ -118,7 +118,7 @@ const SectionsReport = ({section, index, reportInfo,userSubmission,refreshData,s
                     </Grid>
                 </Container>
             }
-            {(() => {
+            {!readOnly && (() => {
                 const allQuestions = [...reflectionQuestions, ...getFilteredQuestions()];
                 return allQuestions.length > 0 ? (
                     <QuestionsReportSections questions={allQuestions} answers={userSubmission?.answers} submissionId={userSubmission?._id} callUserSubmission={refreshData} saveFn={saveFn}/>
